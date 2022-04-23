@@ -1,0 +1,12 @@
+---
+title: "analyze"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+rm(list = ls())
+library(data.table); library(tidyverse)
+```
+
