@@ -36,8 +36,25 @@ library(BayesFactor)
 t.test(response ~ condition, d1)
 
 
+ttestBF(formula = response ~ condition, data = d1)
 
-ttestBF(formula = response ~ condition, data = d1[1:500])
+1 / 0.09328062
+
+
+
+
+
+library(BFpack)
+m1 <- lm(response ~ condition, d1)
+m1
+
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+m1_bf
+summary(m1_bf)
+
+# https://github.com/jomulder/BFpack
+
+
 ```
 
 
