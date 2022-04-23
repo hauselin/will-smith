@@ -1,0 +1,43 @@
+---
+title: "scratch"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+```{r}
+d0[, unique(field)]
+
+d1 <- d0[field == "politicalpref", .(user_id, response)][response != ""]
+
+d1[, unique(response)] |> sort()
+
+
+d1[, response := substr(response, 1, 1)]
+d1[, response := as.numeric(response)]
+glimpse(d1)
+
+
+
+d1[, condition := sample(x = c(0, 1), size = .N, replace = T)]
+
+d1[, table(condition)]
+
+```
+
+
+
+```{r}
+library(BayesFactor)
+
+
+t.test(response ~ condition, d1)
+
+
+
+ttestBF(formula = response ~ condition, data = d1[1:500])
+```
+
+

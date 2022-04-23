@@ -1,0 +1,28 @@
+---
+title: "prep_data"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html
+# https://richarddmorey.github.io/BayesFactor/
+rm(list = ls())
+library(data.table); library(tidyverse)
+```
+
+```{r}
+d0 <- fread("../data/raw/eNKqay_user_form.csv")
+```
+
+```{r}
+d0[, n_distinct(user_id)]
+d0[, unique(field)]
+d0
+```
+
+```{r}
+
+```
+
