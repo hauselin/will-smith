@@ -10,3 +10,19 @@ rm(list = ls())
 library(data.table); library(tidyverse)
 ```
 
+```{r}
+d0 <- fread("../data/clean/merged_cleaned_data.csv")
+
+library(BayesFactor)
+
+ttestBF(formula = response_num ~ condition, data = d0)
+
+library(BFpack)
+m1 <- lm(response_num ~ condition, d0)
+m1
+
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+m1_bf
+summary(m1_bf)
+
+```
