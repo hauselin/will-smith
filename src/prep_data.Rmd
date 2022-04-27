@@ -23,11 +23,47 @@ d0
 ```
 
 ```{r}
+d0 <- d0[!grepl("test", user_id)]
+```
+
+```{r}
+# get users who properly completed study
+d0[field == "comments", .N, by = .(user_id)]
+d0[field == "comments", .N, by = .(user_id)][N != 1]
+
+users_complete <- d0[field == "comments", .N, by = .(user_id)][N == 1, user_id]
+users_complete
+
+d0 <- d0[user_id %in% users_complete]
+d0
+```
+
+
+```{r}
 # TODO: select more than just one variable (we have 6 questions, so select 6 variables/fields); use %in% to select/filter multiple fields not ==
-d1 <- d0[field == "politicalpref", .(user_id, field, response)][response != ""]
+
+cols <- c("attentioncheck1", "attentioncheck2", "politicalpref", "gender")
+d1 <- d0[field %in% cols, .(user_id, field, response)][response != ""]
 d1[, n_distinct(user_id)]
 d1[, unique(response)] |> sort()
+```
 
+```{r atteniton check}
+ac <- d1[field %in% c("politicalpref", "gender")]
+
+ac[field == "politicalpref", acc := ifelse(response == "2_democratic", 1, 0)]
+ac[field == "gender", acc := ifelse(response == "female", 1, 0)]
+
+ac[, .(acc = mean(acc, na.rm = T)), by = user_id][, table(acc)]
+attention <- ac[, .(attention = mean(acc, na.rm = T)), by = user_id]
+attention
+
+d1 <- left_join(d1, attention)
+setDT(d1)
+```
+
+
+```{r}
 d1[, news_eval := substr(response, 1, 1)]
 d1[, news_eval := as.numeric(response_num)]
 glimpse(d1)
