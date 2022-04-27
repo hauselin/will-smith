@@ -23,21 +23,17 @@ d0
 ```
 
 ```{r}
-d1 <- d0[field == "politicalpref", .(user_id, response)][response != ""]
+# TODO: select more than just one variable (we have 6 questions, so select 6 variables/fields); use %in% to select/filter multiple fields not ==
+d1 <- d0[field == "politicalpref", .(user_id, field, response)][response != ""]
 d1[, n_distinct(user_id)]
-d1[, unique(response)]
-
 d1[, unique(response)] |> sort()
 
-d1[, response_num := substr(response, 1, 1)]
-d1[, response_num := as.numeric(response_num)]
+d1[, news_eval := substr(response, 1, 1)]
+d1[, news_eval := as.numeric(response_num)]
 glimpse(d1)
-
-
 ```
 
 ```{r}
-
 d2 <- fread("../data/raw/eNKqay_engagement.csv")
 d2[, n_distinct(user_id)]
 d2[, unique(user_id)]
@@ -46,7 +42,7 @@ d2[, unique(entity_id)]
 
 glimpse(d2)
 
-d3 <- d2[, .(user_id, condition)][condition != "null"]
+d3 <- d2[, .(user_id, condition)][condition != "null"] |> distinct()
 
 glimpse(d3)
 
@@ -54,16 +50,14 @@ d3[, condition := as.numeric(condition)]
 
 d3[, unique(user_id)]
 
-d3 <- unique(d3)
 
-a <- d1$user_id
-b <- d3$user_id
+d4 <- left_join(d1, d3)
 
-intersect(a, b)
-
-d4 <- merge(x = d1, y = d3, by = "user_id")
+d4[, condition := condition - 1]  # recode condition to 0,1 foor model fitting
 
 fwrite(d4, file = "../data/clean/merged_cleaned_data.csv")
+
+
 
 ```
 

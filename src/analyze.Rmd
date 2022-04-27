@@ -8,17 +8,24 @@ editor_options:
 ```{r}
 rm(list = ls())
 library(data.table); library(tidyverse)
+library(BayesFactor); library(BFpack)
 ```
 
 ```{r}
 d0 <- fread("../data/clean/merged_cleaned_data.csv")
+d0[, n_distinct(user_id), condition]  # users per condition
 
-library(BayesFactor)
+# TODOs
+# if we have 6 fields, we expect 6 rows per subject, so double-check that
+# then use dcast to convert from long to wide form
+# then correlate variables (see prereg) to see if r > .7; if so, we combine/take mean of columns
 
-ttestBF(formula = response_num ~ condition, data = d0)
 
-library(BFpack)
-m1 <- lm(response_num ~ condition, d0)
+
+ttestBF(formula = news_eval ~ condition, data = d0)
+
+
+m1 <- lm(news_eval ~ condition, d0)
 m1
 
 m1_bf <- BF(m1, hypothesis = "condition = 0")
