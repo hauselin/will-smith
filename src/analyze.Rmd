@@ -15,20 +15,92 @@ library(BayesFactor); library(BFpack)
 d0 <- fread("../data/clean/merged_cleaned_data.csv")
 d0[, n_distinct(user_id), condition]  # users per condition
 
-# TODOs
-# if we have 6 fields, we expect 6 rows per subject, so double-check that
-# then use dcast to convert from long to wide form
-# then correlate variables (see prereg) to see if r > .7; if so, we combine/take mean of columns
+user_freq <- count(d0, user_id)
+# check each user has all 8 rows
+users_full_data <- user_freq[n==8]$user_id
+users_full_data
+d1 <- d0[user_id %in% users_full_data]
 
+# drop attention check rows since attention has been calculated
 
+d2 <- d1[field != 'attentioncheck1' & field != 'attentioncheck2']
+d2$field <- gsub('-', '_', d2$field)
 
-ttestBF(formula = news_eval ~ condition, data = d0)
+# remove alphanumeric response column, ip address and country codes
+d2 <- d2[,!c("response", "ip_address", "country_codes")]
 
+d3 <- dcast(d2, user_id ~ field, value.var = "news_eval")
 
-m1 <- lm(news_eval ~ condition, d0)
-m1
+d2 <- d2[,!c("field", "news_eval")]
 
+d3 <- inner_join(d3, unique(d2))
+
+glimpse(d3)
+
+# check if need to combine importance and newsworthiness
+if (cor(d3[,c("election_importance", "election_newsworthiness")])[2] > 0.7) {
+  d3$election_mean <- (d3$election_importance + d3$election_newsworthiness)/2
+}
+
+if (cor(d3[,c("johnny_importance", "johnny_newsworthiness")])[2] > 0.7) {
+  d3$johnny_mean <- (d3$johnny_importance + d3$johnny_newsworthiness)/2
+}
+
+if (cor(d3[,c("willsmith_importance", "willsmith_newsworthiness")])[2] > 0.7) {
+  d3$willsmith_mean <- (d3$willsmith_importance + d3$willsmith_newsworthiness)/2
+}
+
+# t test
+if (cor(d3[,c("election_importance", "election_newsworthiness")])[2] > 0.7) {
+ttestBF(formula = election_mean ~ condition, data = d3)
+m1 <- lm(election_mean ~ condition, d3)
 m1_bf <- BF(m1, hypothesis = "condition = 0")
-m1_bf
 summary(m1_bf)
+} else {
+ttestBF(formula = election_importance ~ condition, data = d3)
+m1 <- lm(election_importance ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+  
+ttestBF(formula = election_newsworthiness ~ condition, data = d3)
+m1 <- lm(election_newsworthiness ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+}
+
+if (cor(d3[,c("johnny_importance", "johnny_newsworthiness")])[2] > 0.7) {
+ttestBF(formula = johnny_mean ~ condition, data = d3)
+m1 <- lm(johnny_mean ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+} else {
+ttestBF(formula = johnny_importance ~ condition, data = d3)
+m1 <- lm(johnny_importance ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+  
+ttestBF(formula = johnny_newsworthiness ~ condition, data = d3)
+m1 <- lm(johnny_newsworthiness ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+}
+
+if (cor(d3[,c("willsmith_importance", "willsmith_newsworthiness")])[2] > 0.7) {
+ttestBF(formula = willsmith_mean ~ condition, data = d3)
+m1 <- lm(willsmith_mean ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+} else {
+ttestBF(formula = willsmith_importance ~ condition, data = d3)
+m1 <- lm(willsmith_importance ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+  
+ttestBF(formula = willsmith_newsworthiness ~ condition, data = d3)
+m1 <- lm(willsmith_newsworthiness ~ condition, d3)
+m1_bf <- BF(m1, hypothesis = "condition = 0")
+summary(m1_bf)
+}
+
+
 ```

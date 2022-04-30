@@ -10,15 +10,17 @@ editor_options:
 # https://richarddmorey.github.io/BayesFactor/
 rm(list = ls())
 library(data.table); library(tidyverse)
+library(rgeolocate)
 ```
 
 ```{r}
-d0 <- fread("../data/raw/eNKqay_user_form.csv")
+d0 <- fread("../data/raw/ej3MkW_user_form.csv")
 ```
 
 ```{r}
 d0[, n_distinct(user_id)]
 d0[, unique(field)]
+d0[, unique(user_id)]
 d0
 ```
 
@@ -40,19 +42,18 @@ d0
 
 
 ```{r}
-# TODO: select more than just one variable (we have 6 questions, so select 6 variables/fields); use %in% to select/filter multiple fields not ==
-
-cols <- c("attentioncheck1", "attentioncheck2", "politicalpref", "gender")
-d1 <- d0[field %in% cols, .(user_id, field, response)][response != ""]
+# select DVs
+cols <- c("attentioncheck1", "attentioncheck2", "election-importance", "election-newsworthiness", "johnny-importance", "johnny-newsworthiness", "willsmith-importance", "willsmith-newsworthiness")
+d1 <- d0[field %in% cols, .(user_id, field, response)]
 d1[, n_distinct(user_id)]
 d1[, unique(response)] |> sort()
 ```
 
-```{r atteniton check}
-ac <- d1[field %in% c("politicalpref", "gender")]
+```{r attention check}
+ac <- d1[field %in% c("attentioncheck1", "attentioncheck2")]
 
-ac[field == "politicalpref", acc := ifelse(response == "2_democratic", 1, 0)]
-ac[field == "gender", acc := ifelse(response == "female", 1, 0)]
+ac[field == "attentioncheck1", acc := ifelse(response == "3_neither-agree-nor-disagree", 1, 0)]
+ac[field == "attentioncheck2", acc := ifelse(response == "very-interested;extremely-interested", 1, 0)]
 
 ac[, .(acc = mean(acc, na.rm = T)), by = user_id][, table(acc)]
 attention <- ac[, .(attention = mean(acc, na.rm = T)), by = user_id]
@@ -65,12 +66,12 @@ setDT(d1)
 
 ```{r}
 d1[, news_eval := substr(response, 1, 1)]
-d1[, news_eval := as.numeric(response_num)]
+d1[, news_eval := as.numeric(news_eval)]
 glimpse(d1)
 ```
 
 ```{r}
-d2 <- fread("../data/raw/eNKqay_engagement.csv")
+d2 <- fread("../data/raw/ej3MkW_engagement.csv")
 d2[, n_distinct(user_id)]
 d2[, unique(user_id)]
 d2[, n_distinct(entity_id)]
@@ -78,7 +79,7 @@ d2[, unique(entity_id)]
 
 glimpse(d2)
 
-d3 <- d2[, .(user_id, condition)][condition != "null"] |> distinct()
+d3 <- d2[, .(user_id, condition, ip_address)][condition != "null"] |> distinct()
 
 glimpse(d3)
 
@@ -89,9 +90,16 @@ d3[, unique(user_id)]
 
 d4 <- left_join(d1, d3)
 
-d4[, condition := condition - 1]  # recode condition to 0,1 foor model fitting
+d4[, condition := condition - 1]  # recode condition to 0,1 for model fitting
 
-fwrite(d4, file = "../data/clean/merged_cleaned_data.csv")
+# remove non USA ip
+file <- system.file("extdata","GeoLite2-Country.mmdb", package = "rgeolocate")
+d4$country_codes <-  maxmind(d4$ip_address, file, "country_code")
+
+d5 <- d4[country_codes == "US"]
+d5[, unique(user_id)]
+
+fwrite(d5, file = "../data/clean/merged_cleaned_data.csv")
 
 
 
