@@ -116,6 +116,8 @@ if (nrow(ips) > 0) {
     ips_checked2 <- ips_checked2[!is.na(IP_Hub_recommend_block)]
     ips_checked2 <- bind_rows(checked, ips_checked2)
     fwrite(ips_checked2, "../data/clean/ips_checked.csv")
+} else {
+    ips_checked2 <- checked
 }
 ```
 
@@ -156,6 +158,11 @@ dt_main2[, unique(condition)]
 dt_feed2[, unique(condition)]
 dt_feed2[, condition := condition - 1.5]  # recode condition for model fitting
 dt_feed2[, unique(condition)]
+```
+
+
+```{r}
+dt_main2[, field := gsub('-', '_', field)]
 ```
 
 

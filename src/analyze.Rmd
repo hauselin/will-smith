@@ -7,100 +7,73 @@ editor_options:
 
 ```{r}
 rm(list = ls())
-library(data.table); library(tidyverse)
-library(BayesFactor); library(BFpack)
+library(data.table); library(tidyverse); library(correlation)
+library(BayesFactor); library(BFpack); library(ggbeeswarm)
+theme_set(theme_minimal())
 ```
 
 ```{r}
-d0 <- fread("../data/clean/merged_cleaned_data.csv")
-d0[, n_distinct(user_id), condition]  # users per condition
+d1 <- fread("../data/clean/data.csv")
+d1[, n_distinct(user_id), keyby = .(condition)]
+d1[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]  # users per condition
 
-user_freq <- count(d0, user_id)
-# check each user has all 8 rows
-users_full_data <- user_freq[n==8]$user_id
-users_full_data
-d1 <- d0[user_id %in% users_full_data]
-
-# drop attention check rows since attention has been calculated
-
-d2 <- d1[field != 'attentioncheck1' & field != 'attentioncheck2']
-d2$field <- gsub('-', '_', d2$field)
+d2 <- d1[attention == 1.0 & ipblock == 0]
+d2[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
 
 # remove alphanumeric response column, ip address and country codes
-d2 <- d2[,!c("response", "ip_address", "country_codes")]
-
-d3 <- dcast(d2, user_id ~ field, value.var = "news_eval")
-
-d2 <- d2[,!c("field", "news_eval")]
-
-d3 <- inner_join(d3, unique(d2))
-
-glimpse(d3)
-
-# check if need to combine importance and newsworthiness
-if (cor(d3[,c("election_importance", "election_newsworthiness")])[2] > 0.7) {
-  d3$election_mean <- (d3$election_importance + d3$election_newsworthiness)/2
-}
-
-if (cor(d3[,c("johnny_importance", "johnny_newsworthiness")])[2] > 0.7) {
-  d3$johnny_mean <- (d3$johnny_importance + d3$johnny_newsworthiness)/2
-}
-
-if (cor(d3[,c("willsmith_importance", "willsmith_newsworthiness")])[2] > 0.7) {
-  d3$willsmith_mean <- (d3$willsmith_importance + d3$willsmith_newsworthiness)/2
-}
-
-# t test
-if (cor(d3[,c("election_importance", "election_newsworthiness")])[2] > 0.7) {
-ttestBF(formula = election_mean ~ condition, data = d3)
-m1 <- lm(election_mean ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-} else {
-ttestBF(formula = election_importance ~ condition, data = d3)
-m1 <- lm(election_importance ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-  
-ttestBF(formula = election_newsworthiness ~ condition, data = d3)
-m1 <- lm(election_newsworthiness ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-}
-
-if (cor(d3[,c("johnny_importance", "johnny_newsworthiness")])[2] > 0.7) {
-ttestBF(formula = johnny_mean ~ condition, data = d3)
-m1 <- lm(johnny_mean ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-} else {
-ttestBF(formula = johnny_importance ~ condition, data = d3)
-m1 <- lm(johnny_importance ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-  
-ttestBF(formula = johnny_newsworthiness ~ condition, data = d3)
-m1 <- lm(johnny_newsworthiness ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-}
-
-if (cor(d3[,c("willsmith_importance", "willsmith_newsworthiness")])[2] > 0.7) {
-ttestBF(formula = willsmith_mean ~ condition, data = d3)
-m1 <- lm(willsmith_mean ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-} else {
-ttestBF(formula = willsmith_importance ~ condition, data = d3)
-m1 <- lm(willsmith_importance ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-  
-ttestBF(formula = willsmith_newsworthiness ~ condition, data = d3)
-m1 <- lm(willsmith_newsworthiness ~ condition, d3)
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-summary(m1_bf)
-}
-
-
+d2 <- select(d2, user_id, condition, field, news_eval)
+d2
 ```
+
+```{r}
+d2 <- separate(d2, field, c("topic", "question"), "_")
+d3 <- dcast(d2, user_id + condition + topic ~ question, value.var = "news_eval")
+d3[, rating_combined := (importance + newsworthiness) / 2]
+```
+
+```{r check correlations}
+cors <- d3[, .(r = cor(importance, newsworthiness)), topic]
+cors
+ggplot(d3, aes(importance, newsworthiness)) +
+    facet_wrap(~ topic) +
+    geom_point() +
+    geom_smooth(method = 'lm', alpha = 0.1) 
+
+select(d3, topic, importance, newsworthiness) %>% group_by(topic) %>% correlation()
+```
+
+
+```{r fit models}
+# if cor is < 0.7 interpret this
+ttestBF(formula = importance ~ condition, data = d3[topic == "willsmith"])
+m1_imp <- lm(importance ~ condition, d3[topic == "willsmith"])
+summary(m1_imp)
+m1_impbf <- BF(m1_imp, hypothesis = "condition = 0")
+summary(m1_impbf)
+
+ttestBF(formula = newsworthiness ~ condition, data = d3[topic == "willsmith"])
+m1_newsw <- lm(newsworthiness ~ condition, d3[topic == "willsmith"])
+summary(m1_newsw)
+m1_newswbf <- BF(m1_newsw, hypothesis = "condition = 0")
+summary(m1_newswbf)
+
+# if cor > 0.7, interpret this
+ttestBF(formula = rating_combined ~ condition, data = d3[topic == "willsmith"])
+m1_combine <- lm(rating_combined ~ condition, d3[topic == "willsmith"])
+summary(m1_combine)
+m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
+summary(m1_combinebf)
+```
+
+
+```{r}
+dodge <- 0.8
+ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+```
+
