@@ -9,8 +9,7 @@ editor_options:
 # https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html
 # https://richarddmorey.github.io/BayesFactor/
 rm(list = ls())
-library(data.table); library(tidyverse)
-library(rgeolocate)
+library(data.table); library(tidyverse); library(rIP)
 ```
 
 ```{r}
@@ -18,19 +17,18 @@ d0 <- fread("../data/raw/ej3MkW_user_form.csv")
 ```
 
 ```{r}
+d0 <- d0[!grepl("test", user_id)]
 d0[, n_distinct(user_id)]
 d0[, unique(field)]
 d0[, unique(user_id)]
-d0
-```
-
-```{r}
-d0 <- d0[!grepl("test", user_id)]
+d0[, n_distinct(user_id)]
 ```
 
 ```{r}
 # get users who properly completed study
 d0[field == "comments", .N, by = .(user_id)]
+d0[field == "gender", .N, by = .(user_id)]
+d0[field == "election-newsworthiness", .N, by = .(user_id)]
 d0[field == "comments", .N, by = .(user_id)][N != 1]
 
 users_complete <- d0[field == "comments", .N, by = .(user_id)][N == 1, user_id]
@@ -38,6 +36,7 @@ users_complete
 
 d0 <- d0[user_id %in% users_complete]
 d0
+d0[, n_distinct(user_id)]
 ```
 
 
@@ -45,19 +44,20 @@ d0
 # select DVs
 cols <- c("attentioncheck1", "attentioncheck2", "election-importance", "election-newsworthiness", "johnny-importance", "johnny-newsworthiness", "willsmith-importance", "willsmith-newsworthiness")
 d1 <- d0[field %in% cols, .(user_id, field, response)]
+d1[, unique(field)]
 d1[, n_distinct(user_id)]
 d1[, unique(response)] |> sort()
 ```
 
 ```{r attention check}
 ac <- d1[field %in% c("attentioncheck1", "attentioncheck2")]
-
+ac[, .N, .(field, response)]
 ac[field == "attentioncheck1", acc := ifelse(response == "3_neither-agree-nor-disagree", 1, 0)]
 ac[field == "attentioncheck2", acc := ifelse(response == "very-interested;extremely-interested", 1, 0)]
 
-ac[, .(acc = mean(acc, na.rm = T)), by = user_id][, table(acc)]
 attention <- ac[, .(attention = mean(acc, na.rm = T)), by = user_id]
 attention
+attention[, table(attention)]
 
 d1 <- left_join(d1, attention)
 setDT(d1)
@@ -65,43 +65,102 @@ setDT(d1)
 
 
 ```{r}
-d1[, news_eval := substr(response, 1, 1)]
-d1[, news_eval := as.numeric(news_eval)]
+d1 <- d1[!field %in% c("attentioncheck1", "attentioncheck2")]
+d1[, unique(field)]
+glimpse(d1)
+
+d1[, unique(response)]
+d1[, news_eval := as.numeric(substr(response, 1, 1))]
 glimpse(d1)
 ```
 
 ```{r}
+# check feed enegagement data
 d2 <- fread("../data/raw/ej3MkW_engagement.csv")
+d2 <- d2[!grepl("test", user_id)][condition != "null"]
 d2[, n_distinct(user_id)]
 d2[, unique(user_id)]
 d2[, n_distinct(entity_id)]
 d2[, unique(entity_id)]
 
+# extra quick analyses
+d2[, .N, keyby = .(user_id, condition, engagement_type)]
+d2[, .N, keyby = .(user_id, condition, engagement_type)][, .(mean(N)), keyby = .(condition, engagement_type)]
+d2[, .N, user_id]
+
+
+d2[user_id %in% users_complete][, n_distinct(user_id)]
+d2 <- d2[user_id %in% users_complete]
+d2[, n_distinct(user_id)]
 glimpse(d2)
 
-d3 <- d2[, .(user_id, condition, ip_address)][condition != "null"] |> distinct()
-
-glimpse(d3)
-
+# get condition assignment
+d3 <- distinct(d2[, .(user_id, condition, ip_address)])
 d3[, condition := as.numeric(condition)]
-
-d3[, unique(user_id)]
-
+d3[, table(condition)]
 
 d4 <- left_join(d1, d3)
-
-d4[, condition := condition - 1]  # recode condition to 0,1 for model fitting
-
-# remove non USA ip
-file <- system.file("extdata","GeoLite2-Country.mmdb", package = "rgeolocate")
-d4$country_codes <-  maxmind(d4$ip_address, file, "country_code")
-
-d5 <- d4[country_codes == "US"]
-d5[, unique(user_id)]
-
-fwrite(d5, file = "../data/clean/merged_cleaned_data.csv")
+setDT(d4)
+```
 
 
+```{r ip quality}
+ips <- copy(d3)
+checked <- fread("../data/clean/ips_checked.csv")
+ips <- ips[!ip_address %in% checked$ip_address]
+ips
+if (nrow(ips) > 0) {
+    ips_checked <- getIPinfo(ips, "ip_address", iphub_key = iphub_key)
+    ips_checked
+    ips_checked2 <- left_join(ips, ips_checked, by = c("ip_address" = "IPAddress"))
+    ips_checked2 <- ips_checked2[!is.na(IP_Hub_recommend_block)]
+    ips_checked2 <- bind_rows(checked, ips_checked2)
+    fwrite(ips_checked2, "../data/clean/ips_checked.csv")
+}
+```
 
+
+```{r exclude based on ip address}
+ipscheck <- ips_checked2[, .(user_id, ip_address, ipblock = IP_Hub_recommend_block)]
+ipscheck
+
+# check duplicates
+ipscheck[, duplicated(ip_address)]
+dup_id <- ipscheck[duplicated(ip_address), ip_address]
+ipscheck[ip_address %in% dup_id, ipblock := 1]
+ipscheck[, table(ipblock)]
+```
+
+
+```{r}
+users_wrongrows <- d4[, .N, user_id][N != 6, user_id]
+users_wrongrows
+
+dt_main <- d4[!user_id %in% users_wrongrows]
+dt_feed <- d2[!user_id %in% users_wrongrows]
+```
+
+
+
+```{r}
+attention
+ipscheck[, ip_address := NULL]
+
+dt_main2 <- left_join(dt_main, ipscheck)
+dt_feed2 <- left_join(dt_feed, attention) |> left_join(ipscheck)
+
+dt_main2[, unique(condition)]
+dt_main2[, condition := condition - 1.5]  # recode condition for model fitting
+dt_main2[, unique(condition)]
+
+dt_feed2[, unique(condition)]
+dt_feed2[, condition := condition - 1.5]  # recode condition for model fitting
+dt_feed2[, unique(condition)]
+```
+
+
+```{r}
+fwrite(dt_main2, "../data/clean/data.csv")
+fwrite(dt_feed2, "../data/clean/data_feed.csv")
 ```
 
