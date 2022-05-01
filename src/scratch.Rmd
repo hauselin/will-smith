@@ -5,56 +5,16 @@ editor_options:
   chunk_output_type: console
 ---
 
-
-
 ```{r}
-d0[, unique(field)]
+rm(list = ls())
+source("utils_feed.R")
 
-d1 <- d0[field == "politicalpref", .(user_id, response)][response != ""]
+dat <- get_data("../data/raw/ej3MkW_engagement.csv", n_entities = 100)
+dt_dwell <- make_dwell_data(dat)
+dt_dwell
 
-d1[, unique(response)] |> sort()
-
-
-d1[, response := substr(response, 1, 1)]
-d1[, response := as.numeric(response)]
-glimpse(d1)
-
-
-
-d1[, condition := sample(x = c(0, 1), size = .N, replace = T)]
-
-d1[, table(condition)]
-
+library(fixest)
+feglm(likes_1 ~ btn_likes | user_id, dt_dwell, family = "quasipoisson")
+feglm(shares_1 ~ btn_shares | user_id, dt_dwell, family = "quasipoisson")
 ```
-
-
-
-```{r}
-library(BayesFactor)
-
-
-t.test(response ~ condition, d1)
-
-
-ttestBF(formula = response ~ condition, data = d1)
-
-1 / 0.09328062
-
-
-
-
-
-library(BFpack)
-m1 <- lm(response ~ condition, d1)
-m1
-
-m1_bf <- BF(m1, hypothesis = "condition = 0")
-m1_bf
-summary(m1_bf)
-
-# https://github.com/jomulder/BFpack
-
-
-```
-
 

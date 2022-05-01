@@ -10,6 +10,7 @@ editor_options:
 # https://richarddmorey.github.io/BayesFactor/
 rm(list = ls())
 library(data.table); library(tidyverse); library(rIP)
+source("utils_feed.R")
 ```
 
 ```{r}
@@ -80,18 +81,16 @@ d1[, mean(news_eval), field]
 
 ```{r}
 # check feed enegagement data
-d2 <- fread("../data/raw/ej3MkW_engagement.csv")
+d2 <- get_data("../data/raw/ej3MkW_engagement.csv", n_entities = 100)
 d2 <- d2[!grepl("test", user_id)][condition != "null"]
+d2 <- make_dwell_data(d2)
+
 d2[, n_distinct(user_id)]
 d2[, unique(user_id)]
 d2[, n_distinct(entity_id)]
 d2[, unique(entity_id)]
-
-# extra quick analyses
-d2[, .N, keyby = .(user_id, condition, engagement_type)]
-d2[, .N, keyby = .(user_id, condition, engagement_type)][, .(mean(N)), keyby = .(condition, engagement_type)]
-d2[, .N, user_id]
-
+d2[, unique(entity_set)]
+d2[, unique(veracity)]
 
 d2[user_id %in% users_complete][, n_distinct(user_id)]
 d2 <- d2[user_id %in% users_complete]
