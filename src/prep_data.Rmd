@@ -42,7 +42,7 @@ d0[, n_distinct(user_id)]
 
 ```{r}
 # select DVs
-cols <- c("attentioncheck1", "attentioncheck2", "election-importance", "election-newsworthiness", "johnny-importance", "johnny-newsworthiness", "willsmith-importance", "willsmith-newsworthiness")
+cols <- c("attentioncheck1", "attentioncheck2", "election-importance", "election-newsworthiness", "johnny-importance", "johnny-newsworthiness", "willsmith-importance", "willsmith-newsworthiness", "willsmith-cards-perc")
 d1 <- d0[field %in% cols, .(user_id, field, response)]
 d1[, unique(field)]
 d1[, n_distinct(user_id)]
@@ -70,8 +70,12 @@ d1[, unique(field)]
 glimpse(d1)
 
 d1[, unique(response)]
-d1[, news_eval := as.numeric(substr(response, 1, 1))]
+d1[field != "willsmith-cards-perc", news_eval := substr(response, 1, 1)]
+d1[field == "willsmith-cards-perc", news_eval := response]
+d1[, news_eval := as.numeric(news_eval)]
 glimpse(d1)
+
+d1[, mean(news_eval), field]
 ```
 
 ```{r}
@@ -135,7 +139,7 @@ ipscheck[, table(ipblock)]
 
 
 ```{r}
-users_wrongrows <- d4[, .N, user_id][N != 6, user_id]
+users_wrongrows <- d4[, .N, user_id][N != 7, user_id]
 users_wrongrows
 
 dt_main <- d4[!user_id %in% users_wrongrows]

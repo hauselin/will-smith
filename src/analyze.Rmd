@@ -22,13 +22,19 @@ d2[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
 
 # remove alphanumeric response column, ip address and country codes
 d2 <- select(d2, user_id, condition, field, news_eval)
-d2
+perc <- d2[field == "willsmith_cards_perc", .(user_id, news_eval)]
+setnames(perc, c("user_id", "willsmith_perc"))
+perc
+
+d2 <- d2[field != "willsmith_cards_perc"] |> left_join(perc) 
+setDT(d2)
 ```
 
 ```{r}
 d2 <- separate(d2, field, c("topic", "question"), "_")
-d3 <- dcast(d2, user_id + condition + topic ~ question, value.var = "news_eval")
+d3 <- dcast(d2, user_id + condition + topic + willsmith_perc ~ question, value.var = "news_eval")
 d3[, rating_combined := (importance + newsworthiness) / 2]
+d3
 ```
 
 ```{r check correlations}
@@ -40,6 +46,23 @@ ggplot(d3, aes(importance, newsworthiness)) +
     geom_smooth(method = 'lm', alpha = 0.1) 
 
 select(d3, topic, importance, newsworthiness) %>% group_by(topic) %>% correlation()
+```
+
+
+```{r}
+d4 <- distinct(d3[, .(user_id, condition, willsmith_perc)])
+d4[, condition := condition + 0.5]
+summary(lm(willsmith_perc ~ condition, d4))
+
+p1 <- ggplot(d4, aes(factor(condition, labels = c("control", "treatment")), willsmith_perc)) +
+    geom_quasirandom(alpha = 0.3, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(x = "", y = "self-reported percent will smith cards seen")
+p1
+
+ggsave("../figures/manipulation_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
 ```
 
 
@@ -68,12 +91,20 @@ summary(m1_combinebf)
 
 ```{r}
 dodge <- 0.8
-ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
     facet_wrap(~ topic) +
     geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
     scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
     labs(x = "", y = "rating", col = "condition")
+p2
+
+ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+```
+
+```{r}
+# ggdist
+# https://mjskay.github.io/ggdist/articles/dotsinterval.html
 ```
 
