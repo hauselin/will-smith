@@ -15,7 +15,6 @@ theme_set(theme_minimal())
 ```{r}
 d0_feed <- fread("../data/clean/data_feed.csv")
 
-
 d1 <- fread("../data/clean/data.csv")
 d1[, n_distinct(user_id), keyby = .(condition)]
 d1[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]  # users per condition

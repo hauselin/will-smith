@@ -11,6 +11,7 @@ editor_options:
 rm(list = ls())
 library(data.table); library(tidyverse); library(rIP)
 source("utils_feed.R")
+source("creds.R")
 ```
 
 ```{r}
