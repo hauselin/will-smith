@@ -13,6 +13,9 @@ theme_set(theme_minimal())
 ```
 
 ```{r}
+d0_feed <- fread("../data/clean/data_feed.csv")
+
+
 d1 <- fread("../data/clean/data.csv")
 d1[, n_distinct(user_id), keyby = .(condition)]
 d1[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]  # users per condition
@@ -103,8 +106,111 @@ p2
 ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
 ```
 
+
+
+
 ```{r}
 # ggdist
 # https://mjskay.github.io/ggdist/articles/dotsinterval.html
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# other
+
+
+```{r}
+glimpse(d0_feed)
+d0_feed$user_agent <- NULL
+d0_feed$entity_url <- NULL
+
+# do people who spend more time lookin gat will msmith cards differ in anyway?
+
+d0_feed[, unique(entity_set)]
+d0_feed[, unique(engagement_type)]
+
+d0_feed <- d0_feed[entity_set == "22apr25_willsmith"]
+
+d0_feed[engagement_type == "dwell" & response < 30000, ]
+
+d0_feed[engagement_type == "dwell" & response < 30000 & !item_order %in% c(0, 1, 2, 97, 98, 99)]
+
+dt_dwell <- d0_feed[engagement_type == "dwell" & response < 30000, 
+        .(n_dwell = .N, 
+          dwell_mean = mean(response),
+          dwell_sum = sum(response)
+          ), 
+        keyby = .(condition, user_id)]
+dt_dwell
+
+# likes and shares
+d0_feed[engagement_type == "dwell" & response < 30000, 
+        .(n_dwell = .N, 
+          dwell_mean = mean(response),
+          dwell_sum = sum(response)
+          ), 
+        keyby = .(condition, user_id)]
+
+
+
+d5 <- left_join(d4, select(dt_dwell, -condition))
+setDT(d5)
+
+summary(lm(willsmith_perc ~ n_dwell, d5))
+correlation(select(d5[condition == 1], willsmith_perc, n_dwell, dwell_mean, dwell_sum), p_adjust = "none")
+
+
+ggplot(d5, aes(dwell_mean, willsmith_perc)) +
+    geom_point() +
+    geom_smooth(method = 'lm', alpha = 0.1) 
+
+
+
+
+
+
+d0_feed[engagement_type != "dwell", .(user_id, item_order, entity_id, engagement_type, response)][order(user_id, item_order)] |> View()
+d0_feed[engagement_type != "dwell", unique(response)]
+
+
+d0_feed[engagement_type != "dwell" & response == 1, ]
+
+d0_feed[engagement_type == "likes", sum(response), .(user_id, entity_id)][V1 > 1]
+d0_feed[engagement_type == "shares", sum(response), .(user_id, entity_id)][V1 > 1]
+d0_feed[engagement_type == "read_later", sum(response), .(user_id, entity_id)][V1 > 1]
+
+library(fixest)
+feols(response ~ likes | user_id, d0_feed[engagement_type == "dwell" & response < 10000])
+feols(response ~ shares | user_id, d0_feed[engagement_type == "dwell" & response < 10000])
 ```
 
