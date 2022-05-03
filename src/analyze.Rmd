@@ -8,7 +8,7 @@ editor_options:
 ```{r}
 rm(list = ls())
 library(data.table); library(tidyverse); library(correlation)
-library(BayesFactor); library(BFpack); library(ggbeeswarm)
+library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork)
 theme_set(theme_minimal())
 ```
 
@@ -44,7 +44,7 @@ cors <- d3[, .(r = cor(importance, newsworthiness)), topic]
 cors
 ggplot(d3, aes(importance, newsworthiness)) +
     facet_wrap(~ topic) +
-    geom_point() +
+    geom_jitter() +
     geom_smooth(method = 'lm', alpha = 0.1) 
 
 select(d3, topic, importance, newsworthiness) %>% group_by(topic) %>% correlation()
@@ -90,7 +90,6 @@ m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
 summary(m1_combinebf)
 ```
 
-
 ```{r}
 dodge <- 0.8
 p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
@@ -104,6 +103,27 @@ p2
 
 ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
 ```
+
+
+
+
+
+
+
+
+```{r}
+d3
+summary(lm(newsworthiness ~ condition * willsmith_perc, d3[topic == "willsmith"]))
+summary(lm(newsworthiness ~ willsmith_perc, d3[condition == 0.5 & topic == "willsmith"]))
+summary(lm(newsworthiness ~ willsmith_perc, d3[topic == "willsmith"]))
+```
+
+
+
+
+
+
+
 
 
 
@@ -150,67 +170,100 @@ ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg =
 
 ```{r}
 glimpse(d0_feed)
-d0_feed$user_agent <- NULL
-d0_feed$entity_url <- NULL
+d0_feed_ws <- d0_feed[entity_set == "22apr25_willsmith"]
 
-# do people who spend more time lookin gat will msmith cards differ in anyway?
+p1 <- ggplot(d0_feed_ws, aes(item_order, dwell)) +
+    geom_smooth(method = 'lm') +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
-d0_feed[, unique(entity_set)]
-d0_feed[, unique(engagement_type)]
+p2 <- ggplot(d0_feed_ws, aes(item_order, likes_1)) +
+    geom_smooth(method = 'lm') +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
+p3 <- ggplot(d0_feed_ws, aes(item_order, shares_1)) +
+    geom_smooth(method = 'lm') +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
-d0_feed <- d0_feed[entity_set == "22apr25_willsmith"]
+p4 <- ggplot(d0_feed_ws, aes(item_order, read_later_1)) +
+    geom_smooth(method = 'lm') +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
-d0_feed[engagement_type == "dwell" & response < 30000, ]
+p1 / p2 / p3 / p4
 
-d0_feed[engagement_type == "dwell" & response < 30000 & !item_order %in% c(0, 1, 2, 97, 98, 99)]
+d0_feed_ws[, engage := likes_1 + shares_1 + read_later_1]
 
-dt_dwell <- d0_feed[engagement_type == "dwell" & response < 30000, 
-        .(n_dwell = .N, 
-          dwell_mean = mean(response),
-          dwell_sum = sum(response)
-          ), 
-        keyby = .(condition, user_id)]
-dt_dwell
+coefs <- d0_feed_ws[condition == 0.5, .(b1 = coef(lm(ldwell ~ item_order))[2]), user_id]
+coefs
 
-# likes and shares
-d0_feed[engagement_type == "dwell" & response < 30000, 
-        .(n_dwell = .N, 
-          dwell_mean = mean(response),
-          dwell_sum = sum(response)
-          ), 
-        keyby = .(condition, user_id)]
+feed_avg <- d0_feed_ws[, .(like = mean(likes_1, na.rm = T),
+            share = mean(shares_1, na.rm = T),
+            read = mean(read_later_1, na.rm = T),
+            ldwell = mean(ldwell, na.rm = T),
+            n_dwell = mean(n_dwells, na.rm = T),
+            engage = mean(engage, na.rm = T)),
+           user_id]
 
+d5 <- left_join(d3, feed_avg) |> left_join(coefs) |> data.table()
+d5
 
+library(hausekeep)
+summaryh(lm(newsworthiness ~ like, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ read, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ share, d5[topic == "willsmith" & condition == 0.5])) # 
+summaryh(lm(newsworthiness ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ engage, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ b1, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ like + read + share + ldwell + n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ like + read + ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ like + read + ldwell + willsmith_perc, d5[topic == "willsmith" & condition == 0.5]))
 
-d5 <- left_join(d4, select(dt_dwell, -condition))
-setDT(d5)
+summaryh(lm(importance ~ like, d5[topic == "willsmith" & condition == 0.5]))  # 
+summaryh(lm(importance ~ read, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ share, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ engage, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ b1, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ like + read + share + ldwell + n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ like + read + ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ like + read + ldwell + willsmith_perc, d5[topic == "willsmith" & condition == 0.5]))
 
-summary(lm(willsmith_perc ~ n_dwell, d5))
-correlation(select(d5[condition == 1], willsmith_perc, n_dwell, dwell_mean, dwell_sum), p_adjust = "none")
+summaryh(lm(rating_combined ~ like, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ read, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ share, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ engage, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ b1, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ like + read + share + ldwell + n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ like + read + ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ like + read + ldwell + willsmith_perc, d5[topic == "willsmith" & condition == 0.5]))
 
+summaryh(lm(willsmith_perc ~ like, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ read, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ share, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ engage, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ b1, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ like + read + share + ldwell + n_dwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ like + read + ldwell, d5[topic == "willsmith" & condition == 0.5]))
 
-ggplot(d5, aes(dwell_mean, willsmith_perc)) +
-    geom_point() +
+ggplot(d5[condition == 0.5], aes(like, importance)) +
+    geom_jitter() +
     geom_smooth(method = 'lm', alpha = 0.1) 
 
 
-
-
-
-
-d0_feed[engagement_type != "dwell", .(user_id, item_order, entity_id, engagement_type, response)][order(user_id, item_order)] |> View()
-d0_feed[engagement_type != "dwell", unique(response)]
-
-
-d0_feed[engagement_type != "dwell" & response == 1, ]
-
-d0_feed[engagement_type == "likes", sum(response), .(user_id, entity_id)][V1 > 1]
-d0_feed[engagement_type == "shares", sum(response), .(user_id, entity_id)][V1 > 1]
-d0_feed[engagement_type == "read_later", sum(response), .(user_id, entity_id)][V1 > 1]
-
 library(fixest)
-feols(response ~ likes | user_id, d0_feed[engagement_type == "dwell" & response < 10000])
-feols(response ~ shares | user_id, d0_feed[engagement_type == "dwell" & response < 10000])
+feols(ldwell ~ btn_likes | user_id, d0_feed_ws[engage == 0])
+feols(ldwell ~ btn_shares | user_id, d0_feed_ws[engage == 0])
+
+
+
 ```
 
