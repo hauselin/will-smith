@@ -131,6 +131,34 @@ summary(lm(newsworthiness ~ willsmith_perc, d3[topic == "willsmith"]))
 ```{r}
 # ggdist
 # https://mjskay.github.io/ggdist/articles/dotsinterval.html
+
+set.seed(12345) # for reproducibility
+library(ggdist)
+p3 <- d3 %>%
+  ggplot(aes(y = topic, x = importance, fill = topic)) +
+  stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
+  stat_dotsinterval(side = "bottom", scale = 0.7, slab_size = NA) +
+  scale_fill_brewer(palette = "Set2")
+
+ggsave("../figures/rain_cloud_plot_importance.png", p3, dpi = 300, width = 13, height = 5, bg = "white")
+
+p3 <- d3 %>%
+  ggplot(aes(y = topic, x = newsworthiness, fill = topic)) +
+  stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
+  stat_dotsinterval(side = "bottom", scale = 0.7, slab_size = NA) +
+  scale_fill_brewer(palette = "Set2")
+
+ggsave("../figures/rain_cloud_plot_newsworthiness.png", p3, dpi = 300, width = 13, height = 5, bg = "white")
+
+p3 <- d3 %>%
+  ggplot(aes(y = topic, x = rating_combined, fill = topic)) +
+  stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
+  stat_dotsinterval(side = "bottom", scale = 0.7, slab_size = NA) +
+  scale_fill_brewer(palette = "Set2")
+
+ggsave("../figures/rain_cloud_plot_combined.png", p3, dpi = 300, width = 13, height = 5, bg = "white")
+
+
 ```
 
 
