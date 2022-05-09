@@ -1,0 +1,180 @@
+---
+title: "analyze"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+rm(list = ls())
+library(data.table); library(tidyverse); library(correlation)
+library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork)
+theme_set(theme_minimal())
+```
+
+```{r}
+d0_feed <- fread("../data/clean/data_feed.csv")
+
+
+glimpse(d0_feed)
+
+d0_feed_like_flipflopers <- d0_feed[likes_0+likes_1 >= 2]
+d0_feed_read_later_flipflopers <- d0_feed[read_later_0+read_later_1 >= 2]
+d0_feed_share_flipflopers <- d0_feed[shares_0+shares_1 >= 2]
+
+table(d0_feed_like_flipflopers$condition, d0_feed_like_flipflopers$entity_set)
+table(d0_feed_read_later_flipflopers$condition, d0_feed_read_later_flipflopers$entity_set)
+table(d0_feed_share_flipflopers$condition, d0_feed_share_flipflopers$entity_set)
+
+# overall, more flip flops of all 3 kinds happened in the -0.5 aka control condition
+
+
+```
+
+
+```{r}
+
+d1 <- fread("../data/clean/data.csv")
+d1[, n_distinct(user_id), keyby = .(condition)]
+d1[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]  # users per condition
+
+d2 <- d1[attention == 1.0 & ipblock == 0]
+d2[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
+
+# remove alphanumeric response column, ip address and country codes
+d2 <- select(d2, user_id, condition, field, news_eval)
+perc <- d2[field == "willsmith_cards_perc", .(user_id, news_eval)]
+setnames(perc, c("user_id", "willsmith_perc"))
+perc
+
+d2 <- d2[field != "willsmith_cards_perc"] |> left_join(perc) 
+setDT(d2)
+```
+
+```{r}
+d2 <- separate(d2, field, c("topic", "question"), "_")
+d3 <- dcast(d2, user_id + condition + topic + willsmith_perc ~ question, value.var = "news_eval")
+d3[, rating_combined := (importance + newsworthiness) / 2]
+d3
+```
+
+```{r}
+d0_feed_like_flipflopers_ws <- d0_feed_like_flipflopers[entity_set == "22apr25_willsmith"]
+
+unique_users <- unique(d0_feed_like_flipflopers$user_id)
+
+d5 <- d2[user_id %in% unique_users]
+d5
+
+dodge <- 0.8
+p2 <- ggplot(d5, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2
+
+ggsave("../figures/main_effect_folks_who_flipflopped_likes_any_card.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+
+unique_users <- unique(d0_feed_like_flipflopers_ws$user_id)
+
+d5 <- d2[user_id %in% unique_users]
+d5
+
+dodge <- 0.8
+p2 <- ggplot(d5, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2
+
+ggsave("../figures/main_effect_folks_who_flipflopped_likes_WS_card.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+
+```
+
+
+```{r}
+d0_feed_read_later_flipflopers_ws <- d0_feed_read_later_flipflopers[entity_set == "22apr25_willsmith"]
+
+unique_users <- unique(d0_feed_read_later_flipflopers$user_id)
+
+d5 <- d2[user_id %in% unique_users]
+d5
+
+dodge <- 0.8
+p2 <- ggplot(d5, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2
+
+ggsave("../figures/main_effect_folks_who_flipflopped_readlater_any_card.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+
+unique_users <- unique(d0_feed_read_later_flipflopers_ws$user_id)
+
+d5 <- d2[user_id %in% unique_users]
+d5
+
+dodge <- 0.8
+p2 <- ggplot(d5, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2
+
+ggsave("../figures/main_effect_folks_who_flipflopped_readlater_WS_card.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+
+```
+
+
+
+```{r}
+d0_feed_share_flipflopers_ws <- d0_feed_share_flipflopers[entity_set == "22apr25_willsmith"]
+
+unique_users <- unique(d0_feed_share_flipflopers$user_id)
+
+d5 <- d2[user_id %in% unique_users]
+d5
+
+dodge <- 0.8
+p2 <- ggplot(d5, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2
+
+ggsave("../figures/main_effect_folks_who_flipflopped_shares_any_card.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+
+unique_users <- unique(d0_feed_share_flipflopers_ws$user_id)
+
+d5 <- d2[user_id %in% unique_users]
+d5
+
+dodge <- 0.8
+p2 <- ggplot(d5, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2
+
+ggsave("../figures/main_effect_folks_who_flipflopped_shares_WS_card.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+
+```
+
