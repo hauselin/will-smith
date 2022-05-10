@@ -118,13 +118,14 @@ p2
 dodge <- 0.8
 ggplot(d2, aes(question, news_eval, fill = factor(condition, labels = c("control", "treatment")))) +
     facet_wrap(~ topic) +
-    stat_slab(aes(thickness = stat(pdf*n)), scale = 0.5, position = position_dodge(dodge)) +
-    geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.3) +
+    stat_slab(aes(thickness = stat(pdf*n)), scale = 0.5, position = position_dodge(dodge), alpha = 0.3) +
+    # geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.3) +
+    geom_jitter(position = position_jitterdodge(jitter.width = 0.1, dodge.width = dodge, jitter.height = 0.1), size = 0.3, alpha = 0.1) +
     # stat_dotsinterval(side = "left", scale = 0.2, position = position_dodge(dodge)) +
-    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
-    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge), aes(col = factor(condition, labels = c("control", "treatment")))) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge), aes(col = factor(condition, labels = c("control", "treatment")))) +
     scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
-    labs(x = "", y = "rating", fill = "condition")
+    labs(x = "", y = "rating", fill = "condition", col = "condition")
 # ggdist
 # https://mjskay.github.io/ggdist/articles/dotsinterval.html
 
@@ -135,6 +136,7 @@ p3 <- d3 %>%
   stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
   stat_dotsinterval(side = "bottom", scale = 0.7, slab_size = NA) +
   scale_fill_brewer(palette = "Set2")
+p3
 
 ggsave("../figures/rain_cloud_plot_importance.png", p3, dpi = 300, width = 13, height = 5, bg = "white")
 
