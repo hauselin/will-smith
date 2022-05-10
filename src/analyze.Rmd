@@ -8,7 +8,7 @@ editor_options:
 ```{r}
 rm(list = ls())
 library(data.table); library(tidyverse); library(correlation)
-library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork)
+library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
 theme_set(theme_minimal())
 ```
 
@@ -64,7 +64,7 @@ p1 <- ggplot(d4, aes(factor(condition, labels = c("control", "treatment")), will
     labs(x = "", y = "self-reported percent will smith cards seen")
 p1
 
-ggsave("../figures/manipulation_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
+# ggsave("../figures/manipulation_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
 ```
 
 
@@ -94,28 +94,14 @@ summary(m1_combinebf)
 dodge <- 0.8
 p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
     facet_wrap(~ topic) +
-    geom_quasirandom(alpha = 0.3, dodge = dodge, size = 0.8) +
+    geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.8) +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
     scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
     labs(x = "", y = "rating", col = "condition")
 p2
 
-ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
-```
-
-
-
-
-
-
-
-
-```{r}
-d3
-summary(lm(newsworthiness ~ condition * willsmith_perc, d3[topic == "willsmith"]))
-summary(lm(newsworthiness ~ willsmith_perc, d3[condition == 0.5 & topic == "willsmith"]))
-summary(lm(newsworthiness ~ willsmith_perc, d3[topic == "willsmith"]))
+# ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
 ```
 
 
@@ -129,8 +115,16 @@ summary(lm(newsworthiness ~ willsmith_perc, d3[topic == "willsmith"]))
 
 
 ```{r}
-# ggdist
-# https://mjskay.github.io/ggdist/articles/dotsinterval.html
+dodge <- 0.8
+ggplot(d2, aes(question, news_eval, fill = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    stat_slab(aes(thickness = stat(pdf*n)), scale = 0.5, position = position_dodge(dodge)) +
+    geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.3) +
+    # stat_dotsinterval(side = "left", scale = 0.2, position = position_dodge(dodge)) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", fill = "condition")
 ```
 
 
@@ -170,6 +164,14 @@ summary(lm(newsworthiness ~ willsmith_perc, d3[topic == "willsmith"]))
 
 ```{r}
 glimpse(d0_feed)
+
+d0_feed <- d0_feed[attention == 1 & ipblock == 0]
+
+d0_feed[, engage := likes_1 + shares_1 + read_later_1]
+d0_feed[, engaged := 0]
+d0_feed[likes_1 > 0 | shares_1 > 0 | read_later_1 > 0, engaged := 1]
+
+
 d0_feed_ws <- d0_feed[entity_set == "22apr25_willsmith"]
 
 p1 <- ggplot(d0_feed_ws, aes(item_order, dwell)) +
@@ -194,27 +196,39 @@ p4 <- ggplot(d0_feed_ws, aes(item_order, read_later_1)) +
 
 p1 / p2 / p3 / p4
 
-d0_feed_ws[, engage := likes_1 + shares_1 + read_later_1]
 
-coefs <- d0_feed_ws[condition == 0.5, .(b1 = coef(lm(ldwell ~ item_order))[2]), user_id]
+
+include <- d0_feed_ws[condition == 0.5 & engaged == 0, .N, user_id][N > 5, user_id]
+coefs <- d0_feed_ws[condition == 0.5 & user_id %in% include, .(b1 = coef(lm(ldwell ~ item_order))[2]), user_id]
 coefs
 
-feed_avg <- d0_feed_ws[, .(like = mean(likes_1, na.rm = T),
+feed_avg <- d0_feed_ws[condition == 0.5, .(like = mean(likes_1, na.rm = T),
             share = mean(shares_1, na.rm = T),
             read = mean(read_later_1, na.rm = T),
             ldwell = mean(ldwell, na.rm = T),
             n_dwell = mean(n_dwells, na.rm = T),
             engage = mean(engage, na.rm = T)),
            user_id]
+feed_avg[order(-engage)]
 
-d5 <- left_join(d3, feed_avg) |> left_join(coefs) |> data.table()
+# exclude extreme engagers
+feed_avg <- feed_avg[share < 1.0][like < 1][read < 1]
+
+dwell_engage0 <- d0_feed_ws[engaged == 0, .(ldwell_engage0 = mean(ldwell, na.rm = T)), user_id]
+
+d5 <- left_join(d3, feed_avg) |> left_join(coefs) |> left_join(dwell_engage0) |>  data.table()
 d5
 
 library(hausekeep)
-summaryh(lm(newsworthiness ~ like, d5[topic == "willsmith" & condition == 0.5]))
-summaryh(lm(newsworthiness ~ read, d5[topic == "willsmith" & condition == 0.5]))
-summaryh(lm(newsworthiness ~ share, d5[topic == "willsmith" & condition == 0.5])) # 
+d5[topic == "willsmith" & condition == 0.5, hist(log(like + 1))]
+d5[topic == "willsmith" & condition == 0.5, hist(like)]
+summaryh(lm(newsworthiness ~ log(like + 1), d5[topic == "willsmith" & condition == 0.5]))  # ya
+summaryh(lm(newsworthiness ~ like, d5[topic == "willsmith" & condition == 0.5]))  # ya
+summaryh(lm(newsworthiness ~ log(read + 1), d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ share, d5[topic == "willsmith" & condition == 0.5])) # works well if we exclude outlier
+summaryh(lm(newsworthiness ~ log(share + 1), d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(newsworthiness ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(newsworthiness ~ ldwell_engage0, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(newsworthiness ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(newsworthiness ~ engage, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(newsworthiness ~ b1, d5[topic == "willsmith" & condition == 0.5]))
@@ -222,10 +236,14 @@ summaryh(lm(newsworthiness ~ like + read + share + ldwell + n_dwell, d5[topic ==
 summaryh(lm(newsworthiness ~ like + read + ldwell, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(newsworthiness ~ like + read + ldwell + willsmith_perc, d5[topic == "willsmith" & condition == 0.5]))
 
-summaryh(lm(importance ~ like, d5[topic == "willsmith" & condition == 0.5]))  # 
+summaryh(lm(importance ~ like, d5[topic == "willsmith" & condition == 0.5]))  #
+summaryh(lm(importance ~ log(like + 1), d5[topic == "willsmith" & condition == 0.5]))  #
 summaryh(lm(importance ~ read, d5[topic == "willsmith" & condition == 0.5]))
-summaryh(lm(importance ~ share, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ log(read + 1), d5[topic == "willsmith" & condition == 0.5]))  #
+summaryh(lm(importance ~ share, d5[topic == "willsmith" & condition == 0.5])) # 
+summaryh(lm(importance ~ log(share + 1), d5[topic == "willsmith" & condition == 0.5]))  #
 summaryh(lm(importance ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(importance ~ ldwell_engage0, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(importance ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(importance ~ engage, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(importance ~ b1, d5[topic == "willsmith" & condition == 0.5]))
@@ -237,31 +255,36 @@ summaryh(lm(rating_combined ~ like, d5[topic == "willsmith" & condition == 0.5])
 summaryh(lm(rating_combined ~ read, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(rating_combined ~ share, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(rating_combined ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(rating_combined ~ ldwell_engage0, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(rating_combined ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(rating_combined ~ engage, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(rating_combined ~ b1, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(rating_combined ~ like + read + share + ldwell + n_dwell, d5[topic == "willsmith" & condition == 0.5]))
-summaryh(lm(rating_combined ~ like + read + ldwell, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(rating_combined ~ like + read + ldwell + willsmith_perc, d5[topic == "willsmith" & condition == 0.5]))
 
 summaryh(lm(willsmith_perc ~ like, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ read, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ share, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ ldwell, d5[topic == "willsmith" & condition == 0.5]))
+summaryh(lm(willsmith_perc ~ ldwell_engage0, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ n_dwell, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ engage, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ b1, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ like + read + share + ldwell + n_dwell, d5[topic == "willsmith" & condition == 0.5]))
 summaryh(lm(willsmith_perc ~ like + read + ldwell, d5[topic == "willsmith" & condition == 0.5]))
 
-ggplot(d5[condition == 0.5], aes(like, importance)) +
-    geom_jitter() +
-    geom_smooth(method = 'lm', alpha = 0.1) 
-
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "willsmith"], "share", "importance")) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "willsmith"], "like", "importance")) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2
 
 library(fixest)
-feols(ldwell ~ btn_likes | user_id, d0_feed_ws[engage == 0])
-feols(ldwell ~ btn_shares | user_id, d0_feed_ws[engage == 0])
+feols(ldwell ~ btn_likes | user_id, d0_feed_ws[engaged == 0])
+feols(ldwell ~ btn_shares | user_id, d0_feed_ws[engaged == 0])
+
+feols(ldwell ~ btn_likes | user_id, d0_feed[engaged == 0])
+feols(ldwell ~ btn_shares | user_id, d0_feed[engaged == 0])
 
 
 
