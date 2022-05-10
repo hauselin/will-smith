@@ -33,7 +33,29 @@ table(d0_feed_share_flipflopers$condition, d0_feed_share_flipflopers$entity_set)
 
 
 ```{r}
+d0_feed[, likes := likes_0 + likes_1]
+d0_feed[, shares := shares_0 + shares_1]
+d0_feed[, read_later := read_later_0 + read_later_1]
 
+d0_feed[, likesf := ifelse(likes >= 2, likes - 1, 0)]
+d0_feed[, sharesf := ifelse(shares >= 2, shares - 1, 0)]
+d0_feed[, read_laterf := ifelse(read_later >= 2, read_later - 1, 0)]
+
+d0_feed[, .N, user_id]
+d0_feed_avg <- d0_feed[, .(likesf = mean(likesf), likes = mean(likes), 
+                           sharesf = mean(sharesf), shares = mean(shares), 
+                           read_laterf = mean(read_laterf), read_later = mean(read_later) 
+                           ), .(user_id, condition)]
+d0_feed_avg_long <- melt(d0_feed_avg, id.vars = c("user_id", "condition"))
+d0_feed_avg_long
+
+d0_feed_avg[, ]
+correlation::cor_test(d0_feed_avg, "likesf", "sharesf", method = 'spearman') |> plot()
+```
+
+
+
+```{r}
 d1 <- fread("../data/clean/data.csv")
 d1[, n_distinct(user_id), keyby = .(condition)]
 d1[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]  # users per condition
@@ -59,8 +81,6 @@ d3
 ```
 
 ```{r}
-d0_feed_like_flipflopers_ws <- d0_feed_like_flipflopers[entity_set == "22apr25_willsmith"]
-
 unique_users <- unique(d0_feed_like_flipflopers$user_id)
 
 d5 <- d2[user_id %in% unique_users]
@@ -78,6 +98,7 @@ p2
 
 ggsave("../figures/main_effect_folks_who_flipflopped_likes_any_card.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
 
+d0_feed_like_flipflopers_ws <- d0_feed_like_flipflopers[entity_set == "22apr25_willsmith"]
 unique_users <- unique(d0_feed_like_flipflopers_ws$user_id)
 
 d5 <- d2[user_id %in% unique_users]
