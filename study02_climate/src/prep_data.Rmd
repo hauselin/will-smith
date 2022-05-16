@@ -1,0 +1,20 @@
+---
+title: "prep_data"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html
+# https://richarddmorey.github.io/BayesFactor/
+rm(list = ls())
+library(data.table); library(tidyverse); library(rIP)
+source("../study02_climate/src/utils_feed.R")
+source("creds.R")
+```
+
+```{r}
+
+
+```
