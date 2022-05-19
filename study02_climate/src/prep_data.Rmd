@@ -14,7 +14,169 @@ source("../study02_climate/src/utils_feed.R")
 source("creds.R")
 ```
 
+
 ```{r}
-
-
+d0 <- fread("../study02_climate/data/raw/eRGOfe_user_form.csv")
 ```
+
+
+```{r}
+d0 <- d0[!grepl("test", user_id)]
+d0[, n_distinct(user_id)]
+d0[, unique(field)]
+d0[, unique(user_id)]
+d0[, n_distinct(user_id)]
+```
+
+
+```{r}
+# get users who properly completed study
+d0[field == "comments", .N, by = .(user_id)]
+d0[field == "gender", .N, by = .(user_id)]
+d0[field == "election-newsworthiness", .N, by = .(user_id)]
+d0[field == "comments", .N, by = .(user_id)][N != 1]
+
+users_complete <- d0[field == "comments", .N, by = .(user_id)][N == 1, user_id]
+users_complete
+
+d0 <- d0[user_id %in% users_complete]
+d0
+d0[, n_distinct(user_id)]
+```
+
+
+```{r}
+# select DVs
+cols <- c("attentioncheck1", "attentioncheck2", "election-importance", "election-newsworthiness", "johnny-importance", "johnny-newsworthiness", "climate-importance", "climate-newsworthiness", "election-exposure-frequency", "johnny-exposure-frequency", "climate-exposure-frequency", "election-desired-frequency", "johnny-desired-frequency", "climate-desired-frequency", "climate-concern", "climate-hope", "climate-human-activity", "climate-problem", "climate-cards-perc")
+d1 <- d0[field %in% cols, .(user_id, field, response)]
+d1[, unique(field)]
+d1[, n_distinct(user_id)]
+d1[, unique(response)] |> sort()
+```
+
+
+```{r attention check}
+ac <- d1[field %in% c("attentioncheck1", "attentioncheck2")]
+ac[, .N, .(field, response)]
+ac[field == "attentioncheck1", acc := ifelse(response == "3_neither-agree-nor-disagree", 1, 0)]
+ac[field == "attentioncheck2", acc := ifelse(response == "very-interested;extremely-interested", 1, 0)]
+
+attention <- ac[, .(attention = mean(acc, na.rm = T)), by = user_id]
+attention
+attention[, table(attention)]
+
+d1 <- left_join(d1, attention)
+setDT(d1)
+```
+
+
+```{r}
+d1 <- d1[!field %in% c("attentioncheck1", "attentioncheck2")]
+d1[, unique(field)]
+glimpse(d1)
+
+d1[, unique(response)]
+d1[field != "climate-cards-perc", news_eval := substr(response, 1, 1)]
+d1[field == "climate-cards-perc", news_eval := response]
+d1[, news_eval := as.numeric(news_eval)]
+glimpse(d1)
+
+d1[, mean(news_eval), field]
+```
+
+
+```{r}
+# check feed enegagement data
+d2 <- get_data("../study02_climate/data/raw/eRGOfe_engagement.csv", n_entities = 100)
+d2 <- d2[!grepl("test", user_id)][condition != "null"]
+d2 <- make_dwell_data(d2)
+
+d2[, n_distinct(user_id)]
+d2[, unique(user_id)]
+d2[, n_distinct(entity_id)]
+d2[, unique(entity_id)]
+d2[, unique(entity_set)]
+d2[, unique(veracity)]
+
+d2[user_id %in% users_complete][, n_distinct(user_id)]
+d2 <- d2[user_id %in% users_complete]
+d2[, n_distinct(user_id)]
+glimpse(d2)
+
+# get condition assignment
+d3 <- distinct(d2[, .(user_id, condition, ip_address)])
+d3[, condition := as.numeric(condition)]
+d3[, table(condition)]
+
+d4 <- left_join(d1, d3)
+setDT(d4)
+```
+
+
+```{r ip quality}
+ips <- copy(d3)
+checked <- fread("../study02_climate/data/clean/ips_checked.csv")
+ips <- ips[!ip_address %in% checked$ip_address]
+ips
+if (nrow(ips) > 0) {
+    ips_checked <- getIPinfo(ips, "ip_address", iphub_key = iphub_key)
+    ips_checked
+    ips_checked2 <- left_join(ips, ips_checked, by = c("ip_address" = "IPAddress"))
+    ips_checked2 <- ips_checked2[!is.na(IP_Hub_recommend_block)]
+    ips_checked2 <- bind_rows(checked, ips_checked2)
+    fwrite(ips_checked2, "../study02_climate/data/clean/ips_checked.csv")
+} else {
+    ips_checked2 <- checked
+}
+```
+
+
+```{r exclude based on ip address}
+ipscheck <- ips_checked2[, .(user_id, ip_address, ipblock = IP_Hub_recommend_block)]
+ipscheck
+
+# check duplicates
+ipscheck[, duplicated(ip_address)]
+dup_id <- ipscheck[duplicated(ip_address), ip_address]
+ipscheck[ip_address %in% dup_id, ipblock := 1]
+ipscheck[, table(ipblock)]
+```
+
+
+```{r}
+users_wrongrows <- d4[, .N, user_id][N != 17, user_id]
+users_wrongrows
+
+dt_main <- d4[!user_id %in% users_wrongrows]
+dt_feed <- d2[!user_id %in% users_wrongrows]
+```
+
+
+```{r}
+attention
+ipscheck[, ip_address := NULL]
+
+dt_main2 <- left_join(dt_main, ipscheck)
+dt_feed2 <- left_join(dt_feed, attention) |> left_join(ipscheck)
+
+dt_main2[, unique(condition)]
+dt_main2[, condition := condition - 1.5]  # recode condition for model fitting
+dt_main2[, unique(condition)]
+
+dt_feed2[, unique(condition)]
+dt_feed2[, condition := condition - 1.5]  # recode condition for model fitting
+dt_feed2[, unique(condition)]
+```
+
+
+```{r}
+dt_main2[, field := gsub('-', '_', field)]
+```
+
+
+```{r}
+fwrite(dt_main2, "../study02_climate/data/clean/data.csv")
+fwrite(dt_feed2, "../study02_climate/data/clean/data_feed.csv")
+```
+
+
