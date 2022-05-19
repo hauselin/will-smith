@@ -181,17 +181,28 @@ fwrite(dt_feed2, "../data/clean/data_feed.csv")
 
 
 
-```{r questions demographics}
+```{r demographics}
 # save politics/ideology/AOT in wide form
 cols2 <- c("aot_change-beliefs", "aot_evidence-conflicts", "aot_loyal-beliefs", "aot_maintain-beliefs", "aot_regardless-topic", "aot_true-important", "economicissuespref", "politicalposition", "politicalpref", "socialissuespref")
 d5 <- d0[field %in% cols2, .(user_id, field, response)]
 d5[, unique(field)]
 d5[, n_distinct(user_id)]
 d5[, unique(response)] |> sort()
+d5[, value := as.numeric(substr(response, 1, 1))]
+d5
 
-d6 <- dcast(d5, user_id ~ field, value.var = "response")
-# ../data/clean/data-wide.csv
+d6 <- dcast(d5, user_id ~ field, value.var = c("value"))
+setnames(d6, gsub("-", "", names(d6)))
+glimpse(d6)
+
+# mean aot (reverse-coded)
+aot_r <- 7 - select(d6, starts_with("aot_")) |> rowMeans()
+d6[, aot := aot_r]
+```
+
+```{r}
 fwrite(d6, "../data/clean/data-wide.csv")
-
+d5_code <- d5[, .(n = .N), .(field, response, value)][order(field, response)]
+fwrite(d5_code, "../data/clean/data-wide-code.csv")
 ```
 
