@@ -10,13 +10,13 @@ editor_options:
 # https://richarddmorey.github.io/BayesFactor/
 rm(list = ls())
 library(data.table); library(tidyverse); library(rIP)
-source("../study02_climate/src/utils_feed.R")
+source("utils_feed.R")
 source("creds.R")
 ```
 
 
 ```{r}
-d0 <- fread("../study02_climate/data/raw/eRGOfe_user_form.csv")
+d0 <- fread("../data/raw/eRGOfe_user_form.csv")
 ```
 
 
@@ -87,7 +87,7 @@ d1[, mean(news_eval), field]
 
 ```{r}
 # check feed enegagement data
-d2 <- get_data("../study02_climate/data/raw/eRGOfe_engagement.csv", n_entities = 100)
+d2 <- get_data("../data/raw/eRGOfe_engagement.csv", n_entities = 100)
 d2 <- d2[!grepl("test", user_id)][condition != "null"]
 d2 <- make_dwell_data(d2)
 
@@ -115,7 +115,7 @@ setDT(d4)
 
 ```{r ip quality}
 ips <- copy(d3)
-checked <- fread("../study02_climate/data/clean/ips_checked.csv")
+checked <- fread("../data/clean/ips_checked.csv")
 ips <- ips[!ip_address %in% checked$ip_address]
 ips
 if (nrow(ips) > 0) {
@@ -175,8 +175,16 @@ dt_main2[, field := gsub('-', '_', field)]
 
 
 ```{r}
-fwrite(dt_main2, "../study02_climate/data/clean/data.csv")
-fwrite(dt_feed2, "../study02_climate/data/clean/data_feed.csv")
+fwrite(dt_main2, "../data/clean/data.csv")
+fwrite(dt_feed2, "../data/clean/data_feed.csv")
 ```
 
+
+
+```{r questions demographics}
+# save politics/ideology/AOT in wide form
+
+# ../data/clean/data-wide.csv
+
+```
 
