@@ -126,8 +126,6 @@ ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 8, bg =
 
 
 
-
-
 ```{r}
 # https://mjskay.github.io/ggdist/articles/dotsinterval.html
 set.seed(12345) # for reproducibility
@@ -156,6 +154,80 @@ ggsave("../figures/rain_cloud_plot_combined.png", p3, dpi = 300, width = 8, heig
 ```
 
 
+
+```{r}
+# interact condition with ideology
+
+d_ideology <- fread("../data/clean/data-wide.csv")
+
+d_ideology <- left_join(d4, d_ideology)
+
+summary(lm(economicissuespref ~ condition, d_ideology))
+
+p1 <- ggplot(d_ideology, aes(factor(condition, labels = c("control", "treatment")), economicissuespref)) +
+    geom_quasirandom(alpha = 0.3, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
+    scale_y_continuous(limits = c(0, 7)) +
+    labs(x = "", y = "economicissuespref")
+p1
+
+ggsave("../figures/economicissuespref_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
+
+
+summary(lm(politicalposition ~ condition, d_ideology))
+
+p1 <- ggplot(d_ideology, aes(factor(condition, labels = c("control", "treatment")), politicalposition)) +
+    geom_quasirandom(alpha = 0.3, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
+    scale_y_continuous(limits = c(0, 7)) +
+    labs(x = "", y = "politicalposition")
+p1
+
+ggsave("../figures/politicalposition_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
+
+
+summary(lm(politicalpref ~ condition, d_ideology))
+
+p1 <- ggplot(d_ideology, aes(factor(condition, labels = c("control", "treatment")), politicalpref)) +
+    geom_quasirandom(alpha = 0.3, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
+    scale_y_continuous(limits = c(0, 7)) +
+    labs(x = "", y = "politicalpref")
+p1
+
+ggsave("../figures/politicalpref_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
+
+
+summary(lm(socialissuespref ~ condition, d_ideology))
+
+p1 <- ggplot(d_ideology, aes(factor(condition, labels = c("control", "treatment")), socialissuespref)) +
+    geom_quasirandom(alpha = 0.3, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
+    scale_y_continuous(limits = c(0, 7)) +
+    labs(x = "", y = "socialissuespref")
+p1
+
+ggsave("../figures/socialissuespref_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
+
+
+summary(lm(aot ~ condition, d_ideology))
+
+p1 <- ggplot(d_ideology, aes(factor(condition, labels = c("control", "treatment")), aot)) +
+    geom_quasirandom(alpha = 0.3, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
+    scale_y_continuous(limits = c(0, 7)) +
+    labs(x = "", y = "aot")
+p1
+
+ggsave("../figures/aot_check.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
+
+
+```
 
 
 
