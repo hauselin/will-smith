@@ -34,7 +34,20 @@ setDT(d2)
 ```
 
 ```{r}
-d2 <- separate(d2, field, c("topic", "question"), "_")
+d2[, unique(field)]
+d2[grepl("climate_", field), topic := "climate"]
+d2[grepl("johnny_", field), topic := "johnny"]
+d2[grepl("election_", field), topic := "election"]
+d2[, .(field, topic)][order(field)] |> distinct()
+
+d2[, question := field]
+d2[, question := gsub("climate_", "", question, fixed = F)]
+d2[, question := gsub("johnny_", "", question, fixed = F)]
+d2[, question := gsub("election_", "", question, fixed = F)]
+d2[, .(field, question)][order(question)] |> distinct()
+
+d2[, .(field, topic, question)][order(topic, question)] |> distinct()
+
 d3 <- dcast(d2, user_id + condition + topic + climate_perc ~ question, value.var = "news_eval")
 d3[, rating_combined := (importance + newsworthiness) / 2]
 d3
@@ -92,9 +105,9 @@ summary(m1_combinebf)
 ```
 
 ```{r}
-dodge <- 0.8
+dodge <- 0.5
 p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
-    facet_wrap(~ topic) +
+    facet_grid(topic ~ .) +
     geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.8) +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
@@ -102,7 +115,7 @@ p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("co
     labs(x = "", y = "rating", col = "condition")
 p2
 
-ggsave("../figures/main_effect.png", p2, dpi = 300, width = 23, height = 5, bg = "white")
+ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 8, bg = "white")
 ```
 
 
@@ -116,50 +129,30 @@ ggsave("../figures/main_effect.png", p2, dpi = 300, width = 23, height = 5, bg =
 
 
 ```{r}
-dodge <- 0.8
-ggplot(d2, aes(question, news_eval, fill = factor(condition, labels = c("control", "treatment")))) +
-    facet_wrap(~ topic) +
-    stat_slab(aes(thickness = stat(pdf*n)), scale = 0.5, position = position_dodge(dodge), alpha = 0.3) +
-    # geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.3) +
-    geom_jitter(position = position_jitterdodge(jitter.width = 0.1, dodge.width = dodge, jitter.height = 0.1), size = 0.3, alpha = 0.1) +
-    # stat_dotsinterval(side = "left", scale = 0.2, position = position_dodge(dodge)) +
-    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge), aes(col = factor(condition, labels = c("control", "treatment")))) +
-    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge), aes(col = factor(condition, labels = c("control", "treatment")))) +
-    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
-    labs(x = "", y = "rating", fill = "condition", col = "condition")
-ggsave("../figures/main_effect_with_cloud.png", p2, dpi = 300, width = 23, height = 5, bg = "white")
-
-# ggdist
 # https://mjskay.github.io/ggdist/articles/dotsinterval.html
-
 set.seed(12345) # for reproducibility
-library(ggdist)
-p3 <- d3 %>%
-  ggplot(aes(y = topic, x = importance, fill = topic)) +
-  stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
-  stat_dotsinterval(side = "bottom", scale = 0.7, slab_size = NA) +
-  scale_fill_brewer(palette = "Set2")
+d3[, condition := factor(condition, labels = c("control", "treatment"))]
+p3 <- ggplot(d3, aes(y = topic, x = importance, fill = topic)) +
+    facet_grid(condition ~ topic) +
+    stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
+    stat_dotsinterval(side = "bottom", scale = 0.3, slab_size = NA)
+p3
+ggsave("../figures/rain_cloud_plot_importance.png", p3, dpi = 300, width = 8, height = 8, bg = "white")
+
+p3 <- ggplot(d3, aes(y = topic, x = newsworthiness, fill = topic)) +
+    facet_grid(condition ~ topic) +
+    stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
+    stat_dotsinterval(side = "bottom", scale = 0.3, slab_size = NA)
 p3
 
-ggsave("../figures/rain_cloud_plot_importance.png", p3, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/rain_cloud_plot_newsworthiness.png", p3, dpi = 300, width = 8, height = 8, bg = "white")
 
-p3 <- d3 %>%
-  ggplot(aes(y = topic, x = newsworthiness, fill = topic)) +
-  stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
-  stat_dotsinterval(side = "bottom", scale = 0.7, slab_size = NA) +
-  scale_fill_brewer(palette = "Set2")
+p3 <- ggplot(d3, aes(y = topic, x = rating_combined, fill = topic)) +
+    facet_grid(condition ~ topic) +
+    stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
+    stat_dotsinterval(side = "bottom", scale = 0.3, slab_size = NA)
 
-ggsave("../figures/rain_cloud_plot_newsworthiness.png", p3, dpi = 300, width = 13, height = 5, bg = "white")
-
-p3 <- d3 %>%
-  ggplot(aes(y = topic, x = rating_combined, fill = topic)) +
-  stat_slab(aes(thickness = stat(pdf*n)), scale = 0.7) +
-  stat_dotsinterval(side = "bottom", scale = 0.7, slab_size = NA) +
-  scale_fill_brewer(palette = "Set2")
-
-ggsave("../figures/rain_cloud_plot_combined.png", p3, dpi = 300, width = 13, height = 5, bg = "white")
-
-
+ggsave("../figures/rain_cloud_plot_combined.png", p3, dpi = 300, width = 8, height = 8, bg = "white")
 ```
 
 
