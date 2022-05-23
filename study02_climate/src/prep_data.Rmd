@@ -124,7 +124,7 @@ if (nrow(ips) > 0) {
     ips_checked2 <- left_join(ips, ips_checked, by = c("ip_address" = "IPAddress"))
     ips_checked2 <- ips_checked2[!is.na(IP_Hub_recommend_block)]
     ips_checked2 <- bind_rows(checked, ips_checked2)
-    fwrite(ips_checked2, "../study02_climate/data/clean/ips_checked.csv")
+    fwrite(ips_checked2, "../data/clean/ips_checked.csv")
 } else {
     ips_checked2 <- checked
 }
@@ -186,7 +186,9 @@ fwrite(dt_feed2, "../data/clean/data_feed.csv")
 cols2 <- c("aot_change-beliefs", "aot_evidence-conflicts", "aot_loyal-beliefs", "aot_maintain-beliefs", "aot_regardless-topic", "aot_true-important", "economicissuespref", "politicalposition", "politicalpref", "socialissuespref")
 d5 <- d0[field %in% cols2, .(user_id, field, response)]
 
-d5 <- d5[, .SD[1], .(user_id, field)]  # takek first response/row per user per question
+d5 <- d5[, .SD[1], .(user_id, field)] 
+
+# take first response/row per user per question
 d5[, .N, user_id][, table(N)]  # any weird people? 
 
 d5[, unique(field)]

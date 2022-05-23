@@ -65,6 +65,9 @@ ggplot(d3, aes(importance, newsworthiness)) +
     geom_smooth(method = 'lm', alpha = 0.1) 
 
 select(d3, topic, importance, newsworthiness) %>% group_by(topic) %>% correlation()
+
+
+correlation(d3[topic == "climate"])
 ```
 
 
@@ -177,6 +180,14 @@ ggsave("../figures/main_effect_subset.png", p2a, dpi = 300, width = 13, height =
 ```
 
 ```{r other effects}
+# climate
+ttestBF(formula = exposure_frequency ~ condition, data = d3[topic == "climate"])
+summaryh(lm(exposure_frequency ~ condition, d3[topic == "climate"]))
+
+ttestBF(formula = exposure_frequency ~ condition, data = d3a[topic == "climate"])
+summaryh(lm(exposure_frequency ~ condition, d3a[topic == "climate"]))
+
+
 # election
 ttestBF(formula = importance ~ condition, data = d3[topic == "election"])
 summaryh(lm(importance ~ condition, d3[topic == "election"]))
@@ -186,6 +197,16 @@ summaryh(lm(newsworthiness ~ condition, d3[topic == "election"]))
 
 ttestBF(formula = rating_combined ~ condition, data = d3[topic == "election"])
 summaryh(lm(rating_combined ~ condition, d3[topic == "election"]))
+
+
+# johnny
+ttestBF(formula = exposure_frequency ~ condition, data = d3[topic == "johnny"])
+summaryh(lm(exposure_frequency ~ condition, d3[topic == "johnny"]))
+
+ttestBF(formula = exposure_frequency ~ condition, data = d3a[topic == "johnny"])
+summaryh(lm(exposure_frequency ~ condition, d3a[topic == "johnny"]))
+
+
 ```
 
 
@@ -278,6 +299,43 @@ summaryh(lm(problem ~ condition * aotC, d_demo))
 summaryh(lm(concern ~ condition * aotC, d_demo))
 summaryh(lm(exposure_frequency ~ condition * aotC, d_demo))
 summaryh(lm(desired_frequency ~ condition * aotC, d_demo))
+
+
+summaryh(lm(importance ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(newsworthiness ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(hope ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(human_activity ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(problem ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(concern ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(exposure_frequency ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(desired_frequency ~ condition * politicalprefC, d_demo[user_id %in% user_subset]))
+
+summaryh(lm(importance ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(newsworthiness ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(hope ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(human_activity ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(problem ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(concern ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(exposure_frequency ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(desired_frequency ~ condition * economicissuesprefC, d_demo[user_id %in% user_subset]))
+
+summaryh(lm(importance ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(newsworthiness ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(hope ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(human_activity ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(problem ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(concern ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(exposure_frequency ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+summaryh(lm(desired_frequency ~ condition * socialissuesprefC, d_demo[user_id %in% user_subset]))
+
+summaryh(lm(importance ~ condition * aotC, d_demo[user_id %in% user_subset]))
+summaryh(lm(newsworthiness ~ condition * aotC, d_demo[user_id %in% user_subset]))
+summaryh(lm(hope ~ condition * aotC, d_demo[user_id %in% user_subset]))
+summaryh(lm(human_activity ~ condition * aotC, d_demo[user_id %in% user_subset]))
+summaryh(lm(problem ~ condition * aotC, d_demo[user_id %in% user_subset]))
+summaryh(lm(concern ~ condition * aotC, d_demo[user_id %in% user_subset]))
+summaryh(lm(exposure_frequency ~ condition * aotC, d_demo[user_id %in% user_subset]))
+tidy(lm(desired_frequency ~ condition * aotC, d_demo[user_id %in% user_subset]))
 ```
 
 
