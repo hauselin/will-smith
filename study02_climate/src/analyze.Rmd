@@ -9,6 +9,7 @@ editor_options:
 rm(list = ls())
 library(data.table); library(tidyverse); library(correlation)
 library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
+library(hausekeep)
 theme_set(theme_minimal())
 ```
 
@@ -22,6 +23,8 @@ d1[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
 
 d2 <- d1[attention == 1.0 & ipblock == 0]
 d2[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
+d2[, n_distinct(user_id)]
+d2[, n_distinct(user_id), condition]
 
 # remove alphanumeric response column, ip address and country codes
 d2 <- select(d2, user_id, condition, field, news_eval)
@@ -71,7 +74,7 @@ d4[, condition := condition + 0.5]
 summary(lm(climate_perc ~ condition, d4))
 
 p1 <- ggplot(d4, aes(factor(condition, labels = c("control", "treatment")), climate_perc)) +
-    geom_quasirandom(alpha = 0.3, size = 0.8) +
+    geom_quasirandom(alpha = 0.5, size = 0.8) +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
     scale_y_continuous(limits = c(0, 100)) +
@@ -86,20 +89,20 @@ ggsave("../figures/manipulation_check.png", p1, dpi = 300, width = 5, height = 5
 # if cor is < 0.7 interpret this
 ttestBF(formula = importance ~ condition, data = d3[topic == "climate"])
 m1_imp <- lm(importance ~ condition, d3[topic == "climate"])
-summary(m1_imp)
+summaryh(m1_imp)
 m1_impbf <- BF(m1_imp, hypothesis = "condition = 0")
 summary(m1_impbf)
 
 ttestBF(formula = newsworthiness ~ condition, data = d3[topic == "climate"])
 m1_newsw <- lm(newsworthiness ~ condition, d3[topic == "climate"])
-summary(m1_newsw)
+summaryh(m1_newsw)
 m1_newswbf <- BF(m1_newsw, hypothesis = "condition = 0")
 summary(m1_newswbf)
 
 # if cor > 0.7, interpret this
 ttestBF(formula = rating_combined ~ condition, data = d3[topic == "climate"])
 m1_combine <- lm(rating_combined ~ condition, d3[topic == "climate"])
-summary(m1_combine)
+summaryh(m1_combine)
 m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
 summary(m1_combinebf)
 ```
@@ -116,6 +119,73 @@ p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("co
 p2
 
 ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 8, bg = "white")
+```
+
+```{r fit models to people who reported seeing "correct" no. of climate headlines}
+d3a <- d3[(condition == -0.5 & climate_perc < 20) | (condition == 0.5 & climate_perc > 33)]
+d3a[, fivenum(climate_perc), condition]
+d3a[, n_distinct(user_id), condition]
+user_subset <- d3a[, unique(user_id)]
+
+# if cor is < 0.7 interpret this
+ttestBF(formula = importance ~ condition, data = d3a[topic == "climate"])
+m1_imp <- lm(importance ~ condition, d3a[topic == "climate"])
+summaryh(m1_imp)
+m1_impbf <- BF(m1_imp, hypothesis = "condition = 0")
+summary(m1_impbf)
+
+ttestBF(formula = newsworthiness ~ condition, data = d3a[topic == "climate"])
+m1_newsw <- lm(newsworthiness ~ condition, d3a[topic == "climate"])
+summaryh(m1_newsw)
+m1_newswbf <- BF(m1_newsw, hypothesis = "condition = 0")
+summary(m1_newswbf)
+
+# if cor > 0.7, interpret this
+ttestBF(formula = rating_combined ~ condition, data = d3a[topic == "climate"])
+m1_combine <- lm(rating_combined ~ condition, d3a[topic == "climate"])
+summaryh(m1_combine)
+m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
+summary(m1_combinebf)
+```
+
+```{r}
+d4a <- distinct(d3a[, .(user_id, condition, climate_perc)])
+
+p1 <- ggplot(d4a, aes(factor(condition, labels = c("control", "treatment")), climate_perc)) +
+    geom_quasirandom(alpha = 0.5, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1) +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(x = "", y = "self-reported percent climate cards seen")
+p1
+
+ggsave("../figures/manipulation_check_subset.png", p1, dpi = 300, width = 5, height = 5, bg = "white")
+```
+
+```{r}
+dodge <- 0.5
+p2a <- ggplot(d2[user_id %in% user_subset], aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_grid(topic ~ .) +
+    geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(-2, 8), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2a
+
+ggsave("../figures/main_effect_subset.png", p2a, dpi = 300, width = 13, height = 8, bg = "white")
+```
+
+```{r other effects}
+# election
+ttestBF(formula = importance ~ condition, data = d3[topic == "election"])
+summaryh(lm(importance ~ condition, d3[topic == "election"]))
+
+ttestBF(formula = newsworthiness ~ condition, data = d3[topic == "election"])
+summaryh(lm(newsworthiness ~ condition, d3[topic == "election"]))
+
+ttestBF(formula = rating_combined ~ condition, data = d3[topic == "election"])
+summaryh(lm(rating_combined ~ condition, d3[topic == "election"]))
 ```
 
 
@@ -162,8 +232,8 @@ d_ideology <- fread("../data/clean/data-wide.csv")
 d_ideology <- select(d_ideology, -starts_with("aot_"))
 d_demo <- left_join(d3[topic == "climate"], d_ideology) |> data.table()
 
-d_demo[, conditionC := ifelse(condition == "control", -0.5, 0.5)]
 d_demo <- mutate_if(d_demo, is.integer, as.numeric) |> data.table()
+d_demo[, table(condition)]
 
 glimpse(d_demo)
 
@@ -173,41 +243,41 @@ newcols <- paste0(cols, "C")
 d_demo[, (newcols) := lapply(.SD, function(x) x - mean(x)), .SDcols = cols]
 summary(d_demo)
 
-summary(lm(importance ~ conditionC * politicalprefC, d_demo))
-summary(lm(newsworthiness ~ conditionC * politicalprefC, d_demo))
-summary(lm(hope ~ conditionC * politicalprefC, d_demo))
-summary(lm(human_activity ~ conditionC * politicalprefC, d_demo))
-summary(lm(problem ~ conditionC * politicalprefC, d_demo))
-summary(lm(concern ~ conditionC * politicalprefC, d_demo))
-summary(lm(exposure_frequency ~ conditionC * politicalprefC, d_demo))
-summary(lm(desired_frequency ~ conditionC * politicalprefC, d_demo))
+summaryh(lm(importance ~ condition * politicalprefC, d_demo))
+summaryh(lm(newsworthiness ~ condition * politicalprefC, d_demo))
+summaryh(lm(hope ~ condition * politicalprefC, d_demo))
+summaryh(lm(human_activity ~ condition * politicalprefC, d_demo))
+summaryh(lm(problem ~ condition * politicalprefC, d_demo))
+summaryh(lm(concern ~ condition * politicalprefC, d_demo))
+summaryh(lm(exposure_frequency ~ condition * politicalprefC, d_demo))
+summaryh(lm(desired_frequency ~ condition * politicalprefC, d_demo))
 
-summary(lm(importance ~ conditionC * economicissuesprefC, d_demo))
-summary(lm(newsworthiness ~ conditionC * economicissuesprefC, d_demo))
-summary(lm(hope ~ conditionC * economicissuesprefC, d_demo))
-summary(lm(human_activity ~ conditionC * economicissuesprefC, d_demo))
-summary(lm(problem ~ conditionC * economicissuesprefC, d_demo))
-summary(lm(concern ~ conditionC * economicissuesprefC, d_demo))
-summary(lm(exposure_frequency ~ conditionC * economicissuesprefC, d_demo))
-summary(lm(desired_frequency ~ conditionC * economicissuesprefC, d_demo))
+summaryh(lm(importance ~ condition * economicissuesprefC, d_demo))
+summaryh(lm(newsworthiness ~ condition * economicissuesprefC, d_demo))
+summaryh(lm(hope ~ condition * economicissuesprefC, d_demo))
+summaryh(lm(human_activity ~ condition * economicissuesprefC, d_demo))
+summaryh(lm(problem ~ condition * economicissuesprefC, d_demo))
+summaryh(lm(concern ~ condition * economicissuesprefC, d_demo))
+summaryh(lm(exposure_frequency ~ condition * economicissuesprefC, d_demo))
+summaryh(lm(desired_frequency ~ condition * economicissuesprefC, d_demo))
 
-summary(lm(importance ~ conditionC * socialissuesprefC, d_demo))
-summary(lm(newsworthiness ~ conditionC * socialissuesprefC, d_demo))
-summary(lm(hope ~ conditionC * socialissuesprefC, d_demo))
-summary(lm(human_activity ~ conditionC * socialissuesprefC, d_demo))
-summary(lm(problem ~ conditionC * socialissuesprefC, d_demo))
-summary(lm(concern ~ conditionC * socialissuesprefC, d_demo))
-summary(lm(exposure_frequency ~ conditionC * socialissuesprefC, d_demo))
-summary(lm(desired_frequency ~ conditionC * socialissuesprefC, d_demo))
+summaryh(lm(importance ~ condition * socialissuesprefC, d_demo))
+summaryh(lm(newsworthiness ~ condition * socialissuesprefC, d_demo))
+summaryh(lm(hope ~ condition * socialissuesprefC, d_demo))
+summaryh(lm(human_activity ~ condition * socialissuesprefC, d_demo))
+summaryh(lm(problem ~ condition * socialissuesprefC, d_demo))
+summaryh(lm(concern ~ condition * socialissuesprefC, d_demo))
+summaryh(lm(exposure_frequency ~ condition * socialissuesprefC, d_demo))
+summaryh(lm(desired_frequency ~ condition * socialissuesprefC, d_demo))
 
-summary(lm(importance ~ conditionC * aotC, d_demo))
-summary(lm(newsworthiness ~ conditionC * aotC, d_demo))
-summary(lm(hope ~ conditionC * aotC, d_demo))
-summary(lm(human_activity ~ conditionC * aotC, d_demo))
-summary(lm(problem ~ conditionC * aotC, d_demo))
-summary(lm(concern ~ conditionC * aotC, d_demo))
-summary(lm(exposure_frequency ~ conditionC * aotC, d_demo))
-summary(lm(desired_frequency ~ conditionC * aotC, d_demo))
+summaryh(lm(importance ~ condition * aotC, d_demo))
+summaryh(lm(newsworthiness ~ condition * aotC, d_demo))
+summaryh(lm(hope ~ condition * aotC, d_demo))
+summaryh(lm(human_activity ~ condition * aotC, d_demo))
+summaryh(lm(problem ~ condition * aotC, d_demo))
+summaryh(lm(concern ~ condition * aotC, d_demo))
+summaryh(lm(exposure_frequency ~ condition * aotC, d_demo))
+summaryh(lm(desired_frequency ~ condition * aotC, d_demo))
 ```
 
 
@@ -253,24 +323,24 @@ d0_feed[, engaged := 0]
 d0_feed[likes_1 > 0 | shares_1 > 0 | read_later_1 > 0, engaged := 1]
 
 
-d0_feed_ws <- d0_feed[entity_set == "22051858_climate"]
+d0_feed_cc <- d0_feed[entity_set == "22051858_climate"]
 
-p1 <- ggplot(d0_feed_ws, aes(item_order, dwell)) +
+p1 <- ggplot(d0_feed_cc, aes(item_order, dwell)) +
     geom_smooth(method = 'lm') +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
-p2 <- ggplot(d0_feed_ws, aes(item_order, likes_1)) +
+p2 <- ggplot(d0_feed_cc, aes(item_order, likes_1)) +
     geom_smooth(method = 'lm') +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
-p3 <- ggplot(d0_feed_ws, aes(item_order, shares_1)) +
+p3 <- ggplot(d0_feed_cc, aes(item_order, shares_1)) +
     geom_smooth(method = 'lm') +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
-p4 <- ggplot(d0_feed_ws, aes(item_order, read_later_1)) +
+p4 <- ggplot(d0_feed_cc, aes(item_order, read_later_1)) +
     geom_smooth(method = 'lm') +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
     stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
@@ -279,11 +349,11 @@ p1 / p2 / p3 / p4
 
 
 
-include <- d0_feed_ws[condition == 0.5 & engaged == 0, .N, user_id][N > 5, user_id]
-coefs <- d0_feed_ws[condition == 0.5 & user_id %in% include, .(b1 = coef(lm(ldwell ~ item_order))[2]), user_id]
+include <- d0_feed_cc[condition == 0.5 & engaged == 0, .N, user_id][N > 5, user_id]
+coefs <- d0_feed_cc[condition == 0.5 & user_id %in% include, .(b1 = coef(lm(ldwell ~ item_order))[2]), user_id]
 coefs
 
-feed_avg <- d0_feed_ws[condition == 0.5, .(like = mean(likes_1, na.rm = T),
+feed_avg <- d0_feed_cc[condition == 0.5, .(like = mean(likes_1, na.rm = T),
             share = mean(shares_1, na.rm = T),
             read = mean(read_later_1, na.rm = T),
             ldwell = mean(ldwell, na.rm = T),
@@ -295,18 +365,18 @@ feed_avg[order(-engage)]
 # exclude extreme engagers
 feed_avg <- feed_avg[share < 1.0][like < 1][read < 1]
 
-dwell_engage0 <- d0_feed_ws[engaged == 0, .(ldwell_engage0 = mean(ldwell, na.rm = T)), user_id]
+dwell_engage0 <- d0_feed_cc[engaged == 0, .(ldwell_engage0 = mean(ldwell, na.rm = T)), user_id]
 
 d5 <- left_join(d3, feed_avg) |> left_join(coefs) |> left_join(dwell_engage0) |>  data.table()
 d5
 
-library(hausekeep)
+
 d5[topic == "climate" & condition == 0.5, hist(log(like + 1))]
 d5[topic == "climate" & condition == 0.5, hist(like)]
 summaryh(lm(newsworthiness ~ log(like + 1), d5[topic == "climate" & condition == 0.5]))  # ya
 summaryh(lm(newsworthiness ~ like, d5[topic == "climate" & condition == 0.5]))  # ya
 summaryh(lm(newsworthiness ~ log(read + 1), d5[topic == "climate" & condition == 0.5]))
-summaryh(lm(newsworthiness ~ share, d5[topic == "climate" & condition == 0.5])) # works well if we exclude outlier
+summaryh(lm(newsworthiness ~ share, d5[topic == "climate" & condition == 0.5])) # yes
 summaryh(lm(newsworthiness ~ log(share + 1), d5[topic == "climate" & condition == 0.5]))
 summaryh(lm(newsworthiness ~ ldwell, d5[topic == "climate" & condition == 0.5]))
 summaryh(lm(newsworthiness ~ ldwell_engage0, d5[topic == "climate" & condition == 0.5]))
@@ -354,15 +424,118 @@ summaryh(lm(climate_perc ~ b1, d5[topic == "climate" & condition == 0.5]))
 summaryh(lm(climate_perc ~ like + read + share + ldwell + n_dwell, d5[topic == "climate" & condition == 0.5]))
 summaryh(lm(climate_perc ~ like + read + ldwell, d5[topic == "climate" & condition == 0.5]))
 
-p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", "importance")) +
+v <- "importance"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
     scale_y_continuous(limits = c(1, 6), breaks = 1:6)
-p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", "importance")) +
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
     scale_y_continuous(limits = c(1, 6), breaks = 1:6)
-p1 + p2
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+v <- "newsworthiness"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+v <- "rating_combined"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+v <- "concern"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+v <- "human_activity"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+v <- "problem"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+v <- "hope"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+
+v <- "exposure_frequency"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 6), breaks = 1:6)
+p1 + p2 + p3
+
+v <- "desired_frequency"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 3), breaks = 1:3)
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 3), breaks = 1:3)
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson')) +
+    scale_y_continuous(limits = c(1, 3), breaks = 1:3)
+p1 + p2 + p3
+
+
+v <- "n_dwell"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson'))
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson'))
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson'))
+p1 + p2 + p3
+
+v <- "ldwell"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson'))
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson'))
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson'))
+p1 + p2 + p3
+
+v <- "ldwell_engage0"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson'))
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson'))
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson'))
+p1 + p2 + p3
+
+v <- "b1"
+p1 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "share", v, method = 'pearson'))
+p2 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "like", v, method = 'pearson'))
+p3 <- plot(correlation::cor_test(d5[condition == 0.5 & topic == "climate"], "read", v, method = 'pearson'))
+p1 + p2 + p3
+
+
 
 library(fixest)
-feols(ldwell ~ btn_likes | user_id, d0_feed_ws[engaged == 0])
-feols(ldwell ~ btn_shares | user_id, d0_feed_ws[engaged == 0])
+feols(ldwell ~ btn_likes | user_id, d0_feed_cc[engaged == 0])
+feols(ldwell ~ btn_shares | user_id, d0_feed_cc[engaged == 0])
 
 feols(ldwell ~ btn_likes | user_id, d0_feed[engaged == 0])
 feols(ldwell ~ btn_shares | user_id, d0_feed[engaged == 0])

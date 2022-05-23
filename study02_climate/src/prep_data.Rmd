@@ -185,6 +185,10 @@ fwrite(dt_feed2, "../data/clean/data_feed.csv")
 # save politics/ideology/AOT in wide form
 cols2 <- c("aot_change-beliefs", "aot_evidence-conflicts", "aot_loyal-beliefs", "aot_maintain-beliefs", "aot_regardless-topic", "aot_true-important", "economicissuespref", "politicalposition", "politicalpref", "socialissuespref")
 d5 <- d0[field %in% cols2, .(user_id, field, response)]
+
+d5 <- d5[, .SD[1], .(user_id, field)]  # takek first response/row per user per question
+d5[, .N, user_id][, table(N)]  # any weird people? 
+
 d5[, unique(field)]
 d5[, n_distinct(user_id)]
 d5[, unique(response)] |> sort()
