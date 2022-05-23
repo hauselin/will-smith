@@ -69,6 +69,7 @@ p1
 
 
 ```{r fit models}
+
 # if cor is < 0.7 interpret this
 ttestBF(formula = importance ~ condition, data = d3[topic == "willsmith"])
 m1_imp <- lm(importance ~ condition, d3[topic == "willsmith"])
@@ -90,6 +91,36 @@ m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
 summary(m1_combinebf)
 ```
 
+
+```{r fit models after filtering subjects}
+
+d3a <- d3[(condition == -0.5 & willsmith_perc < 20) | (condition == 0.5 & willsmith_perc > 33)]
+d3a[, fivenum(willsmith_perc), condition]
+d3a[, n_distinct(user_id), condition]
+user_subset <- d3a[, unique(user_id)]
+
+# if cor is < 0.7 interpret this
+ttestBF(formula = importance ~ condition, data = d3a[topic == "willsmith"])
+m1_imp <- lm(importance ~ condition, d3a[topic == "willsmith"])
+summary(m1_imp)
+m1_impbf <- BF(m1_imp, hypothesis = "condition = 0")
+summary(m1_impbf)
+
+ttestBF(formula = newsworthiness ~ condition, data = d3a[topic == "willsmith"])
+m1_newsw <- lm(newsworthiness ~ condition, d3a[topic == "willsmith"])
+summary(m1_newsw)
+m1_newswbf <- BF(m1_newsw, hypothesis = "condition = 0")
+summary(m1_newswbf)
+
+# if cor > 0.7, interpret this
+ttestBF(formula = rating_combined ~ condition, data = d3a[topic == "willsmith"])
+m1_combine <- lm(rating_combined ~ condition, d3a[topic == "willsmith"])
+summary(m1_combine)
+m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
+summary(m1_combinebf)
+```
+
+
 ```{r}
 dodge <- 0.8
 p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
@@ -102,6 +133,21 @@ p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("co
 p2
 
 # ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+```
+
+
+```{r}
+dodge <- 0.8
+p2 <- ggplot(d2[user_id %in% user_subset], aes(question, news_eval, col = factor(condition, labels = c("control", "treatment")))) +
+    facet_wrap(~ topic) +
+    geom_quasirandom(alpha = 0.1, dodge = dodge, size = 0.8) +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(dodge)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 1.1, position = position_dodge(dodge)) +
+    scale_y_continuous(limits = c(0, 7), breaks = 1:6) +
+    labs(x = "", y = "rating", col = "condition")
+p2
+
+# ggsave("../figures/main_effect_subset.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
 ```
 
 
