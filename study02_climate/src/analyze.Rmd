@@ -226,6 +226,15 @@ summaryh(lm(exposure_frequency ~ condition, d3[topic == "climate"]))
 ttestBF(formula = exposure_frequency ~ condition, data = d3a[topic == "climate"])
 summaryh(lm(exposure_frequency ~ condition, d3a[topic == "climate"]))
 
+ttestBF(formula = desired_frequency ~ condition, data = d3[topic == "climate"])
+summaryh(lm(desired_frequency ~ condition, d3[topic == "climate"]))
+
+ttestBF(formula = hope ~ condition, data = d3[topic == "climate"])
+summaryh(lm(hope ~ condition, d3[topic == "climate"]))
+
+ttestBF(formula = concern ~ condition, data = d3[topic == "climate"])
+summaryh(lm(concern ~ condition, d3[topic == "climate"]))
+
 
 # election
 ttestBF(formula = importance ~ condition, data = d3[topic == "election"])
@@ -237,6 +246,12 @@ summaryh(lm(newsworthiness ~ condition, d3[topic == "election"]))
 ttestBF(formula = rating_combined ~ condition, data = d3[topic == "election"])
 summaryh(lm(rating_combined ~ condition, d3[topic == "election"]))
 
+ttestBF(formula = desired_frequency ~ condition, data = d3[topic == "election"])
+summaryh(lm(desired_frequency ~ condition, d3[topic == "election"]))
+
+ttestBF(formula = exposure_frequency ~ condition, data = d3[topic == "election"])
+summaryh(lm(exposure_frequency ~ condition, d3[topic == "election"]))
+
 
 # johnny
 ttestBF(formula = exposure_frequency ~ condition, data = d3[topic == "johnny"])
@@ -245,7 +260,17 @@ summaryh(lm(exposure_frequency ~ condition, d3[topic == "johnny"]))
 ttestBF(formula = exposure_frequency ~ condition, data = d3a[topic == "johnny"])
 summaryh(lm(exposure_frequency ~ condition, d3a[topic == "johnny"]))
 
+ttestBF(formula = newsworthiness ~ condition, data = d3[topic == "johnny"])
+summaryh(lm(newsworthiness ~ condition, d3[topic == "johnny"]))
 
+ttestBF(formula = rating_combined ~ condition, data = d3[topic == "johnny"])
+summaryh(lm(rating_combined ~ condition, d3[topic == "johnny"]))
+
+ttestBF(formula = desired_frequency ~ condition, data = d3[topic == "johnny"])
+summaryh(lm(desired_frequency ~ condition, d3[topic == "johnny"]))
+
+ttestBF(formula = exposure_frequency ~ condition, data = d3[topic == "johnny"])
+summaryh(lm(exposure_frequency ~ condition, d3[topic == "johnny"]))
 ```
 
 
