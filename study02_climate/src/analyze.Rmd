@@ -335,7 +335,7 @@ summaryh(lm(human_activity ~ condition * aotC, d_demo[user_id %in% user_subset])
 summaryh(lm(problem ~ condition * aotC, d_demo[user_id %in% user_subset]))
 summaryh(lm(concern ~ condition * aotC, d_demo[user_id %in% user_subset]))
 summaryh(lm(exposure_frequency ~ condition * aotC, d_demo[user_id %in% user_subset]))
-tidy(lm(desired_frequency ~ condition * aotC, d_demo[user_id %in% user_subset]))
+summaryh(lm(desired_frequency ~ condition * aotC, d_demo[user_id %in% user_subset]))
 ```
 
 
