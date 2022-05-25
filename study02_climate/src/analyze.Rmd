@@ -10,6 +10,7 @@ rm(list = ls())
 library(data.table); library(tidyverse); library(correlation)
 library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
 library(hausekeep)
+library(marginaleffects)
 theme_set(theme_minimal())
 ```
 
@@ -74,7 +75,7 @@ correlation(d3[topic == "climate"])
 ```{r}
 d4 <- distinct(d3[, .(user_id, condition, climate_perc)])
 d4[, condition := condition + 0.5]
-summary(lm(climate_perc ~ condition, d4))
+summaryh(lm(climate_perc ~ condition, d4))
 
 p1 <- ggplot(d4, aes(factor(condition, labels = c("control", "treatment")), climate_perc)) +
     geom_quasirandom(alpha = 0.5, size = 0.8) +
@@ -124,6 +125,30 @@ p2
 ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 8, bg = "white")
 ```
 
+```{r interact perc with condition}
+d3[, climate_percC := climate_perc - mean(climate_perc, na.rm = T)]
+m1 <- lm(importance ~ condition * climate_percC, d3[topic == "climate"])
+summaryh(m1)
+
+m2 <- lm(newsworthiness ~ condition * climate_percC, d3[topic == "climate"])
+summaryh(m2)
+
+m3 <- lm(rating_combined ~ condition * climate_percC, d3[topic == "climate"])
+summaryh(m3)
+
+d3[climate_perc %in% c(5, 35), .(climate_perc, climate_percC)] |> distinct()
+marginaleffects(m3, datagrid(climate_percC = c(-30.54032, -0.5403226), condition = c(-0.5, 0.5)))
+
+m1 <- lm(importance ~ climate_percC, d3[topic == "climate"])
+summaryh(m1)
+m2 <- lm(newsworthiness ~ climate_percC, d3[topic == "climate"])
+summaryh(m2)
+m3 <- lm(rating_combined ~ climate_percC, d3[topic == "climate"])
+summaryh(m3)
+```
+
+
+
 ```{r fit models to people who reported seeing "correct" no. of climate headlines}
 d3a <- d3[(condition == -0.5 & climate_perc < 20) | (condition == 0.5 & climate_perc > 33)]
 d3a[, fivenum(climate_perc), condition]
@@ -149,6 +174,20 @@ m1_combine <- lm(rating_combined ~ condition, d3a[topic == "climate"])
 summaryh(m1_combine)
 m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
 summary(m1_combinebf)
+
+m1 <- lm(importance ~ condition * climate_percC, d3a[topic == "climate"])
+summaryh(m1)
+m2 <- lm(newsworthiness ~ condition * climate_percC, d3a[topic == "climate"])
+summaryh(m2)
+m3 <- lm(rating_combined ~ condition * climate_percC, d3a[topic == "climate"])
+summaryh(m3)
+
+m1 <- lm(importance ~ climate_percC, d3a[topic == "climate"])
+summaryh(m1)
+m2 <- lm(newsworthiness ~ climate_percC, d3a[topic == "climate"])
+summaryh(m2)
+m3 <- lm(rating_combined ~ climate_percC, d3a[topic == "climate"])
+summaryh(m3)
 ```
 
 ```{r}
@@ -256,8 +295,12 @@ d_demo <- left_join(d3[topic == "climate"], d_ideology) |> data.table()
 d_demo <- mutate_if(d_demo, is.integer, as.numeric) |> data.table()
 d_demo[, table(condition)]
 
-glimpse(d_demo)
+d_demo[, hist(politicalpref)]
+d_demo[, hist(economicissuespref)]
+d_demo[, hist(socialissuespref)]
+d_demo[, hist(aot)]
 
+glimpse(d_demo)
 
 cols <- select(d_demo, economicissuespref:aot, -politicalposition) |> names()
 newcols <- paste0(cols, "C")
