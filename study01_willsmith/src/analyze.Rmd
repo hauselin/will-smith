@@ -9,6 +9,8 @@ editor_options:
 rm(list = ls())
 library(data.table); library(tidyverse); library(correlation)
 library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
+library(hausekeep)
+library(marginaleffects)
 theme_set(theme_minimal())
 ```
 
@@ -133,6 +135,29 @@ p2 <- ggplot(d2, aes(question, news_eval, col = factor(condition, labels = c("co
 p2
 
 # ggsave("../figures/main_effect.png", p2, dpi = 300, width = 13, height = 5, bg = "white")
+```
+
+
+```{r interact perc with condition}
+d3[, willsmith_percC := willsmith_perc - mean(willsmith_perc, na.rm = T)]
+m1 <- lm(importance ~ condition * willsmith_percC, d3[topic == "willsmith"])
+summaryh(m1)
+
+m2 <- lm(newsworthiness ~ condition * willsmith_percC, d3[topic == "willsmith"])
+summaryh(m2)
+
+m3 <- lm(rating_combined ~ condition * willsmith_percC, d3[topic == "willsmith"])
+summaryh(m3)
+
+d3[willsmith_perc %in% c(5, 35), .(willsmith_perc, willsmith_percC)] |> distinct()
+marginaleffects(m3, datagrid(willsmith_percC = c(-30.54032, -0.5403226), condition = c(-0.5, 0.5)))
+
+m1 <- lm(importance ~ willsmith_percC, d3[topic == "willsmith"])
+summaryh(m1)
+m2 <- lm(newsworthiness ~ willsmith_percC, d3[topic == "willsmith"])
+summaryh(m2)
+m3 <- lm(rating_combined ~ willsmith_percC, d3[topic == "willsmith"])
+summaryh(m3)
 ```
 
 
