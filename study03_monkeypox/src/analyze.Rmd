@@ -16,7 +16,7 @@ theme_set(theme_minimal())
 
 ```{r}
 d0_feed <- fread("../data/clean/data_feed.csv")
-d0_feed[,lapply(.SD,function(x){ifelse(is.na(x),0,x)})][, .(mean_n_dwells = mean(n_dwells), mean_dwell = mean(dwell), mean_ldwell = mean(ldwell)), by = entity_set]
+d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = c("user_id", "entity_set")][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), by = "entity_set"]
 
 d1 <- fread("../data/clean/data.csv")
 d1[, n_distinct(user_id), keyby = .(condition)]
