@@ -54,8 +54,15 @@ d2[, .(field, question)][order(question)] |> distinct()
 
 d2[, .(field, topic, question)][order(topic, question)] |> distinct()
 
+d2_covid_fatigue <- d2[question == "changesubject"]
+d2_covid_fatigue$question <- "covidfatigue"
+d2_covid_fatigue$field <- "covid_covidfatigue"
+d2_covid_fatigue$news_eval <- d2[question == "changesubject" | question == "sickhearing" | question == "tired"][, .(covid_fatigue = mean(news_eval)), by = user_id]$covid_fatigue
+d2 <- rbind(d2, d2_covid_fatigue)
+
 d3 <- dcast(d2, user_id + condition + topic + monkeypox_perc ~ question, value.var = "news_eval")
 d3[, rating_combined := (importance + newsworthiness) / 2]
+d3[, covid_fatigue := (changesubject + sickhearing + tired) / 3]
 d3
 ```
 
@@ -237,6 +244,11 @@ summaryh(lm(worry ~ condition, d3[topic == "monkeypox"]))
 ttestBF(formula = concern ~ condition, data = d3[topic == "monkeypox"])
 summaryh(lm(concern ~ condition, d3[topic == "monkeypox"]))
 
+ttestBF(formula = vax ~ condition, data = d3[topic == "monkeypox"])
+summaryh(lm(vax ~ condition, d3[topic == "monkeypox"]))
+
+ttestBF(formula = problem ~ condition, data = d3[topic == "monkeypox"])
+summaryh(lm(problem ~ condition, d3[topic == "monkeypox"]))
 
 # election
 ttestBF(formula = importance ~ condition, data = d3[topic == "election"])
@@ -265,6 +277,9 @@ summaryh(lm(exposure_frequency ~ condition, d3a[topic == "johnny"]))
 ttestBF(formula = newsworthiness ~ condition, data = d3[topic == "johnny"])
 summaryh(lm(newsworthiness ~ condition, d3[topic == "johnny"]))
 
+ttestBF(formula = importance ~ condition, data = d3[topic == "johnny"])
+summaryh(lm(importance ~ condition, d3[topic == "johnny"]))
+
 ttestBF(formula = rating_combined ~ condition, data = d3[topic == "johnny"])
 summaryh(lm(rating_combined ~ condition, d3[topic == "johnny"]))
 
@@ -285,6 +300,9 @@ summaryh(lm(exposure_frequency ~ condition, d3a[topic == "covid"]))
 ttestBF(formula = newsworthiness ~ condition, data = d3[topic == "covid"])
 summaryh(lm(newsworthiness ~ condition, d3[topic == "covid"]))
 
+ttestBF(formula = importance ~ condition, data = d3[topic == "covid"])
+summaryh(lm(importance ~ condition, d3[topic == "covid"]))
+
 ttestBF(formula = rating_combined ~ condition, data = d3[topic == "covid"])
 summaryh(lm(rating_combined ~ condition, d3[topic == "covid"]))
 
@@ -293,6 +311,18 @@ summaryh(lm(desired_frequency ~ condition, d3[topic == "covid"]))
 
 ttestBF(formula = exposure_frequency ~ condition, data = d3[topic == "covid"])
 summaryh(lm(exposure_frequency ~ condition, d3[topic == "covid"]))
+
+ttestBF(formula = changesubject ~ condition, data = d3[topic == "covid"])
+summaryh(lm(changesubject ~ condition, d3[topic == "covid"]))
+
+ttestBF(formula = sickhearing ~ condition, data = d3[topic == "covid"])
+summaryh(lm(sickhearing ~ condition, d3[topic == "covid"]))
+
+ttestBF(formula = tired ~ condition, data = d3[topic == "covid"])
+summaryh(lm(tired ~ condition, d3[topic == "covid"]))
+
+ttestBF(formula = covid_fatigue ~ condition, data = d3[topic == "covid"])
+summaryh(lm(covid_fatigue ~ condition, d3[topic == "covid"]))
 
 ```
 
