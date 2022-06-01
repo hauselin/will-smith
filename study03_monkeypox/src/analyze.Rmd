@@ -16,7 +16,21 @@ theme_set(theme_minimal())
 
 ```{r}
 d0_feed <- fread("../data/clean/data_feed.csv")
-d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = c("user_id", "entity_set")][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), by = "entity_set"]
+# same analysis in climate change, willsmith
+
+d0_feed <- d0_feed[attention == 1.0 & ipblock == 0]
+d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = .(user_id, entity_set, condition)][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), keyby = .(condition, entity_set)]
+d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = .(user_id, condition)][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), keyby = .(condition)]
+library(fixest)
+feols(ldwell ~ condition, d0_feed[entity_set == 'oct9_news' & dwell>2000], cluster = ~user_id+entity_id)
+
+feols(dwell ~ condition, d0_feed, cluster = ~user_id)
+feols(n_dwells ~ condition, d0_feed, cluster = ~user_id)
+feglm(n_dwells ~ condition, d0_feed, cluster = ~user_id, family = 'quasipoisson')
+
+hist(d0_feed$ldwell)
+hist(d0_feed$dwell)
+hist(d0_feed$n_dwells)
 
 d1 <- fread("../data/clean/data.csv")
 d1[, n_distinct(user_id), keyby = .(condition)]
@@ -119,6 +133,23 @@ m1_combine <- lm(rating_combined ~ condition, d3[topic == "monkeypox"])
 summaryh(m1_combine)
 m1_combinebf <- BF(m1_combine, hypothesis = "condition = 0")
 summary(m1_combinebf)
+```
+
+```{r}
+#compute bayes factor of 20 ppl
+#then loop to add 1 person at a time, to compute bayes factor at each itertn
+# do till last subject, get N-20 bayes factors, save p values
+# might hit 0.1 or 10 at some pt in middle
+# plot bayes factors as function of iteration
+# correlate p vals and bayes factors - sign or not?, no corr if there is no effect
+
+#n, bf1, pval1, bf2, pval2 - do for importance
+
+
+
+
+
+
 ```
 
 ```{r}
