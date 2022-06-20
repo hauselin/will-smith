@@ -90,8 +90,6 @@ ggplot(d3, aes(importance, newsworthiness)) +
     geom_smooth(method = 'lm', alpha = 0.1) 
 
 select(d3, topic, importance, newsworthiness) %>% group_by(topic) %>% correlation()
-
-
 correlation(d3[topic == "monkeypox"])
 ```
 
