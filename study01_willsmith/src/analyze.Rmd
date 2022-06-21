@@ -94,6 +94,77 @@ summary(m1_combinebf)
 ```
 
 
+```{r}
+
+#compute bayes factor of 20 ppl
+#then loop to add 1 person at a time, to compute bayes factor at each itertn
+# do till last subject, get N-20 bayes factors, save p values
+# might hit 0.1 or 10 at some pt in middle
+# plot bayes factors as function of iteration
+# correlate p vals and bayes factors - sign or not?, no corr if there is no effect
+
+#n, bf1, pval1, bf2, pval2 - do for importance
+library(stringr)
+BFs <- {}
+Ns <- {}
+Ps <- {}
+
+for (i in 20:nrow(d3[topic == "willsmith"])) {
+  testOutput <- ttestBF(formula = importance ~ condition, data = d3[topic == "willsmith"][1:i,])
+  m1_imp <- lm(importance ~ condition, d3[topic == "willsmith"][1:i,])
+  m1_imp_testOutput <- summaryh(m1_imp)
+  res <- str_match(m1_imp_testOutput[term == "condition"]$results, "p = \\s*(.*?)\\s*,")
+  BFs <- append(BFs, testOutput@bayesFactor[["bf"]])
+  Ns <- append(Ns, i)
+  Ps <- append(Ps, res[,2])
+}
+
+png("../figures/BF_history_imp.png")
+plot(Ns, exp(BFs))
+dev.off()
+
+png("../figures/P_history_imp.png")
+plot(Ns, Ps)
+dev.off()
+
+png("../figures/P_BF_corr_imp.png")
+plot(exp(BFs), Ps)
+text(paste("Correlation:", cor(exp(BFs), as.numeric(Ps), method = "pearson")), x = 0.5, y = 0.5)
+dev.off()
+
+
+
+BFs <- {}
+Ns <- {}
+Ps <- {}
+
+for (i in 20:nrow(d3[topic == "willsmith"])) {
+  testOutput <- ttestBF(formula = newsworthiness ~ condition, data = d3[topic == "willsmith"][1:i,])
+  m1_newsw <- lm(newsworthiness ~ condition, d3[topic == "willsmith"][1:i,])
+  m1_newsw_testOutput <- summaryh(m1_newsw)
+  res <- str_match(m1_newsw_testOutput[term == "condition"]$results, "p = \\s*(.*?)\\s*,")
+  BFs <- append(BFs, testOutput@bayesFactor[["bf"]])
+  Ns <- append(Ns, i)
+  Ps <- append(Ps, res[,2])
+}
+
+png("../figures/BF_history_newsw.png")
+plot(Ns, exp(BFs))
+dev.off()
+
+png("../figures/P_history_newsw.png")
+plot(Ns, Ps)
+dev.off()
+
+png("../figures/P_BF_corr_newsw.png")
+plot(exp(BFs), Ps)
+text(paste("Correlation:", cor(exp(BFs), as.numeric(Ps), method = "pearson")), x = 15, y = 0.05)
+dev.off()
+
+
+```
+
+
 ```{r fit models after filtering subjects}
 
 d3a <- d3[(condition == -0.5 & willsmith_perc < 20) | (condition == 0.5 & willsmith_perc > 33)]
