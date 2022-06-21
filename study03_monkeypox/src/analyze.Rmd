@@ -134,6 +134,7 @@ summary(m1_combinebf)
 ```
 
 ```{r}
+
 #compute bayes factor of 20 ppl
 #then loop to add 1 person at a time, to compute bayes factor at each itertn
 # do till last subject, get N-20 bayes factors, save p values
@@ -143,8 +144,15 @@ summary(m1_combinebf)
 
 #n, bf1, pval1, bf2, pval2 - do for importance
 
+BFs <- NA
+Ns <- NA
 
-
+for (i in 20:nrow(d3[topic == "monkeypox"])) {
+  testOutput <- ttestBF(formula = importance ~ condition, data = d3[topic == "monkeypox"][1:i,])
+  BFs <- append(BFs, testOutput@bayesFactor[["bf"]])
+  Ns <- append(Ns, i)
+}
+plot(Ns, exp(BFs))
 
 
 
