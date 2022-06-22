@@ -39,9 +39,23 @@ d0[field == "comments", .N, by = .(user_id)][N != 1]
 users_complete <- d0[field == "comments", .N, by = .(user_id)][N == 1, user_id]
 users_complete
 
+users_all <- d0[response == "feed-landed", .N, by = .(user_id)][N == 1, user_id]
+users_intersctt<-intersect(users_all, users_complete)
+
+users_quit <- setdiff(users_all, users_complete)
+
+d0_quitter <- d0[user_id %in% users_quit]
+d0_quitter <- d0_quitter[field == "condition"]
+
+d0_intersctt <- d0[user_id %in% users_intersctt]
+d0_intersctt <- d0_intersctt[field == "condition"]
+
 d0 <- d0[user_id %in% users_complete]
 d0
 d0[, n_distinct(user_id)]
+
+prop.test(c(n_distinct(d0_quitter[response == 2]), n_distinct(d0_quitter[response == 1])), c(n_distinct(d0_intersctt[response == 2]), n_distinct(d0_intersctt[response == 1])))
+
 ```
 
 
