@@ -19,27 +19,26 @@ source("creds.R")
 d0 <- fread("../data/clean/data.csv")
 d0 <- d0[attention == 1.0 & ipblock == 0]
 d0[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
-d0[, n_distinct(user_id)]
-d0[, n_distinct(user_id), condition]
-users_complete <- unique(d0$user_id)
+users_complete <- d0[, unique(user_id)]
+complete_prop <- d0[, .(complete = n_distinct(user_id)), condition][order(condition)]
+complete_prop
 ```
 
 
 ```{r}
-d0_all <- fread("../data/raw/e0j5KD_user_form.csv")
+d0_all <- fread("../data/raw/e0j5KD_engagement.csv")
 d0_all <- d0_all[!grepl("test", user_id)]
-users_all <- d0_all[response == "feed-landed", .N, by = .(user_id)][N == 1, user_id]
-users_intersctt<-intersect(users_all, users_complete)
+users_all <- distinct(d0_all[, .(user_id, condition)])
+users_all <- users_all$user_id
+all_prop <- d0_all[, .(all = n_distinct(user_id)), condition][order(condition)]
+all_prop
+all_prop[, condition := ifelse(condition == 1, -0.5, 0.5)]
+all_prop
 
-users_quit <- setdiff(users_all, users_complete)
+setdiff(users_all, users_complete)  # didn't complete people
+setdiff(users_complete, users_all)  # nothing, good
 
-d0_quitter <- d0_all[user_id %in% users_quit]
-d0_quitter <- d0_quitter[field == "condition"]
-
-d0_intersctt <- d0_all[user_id %in% users_intersctt]
-d0_intersctt <- d0_intersctt[field == "condition"]
-
-
-prop.test(c(n_distinct(d0_quitter[response == 2]), n_distinct(d0_quitter[response == 1])), c(n_distinct(d0_intersctt[response == 2])+n_distinct(d0_quitter[response == 2]), n_distinct(d0_intersctt[response == 1])+n_distinct(d0_quitter[response == 1])))
-
+complete_prop
+all_prop
+prop.test(complete_prop$complete, all_prop$all)
 ```
