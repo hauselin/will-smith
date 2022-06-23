@@ -59,6 +59,10 @@ w
 ```{r}
 cf <- causal_forest(X, y, w, num.trees = 4000, mtry = ncol(X))
 cf
+
+# are there heterogeneous effects?
+test_calibration(cf)
+
 average_treatment_effect(cf, target.sample = "all")  # overall effect of treatment on outcome
 average_treatment_effect(cf, target.sample = "treated")
 
