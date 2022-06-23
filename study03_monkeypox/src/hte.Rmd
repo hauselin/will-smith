@@ -7,60 +7,63 @@ editor_options:
 
 ```{r}
 rm(list = ls())
-library(data.table); library(tidyverse); library(grf); library(modelsummary)
+library(data.table); library(tidyverse); library(grf); library(modelsummary); library(correlation)
 theme_set(theme_minimal())
 ```
 
 ```{r}
 d00 <- fread("../data/clean/data.csv")
 dcov <- fread("../data/clean/data-wide.csv")
+first_headline <- fread("../data/clean/first_headline_engagement.csv")
 ```
+
+```{r prepare covariates}
+dcov <- left_join(dcov, first_headline)
+setDT(dcov)
+dcov
+```
+
 
 ```{r prepare data for modeling}
 d00[, unique(field)]
 
 # outcome variable to model
-yvar <- "monkeypox_importance"
-d0 <- d00[field == yvar, .(user_id, field, y = news_eval, condition)]
-d0[, y := as.numeric(y)]
-d0[, condition := as.numeric(condition)]
-d0
+yvar <- "covid_exposure_frequency"
+d0 <- d00[field == yvar, .(user_id, y = as.numeric(news_eval), condition = condition + 0.5)]  # code 0/1 (control/treatment)
+d0[, .N, condition]
 
 # which covariates/features to use
-x <- select(dcov, user_id, age, aot, crt, politicalposition, politicalpref, ses_educationlevel:socialissuespref, -ses_income)
+x <- select(dcov, user_id, age, aot, crt, politicalposition, politicalpref, ses_educationlevel:socialissuespref, -ses_income, engage_firstheadline)
 
 # join
-d1 <- left_join(d0, x)
-setDT(d1)
+d1 <- left_join(d0, x) |> as.data.table()
 d1
 
-glimpse(d1)
 datasummary_skim(d1)  # check missing values
 nrow(d1)
 na.omit(d1) |> nrow()
-
 d1 <- na.omit(d1)  # ensure no missing values
-nrow(d1)
+
+cor_test(d1, "y", "engage_firstheadline", method = "kendall")
 ```
 
 ```{r}
 y <- d1$y
-df_X <- select(d1, age:socialissuespref)
+df_X <- select(d1, -user_id, -y, -condition)
+names(df_X)
 X <- as.matrix(df_X)
 w <- d1$condition
-w <- w + 0.5  # code 0/1 (control/treatment)
 w  
 ```
 
 ```{r}
-cf <- causal_forest(X, y, w, num.trees = 4000)
+cf <- causal_forest(X, y, w, num.trees = 4000, mtry = ncol(X))
 cf
 average_treatment_effect(cf, target.sample = "all")  # overall effect of treatment on outcome
 average_treatment_effect(cf, target.sample = "treated")
-```
 
-```{r}
-plot(get_tree(cf, 1))  # plot one example tree
+# are there heterogeneous effects?
+test_calibration(cf)
 ```
 
 ```{r variable importance}
@@ -70,12 +73,16 @@ imp  # most to least important variable
 ```
 
 ```{r}
+plot(get_tree(cf, 1))  # plot one example treea
+```
+
+```{r}
 df_x_mean <- df_X[, lapply(.SD, mean)]
 df_x_mean
 
 n <- 50
-vv <- "age"  # change variable here
-pred_vals <- seq(0, 90, length.out = n)  # specify min/max value of the variable above
+vv <- "socialmedia_followers"  # change variable here
+pred_vals <- seq(0, 500, length.out = n)  # specify min/max value of the variable above
 df_x_mean <- df_x_mean[rep(1, n)]
 df_x_mean[, get(vv)]
 df_x_mean[, (vv) := pred_vals]

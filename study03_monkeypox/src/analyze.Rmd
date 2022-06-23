@@ -11,6 +11,8 @@ library(data.table); library(tidyverse); library(correlation)
 library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
 library(hausekeep)
 library(marginaleffects)
+library(lme4)
+library(lmerTest)
 theme_set(theme_minimal())
 ```
 
@@ -573,19 +575,76 @@ summaryh(lm(desired_frequency ~ condition * aotC, d_demo[user_id %in% user_subse
 
 
 # other
-
-
 ```{r}
-glimpse(d0_feed)
-
-d0_feed <- d0_feed[attention == 1 & ipblock == 0]
+d0_feed <- fread("../data/clean/data_feed.csv")
+d0_feed[, item_order := as.numeric(item_order)]
 
 d0_feed[, engage := likes_1 + shares_1 + read_later_1]
 d0_feed[, engaged := 0]
 d0_feed[likes_1 > 0 | shares_1 > 0 | read_later_1 > 0, engaged := 1]
 
+# did people engage with first headline? yes
+d0_feed[item_order == 0, .N, keyby = .(condition, engage, entity_id)]
 
-d0_feed_cc <- d0_feed[entity_set == "22051858_monkeypox"]
+# export/save as covariate
+temp <- d0_feed[item_order == 0, .(user_id, engage_firstheadline = engage, condition)]
+# fwrite(temp, "../data/clean/first_headline_engagement.csv")
+
+
+temp2 <- left_join(d3[topic == "monkeypox"], temp)
+setDT(temp2)
+temp2[, engage_firstheadline := log(as.numeric(engage_firstheadline) + 1)]
+temp2[, engage_firstheadline := engage_firstheadline - mean(engage_firstheadline)]
+temp2[, hist(engage_firstheadline, breaks = 10)]
+ttestBF(formula = importance ~ condition, data = d3[topic == "monkeypox"])
+ttestBF(formula = importance ~ condition, data = temp2)
+
+m1_imp <- lm(importance ~ condition, d3[topic == "monkeypox"])
+summaryh(m1_imp)
+m1_imp <- lm(importance ~ condition * engage_firstheadline, temp2)
+summaryh(m1_imp)
+
+m1_imp <- lm(newsworthiness ~ condition, d3[topic == "monkeypox"])
+summaryh(m1_imp)
+m1_imp <- lm(newsworthiness ~ condition * engage_firstheadline, temp2)
+summaryh(m1_imp)
+
+m1_imp <- lm(rating_combined ~ condition, d3[topic == "monkeypox"])
+summaryh(m1_imp)
+m1_imp <- lm(rating_combined ~ condition * engage_firstheadline, temp2)
+summaryh(m1_imp)
+
+
+
+
+d0_feed <- d0_feed[attention == 1 & ipblock == 0]
+glimpse(d0_feed)
+d0_feed_cc <- d0_feed[entity_set == "22052628_monkeypox"]
+
+# engae over time
+include <- d0_feed_cc[condition == 0.5, .N, user_id]
+coefs <- d0_feed_cc[user_id %in% include, .(b1_engage_trial = coef(lm(engage ~ item_order))[2]), .(user_id, condition)]
+coefs[, hist(b1_engage_trial, breaks = 50)]
+
+tempdat <- d0_feed_cc[user_id %in% include]
+tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
+tempdat[, engage := log(engage + 1)]
+mod <- lmer(engage ~ item_order + (1 | user_id), data = d0_feed_cc[user_id %in% include])
+
+
+# dwell over time
+library(brms)
+include <- d0_feed_cc[condition == 0.5 & engaged == 0, .N, user_id][, user_id]
+tempdat <- d0_feed_cc[user_id %in% include]
+tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
+tempdat[, dwell := log(dwell + 1)]
+mod <- brm(dwell ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include])
+
+
+p0 <- ggplot(d0_feed_cc, aes(item_order, engage)) +
+    geom_smooth(method = 'lm') +
+    stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +
+    stat_summary(fun.data = mean_cl_normal, geom = 'errorbar', width = 0, size = 0.8, position = position_dodge(1))
 
 p1 <- ggplot(d0_feed_cc, aes(item_order, dwell)) +
     geom_smooth(method = 'lm') +
