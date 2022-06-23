@@ -1,0 +1,96 @@
+---
+title: "heterogeneous treatment effects (hte) with grf"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+rm(list = ls())
+library(data.table); library(tidyverse); library(grf); library(modelsummary)
+theme_set(theme_minimal())
+```
+
+```{r}
+d00 <- fread("../data/clean/data.csv")
+dcov <- fread("../data/clean/data-wide.csv")
+```
+
+```{r prepare data for modeling}
+d00[, unique(field)]
+
+# outcome variable
+y <- "monkeypox_importance"  
+d0 <- d00[field == y, .(user_id, field, y = news_eval, condition)]
+d0[, y := as.numeric(y)]
+d0[, condition := as.numeric(condition)]
+d0
+
+# which covariates/features to use
+x <- select(dcov, user_id, age, aot, crt, politicalposition, politicalpref, ses_educationlevel:socialissuespref, -ses_income)
+
+# join
+d1 <- left_join(d0, x)
+setDT(d1)
+d1
+
+glimpse(d1)
+datasummary_skim(d1)  # check missing values
+nrow(d1)
+na.omit(d1) |> nrow()
+
+d1 <- na.omit(d1)
+```
+
+```{r}
+y <- d1$y
+df_X <- select(d1, age:socialissuespref)
+X <- as.matrix(df_X)
+w <- d1$condition
+w <- w + 0.5  # code 0/1 (control/treatment)
+w  
+```
+
+```{r}
+cf <- causal_forest(X, y, w, num.trees = 4000)
+cf
+average_treatment_effect(cf, target.sample = "all")
+average_treatment_effect(cf, target.sample = "treated")
+```
+
+```{r}
+plot(get_tree(cf, 1))
+```
+
+```{r}
+names(df_X)
+imp <- data.table(x = names(df_X), imp = variable_importance(cf)[, 1])[order(-imp)]
+imp
+```
+
+```{r}
+df_x_mean <- df_X[, lapply(.SD, mean)]
+df_x_mean
+
+n <- 50
+vv <- "age"
+pred_vals <- seq(0, 90, length.out = n)
+df_x_mean <- df_x_mean[rep(1, n)]
+df_x_mean[, get(vv)]
+df_x_mean[, (vv) := pred_vals]
+df_x_mean[, ..vv]
+Xtest <- as.matrix(df_x_mean)
+Xtest
+
+cf_predict <- predict(object = cf, newdata = Xtest, estimate.variance = TRUE)
+setDT(cf_predict)
+cf_predict$v <- df_x_mean[, ..vv]
+cf_predict[, se := sqrt(variance.estimates)]
+cf_predict
+
+ggplot(cf_predict, aes(v, predictions)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = predictions - 1.96 * se, ymax = predictions + 1.96 * se), width = 0) +
+    labs(x = vv, y = "average treatment effect")
+```
+

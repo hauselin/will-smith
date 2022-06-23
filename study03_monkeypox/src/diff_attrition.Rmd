@@ -67,7 +67,8 @@ d2
 
 ggplot(d2, aes(response, N, col = condition)) +
     geom_point() +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-    theme_minimal()
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+    
 ```
 
