@@ -21,7 +21,6 @@ d00[, unique(field)]
 
 # outcome variable to model
 yvar <- "monkeypox_importance"
-yvar <- "monkeypox_cards_perc"
 d0 <- d00[field == yvar, .(user_id, field, y = news_eval, condition)]
 d0[, y := as.numeric(y)]
 d0[, condition := as.numeric(condition)]
@@ -75,8 +74,8 @@ df_x_mean <- df_X[, lapply(.SD, mean)]
 df_x_mean
 
 n <- 50
-vv <- "socialmedia_following"  # change variable here
-pred_vals <- seq(0, 5000, length.out = n)  # specify min/max value of the variable above
+vv <- "age"  # change variable here
+pred_vals <- seq(0, 90, length.out = n)  # specify min/max value of the variable above
 df_x_mean <- df_x_mean[rep(1, n)]
 df_x_mean[, get(vv)]
 df_x_mean[, (vv) := pred_vals]
