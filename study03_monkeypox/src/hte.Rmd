@@ -20,7 +20,7 @@ dcov <- fread("../data/clean/data-wide.csv")
 d00[, unique(field)]
 
 # outcome variable to model
-yvar <- "monkeypox_importance"
+yvar <- "monkeypox_newsworthiness"
 d0 <- d00[field == yvar, .(user_id, field, y = news_eval, condition)]
 d0[, y := as.numeric(y)]
 d0[, condition := as.numeric(condition)]
@@ -55,6 +55,10 @@ w
 ```{r}
 cf <- causal_forest(X, y, w, num.trees = 4000)
 cf
+
+# are there heterogeneous effects?
+test_calibration(cf)
+
 average_treatment_effect(cf, target.sample = "all")  # overall effect of treatment on outcome
 average_treatment_effect(cf, target.sample = "treated")
 ```
