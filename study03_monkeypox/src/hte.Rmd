@@ -19,9 +19,10 @@ dcov <- fread("../data/clean/data-wide.csv")
 ```{r prepare data for modeling}
 d00[, unique(field)]
 
-# outcome variable
-y <- "monkeypox_importance"  
-d0 <- d00[field == y, .(user_id, field, y = news_eval, condition)]
+# outcome variable to model
+yvar <- "monkeypox_importance"
+yvar <- "monkeypox_cards_perc"
+d0 <- d00[field == yvar, .(user_id, field, y = news_eval, condition)]
 d0[, y := as.numeric(y)]
 d0[, condition := as.numeric(condition)]
 d0
@@ -39,7 +40,8 @@ datasummary_skim(d1)  # check missing values
 nrow(d1)
 na.omit(d1) |> nrow()
 
-d1 <- na.omit(d1)
+d1 <- na.omit(d1)  # ensure no missing values
+nrow(d1)
 ```
 
 ```{r}
@@ -54,18 +56,18 @@ w
 ```{r}
 cf <- causal_forest(X, y, w, num.trees = 4000)
 cf
-average_treatment_effect(cf, target.sample = "all")
+average_treatment_effect(cf, target.sample = "all")  # overall effect of treatment on outcome
 average_treatment_effect(cf, target.sample = "treated")
 ```
 
 ```{r}
-plot(get_tree(cf, 1))
+plot(get_tree(cf, 1))  # plot one example tree
 ```
 
-```{r}
+```{r variable importance}
 names(df_X)
 imp <- data.table(x = names(df_X), imp = variable_importance(cf)[, 1])[order(-imp)]
-imp
+imp  # most to least important variable
 ```
 
 ```{r}
@@ -73,8 +75,8 @@ df_x_mean <- df_X[, lapply(.SD, mean)]
 df_x_mean
 
 n <- 50
-vv <- "age"
-pred_vals <- seq(0, 90, length.out = n)
+vv <- "socialmedia_following"  # change variable here
+pred_vals <- seq(0, 5000, length.out = n)  # specify min/max value of the variable above
 df_x_mean <- df_x_mean[rep(1, n)]
 df_x_mean[, get(vv)]
 df_x_mean[, (vv) := pred_vals]
@@ -90,7 +92,7 @@ cf_predict
 
 ggplot(cf_predict, aes(v, predictions)) +
     geom_point() +
-    geom_errorbar(aes(ymin = predictions - 1.96 * se, ymax = predictions + 1.96 * se), width = 0) +
-    labs(x = vv, y = "average treatment effect")
+    geom_ribbon(aes(ymin = predictions - 1.96 * se, ymax = predictions + 1.96 * se), alpha = 0.1) +
+    labs(x = vv, y = paste0(yvar, "\naverage treatment effect\ntreatment minus control"))
 ```
 
