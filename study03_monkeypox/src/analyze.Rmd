@@ -653,7 +653,12 @@ ranef(mod)$user_id
 # data.table()
 # fwrite()
 
-
+# change outcome from dwell to engage!
+include <- d0_feed_cc[condition == 0.5, .N, user_id][, user_id]
+tempdat <- d0_feed_cc[user_id %in% include]
+tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
+mod <- brm(engage ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include], cores = 4)
+mod
 
 # correlate b1 with importance ratings
 
