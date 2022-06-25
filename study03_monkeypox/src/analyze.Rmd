@@ -18,7 +18,6 @@ theme_set(theme_minimal())
 
 ```{r}
 d0_feed <- fread("../data/clean/data_feed.csv")
-# same analysis in climate change, willsmith
 
 d0_feed <- d0_feed[attention == 1.0 & ipblock == 0]
 d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = .(user_id, entity_set, condition)][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), keyby = .(condition, entity_set)]
@@ -569,6 +568,8 @@ summaryh(lm(desired_frequency ~ condition * aotC, d_demo[user_id %in% user_subse
 
 
 ```{r}
+d3[, condition := factor(condition, labels = c(-0.5, 0.5))]
+d3$condition <- as.numeric(as.character(d3$condition))
 d0_feed <- fread("../data/clean/data_feed.csv")
 d0_feed <- mutate_if(d0_feed, is.integer, as.numeric) |> data.table()
 glimpse(d0_feed)
