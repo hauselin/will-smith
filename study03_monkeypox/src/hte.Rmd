@@ -28,7 +28,7 @@ dcov
 d00[, unique(field)]
 
 # outcome variable to model
-yvar <- "covid_exposure_frequency"
+yvar <- "monkeypox_importance"
 d0 <- d00[field == yvar, .(user_id, y = as.numeric(news_eval), condition = condition + 0.5)]  # code 0/1 (control/treatment)
 d0[, .N, condition]
 
@@ -49,19 +49,16 @@ cor_test(d1, "y", "engage_firstheadline", method = "kendall")
 
 ```{r}
 y <- d1$y
-df_X <- select(d1, -user_id, -y, -condition)
+X <- select(d1, -user_id, -y, -condition)
 names(df_X)
-X <- as.matrix(df_X)
+# X <- as.matrix(X)
 w <- d1$condition
 w  
 ```
 
 ```{r}
-cf <- causal_forest(X, y, w, num.trees = 4000, mtry = ncol(X))
+cf <- causal_forest(X, y, w, num.trees = 4000, mtry = ncol(X), min.node.size = 5)
 cf
-
-# are there heterogeneous effects?
-test_calibration(cf)
 
 average_treatment_effect(cf, target.sample = "all")  # overall effect of treatment on outcome
 average_treatment_effect(cf, target.sample = "treated")
@@ -77,7 +74,7 @@ imp  # most to least important variable
 ```
 
 ```{r}
-plot(get_tree(cf, 1))  # plot one example treea
+plot(get_tree(cf, 3))  # plot one example tree
 ```
 
 ```{r}
@@ -91,18 +88,46 @@ df_x_mean <- df_x_mean[rep(1, n)]
 df_x_mean[, get(vv)]
 df_x_mean[, (vv) := pred_vals]
 df_x_mean[, ..vv]
-Xtest <- as.matrix(df_x_mean)
-Xtest
 
-cf_predict <- predict(object = cf, newdata = Xtest, estimate.variance = TRUE)
+cf_predict <- predict(object = cf, newdata = df_x_mean, estimate.variance = TRUE)
 setDT(cf_predict)
-cf_predict$v <- df_x_mean[, ..vv]
+cf_predict$v <- df_x_mean[, get(vv)]
 cf_predict[, se := sqrt(variance.estimates)]
 cf_predict
 
 ggplot(cf_predict, aes(v, predictions)) +
-    geom_point() +
-    geom_ribbon(aes(ymin = predictions - 1.96 * se, ymax = predictions + 1.96 * se), alpha = 0.1) +
+    geom_ribbon(aes(ymin = predictions - 1.96 * se, ymax = predictions + 1.96 * se), alpha = 1.0) +
+    geom_point(col = "white") +
     labs(x = vv, y = paste0(yvar, "\naverage treatment effect\ntreatment minus control"))
+```
+
+
+```{r}
+# vary TWO dimensions at once
+df_x_mean <- df_X[, lapply(.SD, mean)]
+df_x_mean
+
+n <- 50
+v1 <- "socialmedia_followers"  # change variable here
+pred_vals <- seq(0, 500, length.out = n)  # specify min/max value of the variable above
+df_x_mean <- df_x_mean[rep(1, n)]
+df_x_mean[, (v1) := pred_vals]
+
+n <- 50
+v2 <- "socialmedia_following"  # change variable here
+pred_vals <- seq(0, 500, length.out = n)  # specify min/max value of the variable above
+df_x_mean[, (v2) := pred_vals]
+
+expand.grid(c(1, 2,3), 11:13)
+
+cf_predict <- predict(object = cf, newdata = df_x_mean, estimate.variance = TRUE)
+setDT(cf_predict)
+cf_predict$v1 <- df_x_mean[, get(v1)]
+cf_predict$v2 <- df_x_mean[, get(v2)]
+cf_predict[, se := sqrt(variance.estimates)]
+cf_predict
+
+# heatmap
+# ggplot()
 ```
 
