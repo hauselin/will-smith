@@ -28,7 +28,7 @@ dcov
 d00[, unique(field)]
 
 # outcome variable to model
-yvar <- "monkeypox_importance"
+yvar <- "climate_importance"
 d0 <- d00[field == yvar, .(user_id, y = as.numeric(news_eval), condition = condition + 0.5)]  # code 0/1 (control/treatment)
 d0[, .N, condition]
 
