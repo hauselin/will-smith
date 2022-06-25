@@ -107,18 +107,19 @@ ggplot(cf_predict, aes(v, predictions)) +
 df_x_mean <- X[, lapply(.SD, mean)]
 df_x_mean
 
-n <- 50
+n1 <- 50
 v1 <- "socialmedia_followers"  # change variable here
-pred_vals <- seq(0, 500, length.out = n)  # specify min/max value of the variable above
-df_x_mean <- df_x_mean[rep(1, n)]
+pred_vals <- seq(0, 600, length.out = n1)  # specify min/max value of the variable above
+df_x_mean <- df_x_mean[rep(1, n1)]
 df_x_mean[, (v1) := pred_vals]
 
-n <- 50
+n2 <- 70
+df_x_mean <- df_x_mean[rep(seq_len(nrow(df_x_mean)), each = n2), ]
 v2 <- "socialmedia_following"  # change variable here
-pred_vals <- seq(0, 500, length.out = n)  # specify min/max value of the variable above
+pred_vals <- seq(0, 800, length.out = n2)  # specify min/max value of the variable above
+pred_vals <- rep(pred_vals, n1)
 df_x_mean[, (v2) := pred_vals]
 
-expand.grid(c(1, 2,3), 11:13)
 
 cf_predict <- predict(object = cf, newdata = df_x_mean, estimate.variance = TRUE)
 setDT(cf_predict)
@@ -129,5 +130,9 @@ cf_predict
 
 # heatmap
 # ggplot()
+ggplot(cf_predict, aes(v1, v2, fill= predictions)) + 
+  geom_tile() +
+    labs(x = v1, y = v2)
 ```
+
 
