@@ -655,7 +655,7 @@ ranef(mod)$user_id
 
 
 
-
+# correlate b1 with importance ratings
 
 
 
