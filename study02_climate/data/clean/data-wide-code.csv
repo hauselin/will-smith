@@ -1,4 +1,56 @@
 field,response,value,n
+age,18,18,3
+age,19,19,8
+age,20,20,9
+age,21,21,13
+age,22,22,15
+age,23,23,13
+age,24,24,25
+age,25,25,18
+age,26,26,18
+age,27,27,16
+age,28,28,34
+age,29,29,23
+age,30,30,16
+age,31,31,20
+age,32,32,17
+age,33,33,22
+age,34,34,22
+age,35,35,24
+age,36,36,14
+age,37,37,20
+age,38,38,18
+age,39,39,18
+age,40,40,11
+age,41,41,12
+age,42,42,16
+age,43,43,12
+age,44,44,6
+age,45,45,5
+age,46,46,9
+age,47,47,5
+age,48,48,5
+age,49,49,8
+age,50,50,5
+age,51,51,9
+age,52,52,4
+age,53,53,4
+age,54,54,3
+age,55,55,8
+age,56,56,5
+age,57,57,3
+age,58,58,4
+age,59,59,3
+age,60,60,5
+age,61,61,2
+age,62,62,1
+age,63,63,3
+age,64,64,1
+age,65,65,1
+age,66,66,1
+age,68,68,3
+age,71,71,1
+age,73,73,1
 aot_change-beliefs,1_strongly-disagree,1,46
 aot_change-beliefs,2_disagree,2,85
 aot_change-beliefs,3_somewhat-disagree,3,113
@@ -35,11 +87,220 @@ aot_true-important,3_somewhat-disagree,3,112
 aot_true-important,4_somewhat-agree,4,53
 aot_true-important,5_agree,5,19
 aot_true-important,6_strongly-agree,6,6
+comments,"","",205
+comments,0,0,1
+comments,<3,<3,1
+comments,"A """"dislike"""" button would have been nice on the social media posts. ","A """"dislike"""" button would have been nice on the social media posts. ",1
+comments,Bo comments. Thank you ,Bo comments. Thank you ,1
+comments,Easy to understand and I had no technical issues. Thank you and good luck with your research!,Easy to understand and I had no technical issues. Thank you and good luck with your research!,1
+comments,Everything was clear and easy to follow. ,Everything was clear and easy to follow. ,1
+comments,Extremely interesting,Extremely interesting,1
+comments,Fuck Joe Biden and his commie shit climate agenda,Fuck Joe Biden and his commie shit climate agenda,1
+comments,GREAT JOB! KEEP UP THE GOOD WORK!,GREAT JOB! KEEP UP THE GOOD WORK!,1
+comments,Good study!,Good study!,1
+comments,Good survey!,Good survey!,1
+comments,Great study!,Great study!,1
+comments,Had technical issues with my computer. I read carefully and answered honestly. ,Had technical issues with my computer. I read carefully and answered honestly. ,1
+comments,"I am leaning republican, even being more liberal, but that is a result of extreme democratic policy swings and suspected malice towards US citizens.","I am leaning republican, even being more liberal, but that is a result of extreme democratic policy swings and suspected malice towards US citizens.",1
+comments,I do not.,I do not.,1
+comments,I don't tend to spread info that I haven't or can't fact check - so sharing on socials tends to be very limited to cute animal vids,I don't tend to spread info that I haven't or can't fact check - so sharing on socials tends to be very limited to cute animal vids,1
+comments,"I feel like the newsfeed was incredibly long, I do not scroll through newsfeeds that long. I'd recommend cutting it by half.","I feel like the newsfeed was incredibly long, I do not scroll through newsfeeds that long. I'd recommend cutting it by half.",1
+comments,I have no comments.,I have no comments.,1
+comments,I hope that my answers will be of some help to you!,I hope that my answers will be of some help to you!,1
+comments,I would have liked to be able to click on some of those news articles! ,I would have liked to be able to click on some of those news articles! ,1
+comments,Interesting study questions. ,Interesting study questions. ,1
+comments,Interesting. Thanks.,Interesting. Thanks.,1
+comments,It was a great survey.,It was a great survey.,1
+comments,Just random on how many people I follow on social media,Just random on how many people I follow on social media,1
+comments,Make your answers a little less generalized,Make your answers a little less generalized,1
+comments,"My internet is really slow right now so a lot of the images didn't load. I did try and do my best though, I waited a while.","My internet is really slow right now so a lot of the images didn't load. I did try and do my best though, I waited a while.",1
+comments,N/A,N/A,8
+comments,N/A.,N/A.,1
+comments,NA,NA,1
+comments,NO,NO,3
+comments,NONE,NONE,2
+comments,No,No,65
+comments,No Comments,No Comments,1
+comments,No comments,No comments,2
+comments,No comments ,No comments ,1
+comments,No comments at this time.,No comments at this time.,1
+comments,No comments.  Thank you!,No comments.  Thank you!,1
+comments,"No, thank you!","No, thank you!",1
+comments,"No, thank you.","No, thank you.",2
+comments,"No, thanks and good luck with your research!","No, thanks and good luck with your research!",1
+comments,"No, thanks. ","No, thanks. ",1
+comments,No.,No.,4
+comments,No.  Thank you.,No.  Thank you.,1
+comments,None,None,12
+comments,None ,None ,1
+comments,None at this time.,None at this time.,1
+comments,"None, I hope my answers were helpful!","None, I hope my answers were helpful!",1
+comments,"None, thanks!","None, thanks!",1
+comments,"None, thanks.","None, thanks.",1
+comments,None.,None.,1
+comments,Nope,Nope,2
+comments,Nope!,Nope!,3
+comments,"Nope, thanks!","Nope, thanks!",1
+comments,Not at this time.,Not at this time.,1
+comments,Nothing,Nothing,1
+comments,Nothing to add.,Nothing to add.,1
+comments,"On formal education, was not sure if this included primary and secondary school or not.","On formal education, was not sure if this included primary and secondary school or not.",1
+comments,Please consider revising the question on how you lean politically. It offends me to be associated with Republicans or Democrats so I don't enjoy having to pick a side.,Please consider revising the question on how you lean politically. It offends me to be associated with Republicans or Democrats so I don't enjoy having to pick a side.,1
+comments,Selecting the articles was way too long,Selecting the articles was way too long,1
+comments,Thank you for allowing me to take part in your study!,Thank you for allowing me to take part in your study!,1
+comments,Thank you for the opportunity to participate in this study ,Thank you for the opportunity to participate in this study ,1
+comments,Thank you!,Thank you!,1
+comments,Thanks,Thanks,2
+comments,Thanks for study and there was a LOT of post to scroll through!!,Thanks for study and there was a LOT of post to scroll through!!,1
+comments,"Thanks, lots to think on! Loved the challenge?'s","Thanks, lots to think on! Loved the challenge?'s",1
+comments,That news feed was incredibly depressing/anxiety inducing.,That news feed was incredibly depressing/anxiety inducing.,1
+comments,That was a lot of tweets! really happy to be a part of this study and I hope my responses help! Be safe and thank you again,That was a lot of tweets! really happy to be a part of this study and I hope my responses help! Be safe and thank you again,1
+comments,The news feed section is very long.,The news feed section is very long.,1
+comments,The news is nothing but lies,The news is nothing but lies,1
+comments,The reason why so many of the news articles were left blank isbecause i wouldn't have responded in any way to them. I hope that is understandable :) ,The reason why so many of the news articles were left blank isbecause i wouldn't have responded in any way to them. I hope that is understandable :) ,1
+comments,"The study is scary, bc it looked like a news channel of brainwashing","The study is scary, bc it looked like a news channel of brainwashing",1
+comments,The word play question on printers does not mention if 10 printers print 10 pages total or 10 printers print 10 pages each.,The word play question on printers does not mention if 10 printers print 10 pages total or 10 printers print 10 pages each.,1
+comments,The word problems are great lmao,The word problems are great lmao,1
+comments,"The word problems were a bit weird. I'm assuming they were an attention check, but as someone who's never been good at word problems. I hope getting them wrong doesn't cause any problems.","The word problems were a bit weird. I'm assuming they were an attention check, but as someone who's never been good at word problems. I hope getting them wrong doesn't cause any problems.",1
+comments,These survey have obvious biases. They are very right leaning.,These survey have obvious biases. They are very right leaning.,1
+comments,"This was a good reminder of why I avoid """"news"""" and social media in general...","This was a good reminder of why I avoid """"news"""" and social media in general...",1
+comments,"This was a good study, I liked reading all of the headlines. ","This was a good study, I liked reading all of the headlines. ",1
+comments,This was an interest survey.  I enjoyed.  I would like to see less news about the pirates of the Caribbean person case. ,This was an interest survey.  I enjoyed.  I would like to see less news about the pirates of the Caribbean person case. ,1
+comments,Very interesting survey,Very interesting survey,1
+comments,Very interesting. Thank you.,Very interesting. Thank you.,1
+comments,"Yes, you shouldnt ask what side someone leans to because I am neither dem or repub and that can used for data that is biased and false to say the least ","Yes, you shouldnt ask what side someone leans to because I am neither dem or repub and that can used for data that is biased and false to say the least ",1
+comments,"You force me to choose between democrats and republicans, liberals and conservative.  You need to allow """"none of the above.""""  ","You force me to choose between democrats and republicans, liberals and conservative.  You need to allow """"none of the above.""""  ",1
+comments,cool study ,cool study ,1
+comments,covid sucks yo,covid sucks yo,1
+comments,fascinating survey,fascinating survey,1
+comments,fun,fun,1
+comments,good survey,good survey,1
+comments,it was fun thanks,it was fun thanks,1
+comments,n/a,n/a,8
+comments,na,na,3
+comments,nice study ,nice study ,1
+comments,no,no,113
+comments,no comments,no comments,2
+comments,no none thanks.,no none thanks.,1
+comments,no thank you,no thank you,1
+comments,no thanks,no thanks,1
+comments,no.,no.,1
+comments,none,none,9
+comments,"none, thanks","none, thanks",1
+comments,nope,nope,6
+comments,nope!,nope!,1
+comments,overall a great survey!,overall a great survey!,1
+comments,"regarding politics, I'm neutral, please provide that option or""""neither"""" please. thank you. ","regarding politics, I'm neutral, please provide that option or""""neither"""" please. thank you. ",1
+comments,thanks great pay also,thanks great pay also,1
+comments,this was interesting.  will do again.,this was interesting.  will do again.,1
+comments,ur cute,ur cute,1
+comments,very interesting topics,very interesting topics,1
+comments,"why no option to """"read now"""" on the social feed?","why no option to """"read now"""" on the social feed?",1
+covidvaccine,1_definitely-not-get-it,1,93
+covidvaccine,2_probably-not-get-it,2,42
+covidvaccine,3_unsure,3,29
+covidvaccine,4_probably-get-it,4,11
+covidvaccine,5_definitely-get-it,5,4
+covidvaccine,6_vaccinated,6,363
+crt_10-50-printer, 10, 10,1
+crt_10-50-printer,1,1,12
+crt_10-50-printer,10,10,193
+crt_10-50-printer,10 ,10 ,6
+crt_10-50-printer,100,100,4
+crt_10-50-printer,2,2,1
+crt_10-50-printer,25,25,1
+crt_10-50-printer,250,250,1
+crt_10-50-printer,5,5,10
+crt_10-50-printer,50,50,299
+crt_10-50-printer,50 ,50 ,10
+crt_10-50-printer,500,500,3
+crt_10-50-printer,505,505,1
+crt_emily-april-may,Don't know,Don't know,1
+crt_emily-april-may,EMILY,EMILY,3
+crt_emily-april-may,Emily,Emily,320
+crt_emily-april-may,Emily ,Emily ,8
+crt_emily-april-may,I DON'T KNOW,I DON'T KNOW,1
+crt_emily-april-may,I would guess June but it could really be anything.,I would guess June but it could really be anything.,1
+crt_emily-april-may,JUNE,JUNE,3
+crt_emily-april-may,June,June,143
+crt_emily-april-may,June ,June ,3
+crt_emily-april-may,June?,June?,1
+crt_emily-april-may,May,May,1
+crt_emily-april-may,Unknown,Unknown,1
+crt_emily-april-may,emily,emily,35
+crt_emily-april-may,emily ,emily ,2
+crt_emily-april-may,june,june,18
+crt_emily-april-may,possibly june ,possibly june ,1
+crt_mark-adam-28,20,20,1
+crt_mark-adam-28,24,24,6
+crt_mark-adam-28,28,28,1
+crt_mark-adam-28,4,4,139
+crt_mark-adam-28,439,439,1
+crt_mark-adam-28,7,7,1
+crt_mark-adam-28,8,8,391
+crt_mark-adam-28,8 ,8 ,1
+crt_mark-adam-28,9,9,1
+crt_mold-bread-40,1,1,1
+crt_mold-bread-40,10,10,10
+crt_mold-bread-40,2,2,1
+crt_mold-bread-40,20,20,270
+crt_mold-bread-40,20 ,20 ,2
+crt_mold-bread-40,208,208,1
+crt_mold-bread-40,24,24,2
+crt_mold-bread-40,25,25,1
+crt_mold-bread-40,28,28,1
+crt_mold-bread-40,30,30,4
+crt_mold-bread-40,38,38,1
+crt_mold-bread-40,39,39,237
+crt_mold-bread-40,39 ,39 ,1
+crt_mold-bread-40,4,4,3
+crt_mold-bread-40,40,40,3
+crt_mold-bread-40,5,5,1
+crt_mold-bread-40,6,6,1
+crt_mold-bread-40,80,80,2
+crt_pass-second-place, 2, 2,1
+crt_pass-second-place,1,1,248
+crt_pass-second-place,2,2,286
+crt_pass-second-place,2 ,2 ,3
+crt_pass-second-place,3,3,4
+crt_sheep-15-8-died,0,0,1
+crt_sheep-15-8-died,14,14,1
+crt_sheep-15-8-died,15,15,5
+crt_sheep-15-8-died,6,6,2
+crt_sheep-15-8-died,7,7,153
+crt_sheep-15-8-died,8,8,379
+crt_sheep-15-8-died,81,81,1
 economicissuespref,1_strongly-liberal,1,90
 economicissuespref,2_somewhat-liberal,2,121
 economicissuespref,3_moderate,3,161
 economicissuespref,4_somewhat-conservative,4,106
 economicissuespref,5_strongly-conservative,5,64
+ethnicity,"","",9
+ethnicity,american-indian-alaska-native,american-indian-alaska-native,1
+ethnicity,asian,asian,42
+ethnicity,asian;other,asian;other,1
+ethnicity,black-african-american,black-african-american,50
+ethnicity,black-african-american;american-indian-alaska-native,black-african-american;american-indian-alaska-native,1
+ethnicity,black-african-american;other,black-african-american;other,2
+ethnicity,black-african-american;prefer-not-to-say,black-african-american;prefer-not-to-say,1
+ethnicity,native-hawaiian-pacific-islander,native-hawaiian-pacific-islander,3
+ethnicity,other,other,17
+ethnicity,prefer-not-to-say,prefer-not-to-say,8
+ethnicity,white-caucasian,white-caucasian,388
+ethnicity,white-caucasian;american-indian-alaska-native,white-caucasian;american-indian-alaska-native,4
+ethnicity,white-caucasian;asian,white-caucasian;asian,3
+ethnicity,white-caucasian;asian;native-hawaiian-pacific-islander;other,white-caucasian;asian;native-hawaiian-pacific-islander;other,1
+ethnicity,white-caucasian;black-african-american,white-caucasian;black-african-american,5
+ethnicity,white-caucasian;black-african-american;american-indian-alaska-native,white-caucasian;black-african-american;american-indian-alaska-native,1
+ethnicity,white-caucasian;black-african-american;asian;american-indian-alaska-native;native-hawaiian-pacific-islander;other,white-caucasian;black-african-american;asian;american-indian-alaska-native;native-hawaiian-pacific-islander;other,1
+ethnicity,white-caucasian;native-hawaiian-pacific-islander,white-caucasian;native-hawaiian-pacific-islander,1
+ethnicity,white-caucasian;other,white-caucasian;other,3
+gender,female,female,331
+gender,male,male,195
+gender,other,other,1
+gender,trans-female,trans-female,1
+gender,trans-male,trans-male,7
+gender,trans-non-binary,trans-non-binary,7
 politicalposition,1_democrat,1,210
 politicalposition,2_republican,2,103
 politicalposition,3_independent,3,182
@@ -50,8 +311,504 @@ politicalpref,3_lean-democratic,3,164
 politicalpref,4_lean-republican,4,148
 politicalpref,5_republican,5,45
 politicalpref,6_strongly-republican,6,21
+random,no,no,513
+random,yes,yes,29
+ses_education-level,0_unsure-unknown-other,0,1
+ses_education-level,1_less-than-high-school,1,3
+ses_education-level,2_high-school-diploma,2,89
+ses_education-level,3_vocational-training,3,28
+ses_education-level,4_attended-college,4,149
+ses_education-level,5_bachelors,5,184
+ses_education-level,6_graduate-degree,6,88
+ses_education-years,0,0,10
+ses_education-years,1,1,6
+ses_education-years,10,10,6
+ses_education-years,11,11,3
+ses_education-years,12,12,55
+ses_education-years,12.5,12.5,1
+ses_education-years,13,13,23
+ses_education-years,13.5,13.5,1
+ses_education-years,14,14,51
+ses_education-years,15,15,28
+ses_education-years,16,16,89
+ses_education-years,17,17,35
+ses_education-years,18,18,41
+ses_education-years,19,19,18
+ses_education-years,2,2,30
+ses_education-years,2 ,2 ,1
+ses_education-years,2.5,2.5,1
+ses_education-years,20,20,28
+ses_education-years,20.5,20.5,1
+ses_education-years,21,21,1
+ses_education-years,22,22,5
+ses_education-years,23,23,2
+ses_education-years,24,24,2
+ses_education-years,25,25,5
+ses_education-years,3,3,14
+ses_education-years,32,32,1
+ses_education-years,4,4,48
+ses_education-years,4.25,4.25,1
+ses_education-years,4.5,4.5,1
+ses_education-years,5,5,9
+ses_education-years,5.5,5.5,1
+ses_education-years,6,6,16
+ses_education-years,7,7,3
+ses_education-years,8,8,3
+ses_education-years,9,9,2
+ses_income,"","",2
+ses_income,0_less-than-10k,0,41
+ses_income,10_100k-149k,1,65
+ses_income,11_150k-or-more,1,26
+ses_income,1_0k-9k,1,36
+ses_income,2_20k-29k,2,41
+ses_income,3_0k-39k,3,62
+ses_income,4_40k-49k,4,63
+ses_income,5_50k-59k,5,46
+ses_income,6_60k-69k,6,50
+ses_income,7_70k-79k,7,33
+ses_income,8_80k-89k,8,42
+ses_income,9_90k-99k,9,35
+ses_ladder,1,1,16
+ses_ladder,2,2,32
+ses_ladder,3,3,85
+ses_ladder,4,4,96
+ses_ladder,5,5,132
+ses_ladder,6,6,108
+ses_ladder,7,7,62
+ses_ladder,8,8,8
+ses_ladder,9,9,3
+social-media_accuracy-importance,1_not-at-all,1,110
+social-media_accuracy-importance,2_slightly,2,29
+social-media_accuracy-importance,3_moderately,3,58
+social-media_accuracy-importance,4_very,4,112
+social-media_accuracy-importance,5_extremely,5,233
+social-media_followers,0,0,53
+social-media_followers,000,000,1
+social-media_followers,1,1,5
+social-media_followers,10,10,12
+social-media_followers,100,100,24
+social-media_followers,1000,1000,15
+social-media_followers,10000,10000,1
+social-media_followers,103,103,1
+social-media_followers,105,105,1
+social-media_followers,106,106,1
+social-media_followers,1082,1082,1
+social-media_followers,11,11,1
+social-media_followers,1100,1100,4
+social-media_followers,1108,1108,1
+social-media_followers,1120,1120,1
+social-media_followers,113,113,1
+social-media_followers,115,115,1
+social-media_followers,116,116,1
+social-media_followers,119,119,1
+social-media_followers,1200,1200,8
+social-media_followers,1208,1208,1
+social-media_followers,123,123,1
+social-media_followers,125,125,2
+social-media_followers,1250,1250,1
+social-media_followers,128,128,1
+social-media_followers,12870,12870,1
+social-media_followers,13,13,1
+social-media_followers,130,130,2
+social-media_followers,1300,1300,2
+social-media_followers,134,134,1
+social-media_followers,135,135,1
+social-media_followers,1359,1359,1
+social-media_followers,138,138,1
+social-media_followers,140,140,1
+social-media_followers,1400,1400,1
+social-media_followers,14092,14092,1
+social-media_followers,143,143,1
+social-media_followers,144,144,1
+social-media_followers,15,15,5
+social-media_followers,150,150,14
+social-media_followers,1500,1500,6
+social-media_followers,154,154,1
+social-media_followers,155,155,2
+social-media_followers,157,157,1
+social-media_followers,16,16,1
+social-media_followers,160,160,1
+social-media_followers,1600,1600,3
+social-media_followers,163,163,1
+social-media_followers,165,165,1
+social-media_followers,17,17,1
+social-media_followers,170,170,1
+social-media_followers,1700,1700,1
+social-media_followers,172,172,1
+social-media_followers,175,175,2
+social-media_followers,1770,1770,1
+social-media_followers,1781,1781,1
+social-media_followers,18,18,1
+social-media_followers,180,180,1
+social-media_followers,184,184,1
+social-media_followers,1867,1867,1
+social-media_followers,193,193,1
+social-media_followers,2,2,3
+social-media_followers,20,20,9
+social-media_followers,200,200,29
+social-media_followers,2000,2000,6
+social-media_followers,20000,20000,1
+social-media_followers,210,210,1
+social-media_followers,214,214,1
+social-media_followers,215,215,1
+social-media_followers,216,216,2
+social-media_followers,217,217,1
+social-media_followers,220,220,2
+social-media_followers,225,225,1
+social-media_followers,2250,2250,1
+social-media_followers,23,23,1
+social-media_followers,2420,2420,1
+social-media_followers,2473,2473,1
+social-media_followers,25,25,7
+social-media_followers,250,250,2
+social-media_followers,2500,2500,3
+social-media_followers,2566,2566,1
+social-media_followers,2586,2586,1
+social-media_followers,2600,2600,2
+social-media_followers,261,261,1
+social-media_followers,2700,2700,1
+social-media_followers,28,28,1
+social-media_followers,291,291,1
+social-media_followers,295,295,1
+social-media_followers,296,296,1
+social-media_followers,299,299,1
+social-media_followers,3,3,3
+social-media_followers,30,30,5
+social-media_followers,300,300,24
+social-media_followers,3000,3000,1
+social-media_followers,303,303,1
+social-media_followers,314,314,1
+social-media_followers,320,320,1
+social-media_followers,322,322,2
+social-media_followers,324,324,1
+social-media_followers,33,33,1
+social-media_followers,3300,3300,1
+social-media_followers,332,332,1
+social-media_followers,335,335,1
+social-media_followers,34 ,34 ,1
+social-media_followers,340,340,1
+social-media_followers,35,35,1
+social-media_followers,350,350,6
+social-media_followers,3500,3500,1
+social-media_followers,356,356,1
+social-media_followers,357,357,1
+social-media_followers,3678,3678,1
+social-media_followers,3700,3700,1
+social-media_followers,380,380,1
+social-media_followers,387,387,1
+social-media_followers,391,391,1
+social-media_followers,4,4,3
+social-media_followers,40,40,2
+social-media_followers,400,400,11
+social-media_followers,4000,4000,3
+social-media_followers,40000,40000,1
+social-media_followers,403,403,1
+social-media_followers,408,408,2
+social-media_followers,413,413,1
+social-media_followers,415,415,1
+social-media_followers,426,426,2
+social-media_followers,435,435,1
+social-media_followers,4400,4400,1
+social-media_followers,45,45,3
+social-media_followers,450,450,2
+social-media_followers,455,455,1
+social-media_followers,457,457,1
+social-media_followers,465,465,1
+social-media_followers,468,468,1
+social-media_followers,470,470,1
+social-media_followers,477,477,1
+social-media_followers,48,48,1
+social-media_followers,481,481,1
+social-media_followers,489,489,1
+social-media_followers,490,490,1
+social-media_followers,5,5,7
+social-media_followers,50,50,16
+social-media_followers,500,500,20
+social-media_followers,500 ,500 ,1
+social-media_followers,5000,5000,3
+social-media_followers,501,501,1
+social-media_followers,515,515,1
+social-media_followers,52,52,2
+social-media_followers,53,53,1
+social-media_followers,530,530,1
+social-media_followers,537,537,1
+social-media_followers,550,550,4
+social-media_followers,552,552,1
+social-media_followers,573,573,1
+social-media_followers,584,584,1
+social-media_followers,586,586,1
+social-media_followers,598,598,1
+social-media_followers,60,60,2
+social-media_followers,600,600,5
+social-media_followers,6000,6000,1
+social-media_followers,605,605,1
+social-media_followers,619,619,1
+social-media_followers,62,62,1
+social-media_followers,625,625,1
+social-media_followers,64,64,1
+social-media_followers,641,641,1
+social-media_followers,646,646,1
+social-media_followers,65,65,2
+social-media_followers,650,650,2
+social-media_followers,658,658,1
+social-media_followers,663,663,1
+social-media_followers,677,677,1
+social-media_followers,68,68,1
+social-media_followers,7,7,2
+social-media_followers,70,70,1
+social-media_followers,700,700,6
+social-media_followers,7000,7000,1
+social-media_followers,706,706,1
+social-media_followers,732,732,1
+social-media_followers,745,745,1
+social-media_followers,75,75,2
+social-media_followers,750,750,2
+social-media_followers,755,755,1
+social-media_followers,773,773,1
+social-media_followers,78,78,1
+social-media_followers,786,786,1
+social-media_followers,79,79,1
+social-media_followers,8,8,2
+social-media_followers,80,80,4
+social-media_followers,800,800,13
+social-media_followers,8000,8000,2
+social-media_followers,82,82,2
+social-media_followers,822,822,1
+social-media_followers,824,824,1
+social-media_followers,850,850,1
+social-media_followers,86,86,1
+social-media_followers,87,87,1
+social-media_followers,879,879,1
+social-media_followers,88,88,2
+social-media_followers,883,883,1
+social-media_followers,900,900,3
+social-media_followers,93,93,1
+social-media_followers,930,930,1
+social-media_followers,937,937,1
+social-media_followers,938,938,1
+social-media_followers,978,978,1
+social-media_followers,987,987,1
+social-media_followers,989,989,1
+social-media_following,0,0,43
+social-media_following,000,000,1
+social-media_following,1,1,19
+social-media_following,10,10,6
+social-media_following,100,100,26
+social-media_following,1000,1000,20
+social-media_following,10000,10000,1
+social-media_following,1017,1017,1
+social-media_following,1045,1045,1
+social-media_following,1048,1048,1
+social-media_following,106,106,1
+social-media_following,107,107,1
+social-media_following,1073,1073,1
+social-media_following,1100,1100,1
+social-media_following,112,112,2
+social-media_following,1129,1129,1
+social-media_following,115,115,1
+social-media_following,12,12,2
+social-media_following,120,120,1
+social-media_following,1200,1200,3
+social-media_following,1217,1217,1
+social-media_following,122,122,1
+social-media_following,125,125,1
+social-media_following,1279,1279,1
+social-media_following,1305,1305,1
+social-media_following,140,140,2
+social-media_following,1400,1400,3
+social-media_following,144,144,1
+social-media_following,1473,1473,1
+social-media_following,15,15,7
+social-media_following,150,150,12
+social-media_following,1500,1500,4
+social-media_following,154,154,1
+social-media_following,155,155,1
+social-media_following,157,157,1
+social-media_following,160,160,1
+social-media_following,1600,1600,1
+social-media_following,164,164,1
+social-media_following,1675,1675,1
+social-media_following,1700,1700,2
+social-media_following,18,18,1
+social-media_following,180,180,2
+social-media_following,181,181,1
+social-media_following,182,182,1
+social-media_following,1877,1877,1
+social-media_following,189,189,1
+social-media_following,1900,1900,1
+social-media_following,196,196,1
+social-media_following,1989,1989,1
+social-media_following,2,2,18
+social-media_following,20,20,12
+social-media_following,200,200,23
+social-media_following,2000,2000,4
+social-media_following,2042,2042,1
+social-media_following,211,211,1
+social-media_following,215,215,1
+social-media_following,220,220,1
+social-media_following,2200,2200,1
+social-media_following,230,230,2
+social-media_following,2311,2311,1
+social-media_following,2317,2317,1
+social-media_following,2350,2350,1
+social-media_following,25,25,6
+social-media_following,250,250,7
+social-media_following,2500,2500,2
+social-media_following,256,256,1
+social-media_following,257,257,1
+social-media_following,260,260,1
+social-media_following,2600,2600,1
+social-media_following,288,288,1
+social-media_following,29,29,1
+social-media_following,3,3,17
+social-media_following,30,30,9
+social-media_following,300,300,22
+social-media_following,3000,3000,1
+social-media_following,309,309,2
+social-media_following,33,33,1
+social-media_following,333,333,1
+social-media_following,34,34,2
+social-media_following,348,348,1
+social-media_following,35,35,2
+social-media_following,350,350,4
+social-media_following,3500,3500,1
+social-media_following,3549,3549,1
+social-media_following,356,356,1
+social-media_following,36,36,1
+social-media_following,37,37,1
+social-media_following,377,377,1
+social-media_following,379,379,2
+social-media_following,380,380,1
+social-media_following,4,4,6
+social-media_following,40,40,6
+social-media_following,400,400,13
+social-media_following,4000,4000,1
+social-media_following,402,402,1
+social-media_following,41,41,2
+social-media_following,412,412,1
+social-media_following,42,42,1
+social-media_following,430,430,1
+social-media_following,445,445,1
+social-media_following,45,45,2
+social-media_following,450,450,4
+social-media_following,464,464,1
+social-media_following,475,475,2
+social-media_following,477,477,1
+social-media_following,490,490,1
+social-media_following,5,5,14
+social-media_following,50,50,14
+social-media_following,500,500,27
+social-media_following,5000,5000,3
+social-media_following,506,506,3
+social-media_following,52,52,1
+social-media_following,526,526,1
+social-media_following,537,537,1
+social-media_following,54,54,1
+social-media_following,548,548,1
+social-media_following,55,55,1
+social-media_following,550,550,2
+social-media_following,567,567,1
+social-media_following,57,57,1
+social-media_following,575,575,1
+social-media_following,584,584,1
+social-media_following,5844,5844,1
+social-media_following,59,59,1
+social-media_following,590,590,1
+social-media_following,598,598,1
+social-media_following,599,599,1
+social-media_following,6,6,3
+social-media_following,60,60,3
+social-media_following,600,600,7
+social-media_following,6000,6000,2
+social-media_following,619,619,1
+social-media_following,632,632,1
+social-media_following,65,65,2
+social-media_following,650,650,1
+social-media_following,656,656,1
+social-media_following,681,681,1
+social-media_following,7,7,2
+social-media_following,70,70,2
+social-media_following,700,700,5
+social-media_following,707,707,1
+social-media_following,72,72,1
+social-media_following,74,74,1
+social-media_following,75,75,4
+social-media_following,750,750,1
+social-media_following,7500,7500,1
+social-media_following,76,76,1
+social-media_following,766,766,1
+social-media_following,781,781,1
+social-media_following,783,783,1
+social-media_following,8,8,2
+social-media_following,80,80,6
+social-media_following,800,800,6
+social-media_following,822,822,1
+social-media_following,827,827,1
+social-media_following,830,830,1
+social-media_following,832,832,1
+social-media_following,835,835,1
+social-media_following,850,850,2
+social-media_following,900,900,2
+social-media_following,93,93,1
+social-media_following,932,932,1
+social-media_following,94,94,1
+social-media_following,942,942,1
+social-media_following,97,97,1
+social-media_following,978,978,1
+social-media_following,988,988,1
+social-media_share-politics,0_dont-use-social-media,0,33
+social-media_share-politics,1_no,1,241
+social-media_share-politics,2_yes,2,268
+social-media_use-freq,1_never,1,29
+social-media_use-freq,2_once-a-month,2,19
+social-media_use-freq,3_once-a-week,3,34
+social-media_use-freq,4_2to6times-per-week,4,94
+social-media_use-freq,5_daily,5,366
 socialissuespref,1_strongly-liberal,1,136
 socialissuespref,2_somewhat-liberal,2,146
 socialissuespref,3_moderate,3,146
 socialissuespref,4_somewhat-conservative,4,77
 socialissuespref,5_strongly-conservative,5,37
+study-duration,10,10,35
+study-duration,11,11,31
+study-duration,12,12,43
+study-duration,13,13,30
+study-duration,14,14,34
+study-duration,15,15,49
+study-duration,16,16,35
+study-duration,17,17,22
+study-duration,18,18,22
+study-duration,19,19,27
+study-duration,20,20,28
+study-duration,21,21,24
+study-duration,22,22,16
+study-duration,23,23,8
+study-duration,24,24,10
+study-duration,25,25,11
+study-duration,26,26,6
+study-duration,28,28,1
+study-duration,29,29,6
+study-duration,3,3,1
+study-duration,30,30,8
+study-duration,31,31,1
+study-duration,32,32,3
+study-duration,33,33,3
+study-duration,34,34,1
+study-duration,35,35,2
+study-duration,36,36,3
+study-duration,38,38,2
+study-duration,4,4,1
+study-duration,4 mins,4 mins,1
+study-duration,40,40,1
+study-duration,45,45,1
+study-duration,47,47,1
+study-duration,48,48,1
+study-duration,49,49,1
+study-duration,5,5,6
+study-duration,6,6,15
+study-duration,68,68,1
+study-duration,7,7,9
+study-duration,79,79,1
+study-duration,8,8,21
+study-duration,85,85,1
+study-duration,9,9,19
