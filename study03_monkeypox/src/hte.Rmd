@@ -50,7 +50,7 @@ cor_test(d1, "y", "engage_firstheadline", method = "kendall")
 ```{r}
 y <- d1$y
 X <- select(d1, -user_id, -y, -condition)
-names(df_X)
+# names(df_X)
 # X <- as.matrix(X)
 w <- d1$condition
 w  
