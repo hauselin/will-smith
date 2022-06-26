@@ -640,6 +640,13 @@ bf = bfInteraction / bfOnlyCondition
 bf
 bf = bfMainEffects / bfOnlyCondition
 bf
+
+# split dwell analysis
+tempSplitDwell_df <- fread("../data/clean/dwell_split.csv")
+d3_tempSplitDwell <- left_join(d3, tempSplitDwell_df)
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "lastMINUSfirst")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "lastMINUSfirst")
+
 ```
 
 
@@ -720,11 +727,11 @@ b1_dwell_df <- fread("../data/clean/b1_dwell.csv")
 b1_engage_df <- fread("../data/clean/b1_engage.csv")
 d3_b1_dwell <- left_join(d3, b1_dwell_df)
 d3_b1_engage <- left_join(d3, b1_engage_df)
-correlation::cor_test(d3_b1_dwell, "importance", "Estimate.item_orderACTUAL")
-correlation::cor_test(d3_b1_engage, "importance", "Estimate.item_orderACTUAL") # significant corr
+correlation::cor_test(d3_b1_dwell[topic=="monkeypox"], "importance", "Estimate.item_orderACTUAL")
+correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "importance", "Estimate.item_orderACTUAL") # significant corr
 
-correlation::cor_test(d3_b1_dwell, "newsworthiness", "Estimate.item_orderACTUAL")
-correlation::cor_test(d3_b1_engage, "newsworthiness", "Estimate.item_orderACTUAL") # significant corr
+correlation::cor_test(d3_b1_dwell[topic=="monkeypox"], "newsworthiness", "Estimate.item_orderACTUAL")
+correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "newsworthiness", "Estimate.item_orderACTUAL") # significant corr
 
 
 
