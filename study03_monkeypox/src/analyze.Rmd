@@ -585,6 +585,16 @@ d0_feed[item_order == 0, .N, keyby = .(condition, engage, entity_id)]
 temp <- d0_feed[item_order == 0, .(user_id, engage_firstheadline = engage, condition)]
 # fwrite(temp, "../data/clean/first_headline_engagement.csv")
 
+tempSplitDwell <- d0_feed[condition == 0.5 & (item_order >= 0 & item_order <= 14), .(user_id, mean_dwell_first15 = dwell)]
+tempSplitDwell_df <- aggregate(mean_dwell_first15 ~ user_id, data = tempSplitDwell, FUN = mean)
+
+tempSplitDwell <- d0_feed[condition == 0.5 & (item_order >= 15 & item_order <= 99), .(user_id, mean_dwell_last85 = dwell)]
+tempSplitDwell <- aggregate(mean_dwell_last85 ~ user_id, data = tempSplitDwell, FUN = mean)
+
+tempSplitDwell_df<- left_join(tempSplitDwell_df, tempSplitDwell)
+tempSplitDwell_df$lastMINUSfirst <- tempSplitDwell_df$mean_dwell_last85 - tempSplitDwell_df$mean_dwell_first15
+# fwrite(tempSplitDwell_df, "../data/clean/dwell_split.csv")
+
 temp2 <- left_join(d3[topic == "monkeypox"], temp)
 setDT(temp2)
 glimpse(temp2)
