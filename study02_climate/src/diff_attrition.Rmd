@@ -1,0 +1,73 @@
+---
+title: "prep_data"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html
+# https://richarddmorey.github.io/BayesFactor/
+rm(list = ls())
+library(data.table); library(tidyverse); library(rIP)
+source("utils_feed.R")
+```
+
+
+```{r}
+d0 <- fread("../data/clean/data.csv")
+d0 <- d0[attention == 1.0 & ipblock == 0]
+d0[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
+users_complete <- d0[, unique(user_id)]
+complete_prop <- d0[, .(complete = n_distinct(user_id)), condition][order(condition)]
+complete_prop
+```
+
+
+```{r}
+d0_all <- fread("../data/raw/eRGOfe_engagement.csv")
+d0_all <- d0_all[!grepl("test", user_id)]
+users_all <- distinct(d0_all[, .(user_id, condition)])
+users_all <- users_all$user_id
+all_prop <- d0_all[, .(all = n_distinct(user_id)), condition][order(condition)]
+all_prop
+all_prop[, condition := ifelse(condition == 1, -0.5, 0.5)]
+all_prop
+
+setdiff(users_all, users_complete)  # didn't complete people
+setdiff(users_complete, users_all)  # nothing, good
+
+complete_prop
+all_prop
+prop.test(complete_prop$complete, all_prop$all)
+```
+
+
+
+```{r}
+d0_user_form <- fread("../data/raw/e0j5KD_user_form.csv")
+d0_user_form <- d0_user_form[!grepl("test", user_id)]
+
+d0_user_form[field %in% c("checkpoint"), unique(response)]
+
+checkpoints <- d0_user_form[grepl("feed-entity-idx-", response)]
+cond <- d0_user_form[field == "condition", .(user_id, response)]
+setnames(cond, "response", "condition")
+
+d1 <- left_join(checkpoints, cond)
+setDT(d1)
+d1 <- d1[!is.na(condition)]
+d1[, unique(condition)]
+d1 <- d1[response != "feed-entity-idx-5"]
+d1 <- d1[!grepl("leave_feed", response)]
+
+d2 <- d1[, .N, keyby = .(response, condition)]
+d2
+
+ggplot(d2, aes(response, N, col = condition)) +
+    geom_point() +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+    
+```
+

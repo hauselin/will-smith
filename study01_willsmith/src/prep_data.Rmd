@@ -175,3 +175,76 @@ fwrite(dt_main2, "../data/clean/data.csv")
 fwrite(dt_feed2, "../data/clean/data_feed.csv")
 ```
 
+
+```{r demographics}
+# save politics/ideology/AOT in wide form
+cols2 <- c("aot_change-beliefs", "aot_evidence-conflicts", "aot_loyal-beliefs", "aot_maintain-beliefs", "aot_regardless-topic", "aot_true-important", "economicissuespref", "politicalposition", "politicalpref", "socialissuespref", "social-media_accuracy-importance", "social-media_followers", "social-media_following", "social-media_share-politics", "social-media_use-freq", "crt_10-50-printer", "crt_emily-april-may", "crt_mark-adam-28", "crt_mold-bread-40", "crt_pass-second-place", "crt_sheep-15-8-died", "ses_education-level", "ses_education-years", "ses_income", "ses_ladder","age", "covidvaccine", "ethnicity", "gender", "comments", "random", "study-duration")
+d5 <- d0[field %in% cols2, .(user_id, field, response)]
+
+d5 <- d5[, .SD[1], .(user_id, field)] 
+
+# take first response/row per user per question
+d5[, .N, user_id][, table(N)]  # any weird people? 
+
+d5[, unique(field)]
+d5[, n_distinct(user_id)]
+d5[, unique(response)] |> sort()
+d5[field != "comments", unique(response)]
+# if contains _, then it's coded as value_label
+d5[, value := ifelse(grepl("_", response, fixed = TRUE), substr(response, 1, 1), response)]
+d5
+d5[is.na(value)]
+
+d6 <- dcast(d5, user_id ~ field, value.var = c("value"))
+
+# numeric columns
+num_cols2 <- c("aot_change-beliefs", "aot_evidence-conflicts", "aot_loyal-beliefs", "aot_maintain-beliefs", "aot_regardless-topic", "aot_true-important", "economicissuespref", "politicalposition", "politicalpref", "socialissuespref", "social-media_accuracy-importance", "social-media_followers", "social-media_following", "social-media_share-politics", "social-media_use-freq", "crt_10-50-printer", "crt_mark-adam-28", "crt_mold-bread-40", "crt_pass-second-place", "crt_sheep-15-8-died", "ses_education-level", "ses_education-years", "ses_income", "ses_ladder","age", "covidvaccine", "study-duration")
+
+d6[, num_cols2] <- lapply(num_cols2, function(x) as.numeric(d6[[x]]))
+setnames(d6, gsub("-", "", names(d6)))
+glimpse(d6)
+
+# mean aot (reverse-coded)
+aot_r <- 7 - select(d6, starts_with("aot_")) |> rowMeans()
+d6[, aot := aot_r]
+d6
+```
+
+
+```{r crt accuracy}
+select(d6, starts_with("crt_"))
+
+d6[, table(crt_1050printer)]
+d6[, crt_1050printer := ifelse(crt_1050printer == 10, 1, 0)]
+
+d6[, table(crt_emilyaprilmay)]
+d6[, crt_emilyaprilmay := str_trim(tolower(crt_emilyaprilmay), side = "both")]
+d6[grepl("emi", crt_emilyaprilmay), table(crt_emilyaprilmay)]
+d6[!grepl("emi", crt_emilyaprilmay), table(crt_emilyaprilmay)]
+d6[, crt_emily := ifelse(grepl("emi", crt_emilyaprilmay), 1, 0)]
+d6[, .(crt_emilyaprilmay, crt_emily)][order(crt_emily)] |> distinct()
+
+d6[, table(crt_markadam28)]
+d6[, crt_markadam28 := ifelse(crt_markadam28 == 4, 1, 0)]
+
+d6[, table(crt_moldbread40)]
+d6[, crt_moldbread40 := ifelse(crt_moldbread40 == 39, 1, 0)]
+
+d6[, table(crt_passsecondplace)]
+d6[, crt_passsecondplace := ifelse(crt_passsecondplace == 2, 1, 0)]
+
+d6[, table(crt_sheep158died)]
+d6[, crt_sheep158died := ifelse(crt_sheep158died == 8, 1, 0)]
+
+crt <- select(d6, starts_with("crt_"), -crt_emilyaprilmay) |> rowMeans()
+d6[, crt := crt]
+```
+
+
+
+```{r}
+fwrite(d6, "../data/clean/data-wide.csv")
+d5_code <- d5[, .(n = .N), .(field, response, value)][order(field, response)]
+fwrite(d5_code, "../data/clean/data-wide-code.csv")
+```
+

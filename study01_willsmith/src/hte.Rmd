@@ -28,7 +28,7 @@ dcov
 d00[, unique(field)]
 
 # outcome variable to model
-yvar <- "monkeypox_importance"
+yvar <- "willsmith_importance"
 d0 <- d00[field == yvar, .(user_id, y = as.numeric(news_eval), condition = condition + 0.5)]  # code 0/1 (control/treatment)
 d0[, .N, condition]
 
@@ -134,4 +134,5 @@ ggplot(cf_predict, aes(v1, v2, fill= predictions)) +
   geom_tile() +
     labs(x = v1, y = v2)
 ```
+
 

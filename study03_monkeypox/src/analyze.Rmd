@@ -18,7 +18,6 @@ theme_set(theme_minimal())
 
 ```{r}
 d0_feed <- fread("../data/clean/data_feed.csv")
-# same analysis in climate change, willsmith
 
 d0_feed <- d0_feed[attention == 1.0 & ipblock == 0]
 d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = .(user_id, entity_set, condition)][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), keyby = .(condition, entity_set)]
@@ -569,6 +568,8 @@ summaryh(lm(desired_frequency ~ condition * aotC, d_demo[user_id %in% user_subse
 
 
 ```{r}
+d3[, condition := factor(condition, labels = c(-0.5, 0.5))]
+d3$condition <- as.numeric(as.character(d3$condition))
 d0_feed <- fread("../data/clean/data_feed.csv")
 d0_feed <- mutate_if(d0_feed, is.integer, as.numeric) |> data.table()
 glimpse(d0_feed)
@@ -583,6 +584,16 @@ d0_feed[item_order == 0, .N, keyby = .(condition, engage, entity_id)]
 # export/save as covariate
 temp <- d0_feed[item_order == 0, .(user_id, engage_firstheadline = engage, condition)]
 # fwrite(temp, "../data/clean/first_headline_engagement.csv")
+
+tempSplitDwell <- d0_feed[condition == 0.5 & (item_order >= 0 & item_order <= 14), .(user_id, mean_dwell_first15 = dwell)]
+tempSplitDwell_df <- aggregate(mean_dwell_first15 ~ user_id, data = tempSplitDwell, FUN = mean)
+
+tempSplitDwell <- d0_feed[condition == 0.5 & (item_order >= 15 & item_order <= 99), .(user_id, mean_dwell_last85 = dwell)]
+tempSplitDwell <- aggregate(mean_dwell_last85 ~ user_id, data = tempSplitDwell, FUN = mean)
+
+tempSplitDwell_df<- left_join(tempSplitDwell_df, tempSplitDwell)
+tempSplitDwell_df$lastMINUSfirst <- tempSplitDwell_df$mean_dwell_last85 - tempSplitDwell_df$mean_dwell_first15
+# fwrite(tempSplitDwell_df, "../data/clean/dwell_split.csv")
 
 temp2 <- left_join(d3[topic == "monkeypox"], temp)
 setDT(temp2)
@@ -600,15 +611,42 @@ summaryh(m1_imp)
 m1_imp <- lm(importance ~ condition + engage_firstheadline, temp2)
 summaryh(m1_imp)
 
-# TODO: compute bayes factor (via model comparison)
-# https://richarddmorey.github.io/BayesFactor/#regression
+# compute bayes factor (via model comparison)
+bfOnlyCondition = lmBF(importance ~ condition, data = temp2)
+bfMainEffects = lmBF(importance ~ condition + engage_firstheadline, data = temp2)
+bfInteraction = lmBF(importance ~ condition + engage_firstheadline + condition:engage_firstheadline, data = temp2)
+
+bf = bfInteraction / bfMainEffects
+bf
+bf = bfInteraction / bfOnlyCondition
+bf
+bf = bfMainEffects / bfOnlyCondition
+bf
+
 
 m1_imp <- lm(newsworthiness ~ condition, d3[topic == "monkeypox"])
 summaryh(m1_imp)
 m1_imp <- lm(newsworthiness ~ condition + engage_firstheadline, temp2)
 summaryh(m1_imp)
 
-# TODO: compute bayes factor 
+# compute bayes factor (via model comparison)
+bfOnlyCondition = lmBF(newsworthiness ~ condition, data = temp2)
+bfMainEffects = lmBF(newsworthiness ~ condition + engage_firstheadline, data = temp2)
+bfInteraction = lmBF(newsworthiness ~ condition + engage_firstheadline + condition:engage_firstheadline, data = temp2)
+
+bf = bfInteraction / bfMainEffects
+bf
+bf = bfInteraction / bfOnlyCondition
+bf
+bf = bfMainEffects / bfOnlyCondition
+bf
+
+# split dwell analysis
+tempSplitDwell_df <- fread("../data/clean/dwell_split.csv")
+d3_tempSplitDwell <- left_join(d3, tempSplitDwell_df)
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "lastMINUSfirst")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "lastMINUSfirst")
+
 ```
 
 
@@ -620,7 +658,7 @@ summaryh(m1_imp)
 
 
 ```{r}
-# TODO
+
 d0_feed <- d0_feed[attention == 1 & ipblock == 0]
 glimpse(d0_feed)
 d0_feed_cc <- d0_feed[entity_set == "22052628_monkeypox"]
@@ -635,7 +673,6 @@ d0_feed_cc <- d0_feed[entity_set == "22052628_monkeypox"]
 # tempdat[, engage := log(engage + 1)]
 # mod <- lmer(engage ~ item_order + (1 | user_id), data = d0_feed_cc[user_id %in% include])
 
-# TODO
 # dwell over time
 library(brms)
 include <- d0_feed_cc[condition == 0.5 & engaged == 0, .N, user_id][, user_id]
@@ -647,11 +684,19 @@ mod <- brm(dwell ~ item_order + (item_order | user_id), data = tempdat[user_id %
 mod
 
 # b1 for each person
-fixef(mod)
-ranef(mod)$user_id
 
-# data.table()
-# fwrite()
+b1_dwell <- ranef(mod)$user_id
+b1_dwell_df<-data.frame(b1_dwell)
+b1_dwell_df <- cbind(user_id = rownames(b1_dwell_df), b1_dwell_df)
+rownames(b1_dwell_df) <- 1:nrow(b1_dwell_df)
+dwell_fe<-fixef(mod)
+dwell_fe_df <- data.frame(dwell_fe)
+b1_dwell_df$FEinterceptEstimate <- dwell_fe_df[c("Intercept"),"Estimate"]
+b1_dwell_df$FEitemOrderEstimate <- dwell_fe_df[c("item_order"),"Estimate"]
+b1_dwell_df$Estimate.InterceptACTUAL <- b1_dwell_df$Estimate.Intercept+b1_dwell_df$FEinterceptEstimate
+b1_dwell_df$Estimate.item_orderACTUAL <- b1_dwell_df$Estimate.item_order+b1_dwell_df$FEitemOrderEstimate
+
+# fwrite(b1_dwell_df, "../data/clean/b1_dwell.csv")
 
 # change outcome from dwell to engage!
 include <- d0_feed_cc[condition == 0.5, .N, user_id][, user_id]
@@ -660,10 +705,33 @@ tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_ord
 mod <- brm(engage ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include], cores = 4)
 mod
 
+
+b1_engage <- ranef(mod)$user_id
+b1_engage_df<-data.frame(b1_engage)
+b1_engage_df <- cbind(user_id = rownames(b1_engage_df), b1_engage_df)
+rownames(b1_engage_df) <- 1:nrow(b1_engage_df)
+engage_fe<-fixef(mod)
+engage_fe_df <- data.frame(engage_fe)
+b1_engage_df$FEinterceptEstimate <- engage_fe_df[c("Intercept"),"Estimate"]
+b1_engage_df$FEitemOrderEstimate <- engage_fe_df[c("item_order"),"Estimate"]
+b1_engage_df$Estimate.InterceptACTUAL <- b1_engage_df$Estimate.Intercept+b1_engage_df$FEinterceptEstimate
+b1_engage_df$Estimate.item_orderACTUAL <- b1_engage_df$Estimate.item_order+b1_engage_df$FEitemOrderEstimate
+
+# fwrite(b1_engage_df, "../data/clean/b1_engage.csv")
+
+
+
 # correlate b1 with importance ratings
 
+b1_dwell_df <- fread("../data/clean/b1_dwell.csv")
+b1_engage_df <- fread("../data/clean/b1_engage.csv")
+d3_b1_dwell <- left_join(d3, b1_dwell_df)
+d3_b1_engage <- left_join(d3, b1_engage_df)
+correlation::cor_test(d3_b1_dwell[topic=="monkeypox"], "importance", "Estimate.item_orderACTUAL")
+correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "importance", "Estimate.item_orderACTUAL") # significant corr
 
-
+correlation::cor_test(d3_b1_dwell[topic=="monkeypox"], "newsworthiness", "Estimate.item_orderACTUAL")
+correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "newsworthiness", "Estimate.item_orderACTUAL") # significant corr
 
 
 
