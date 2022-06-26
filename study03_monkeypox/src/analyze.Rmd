@@ -621,7 +621,7 @@ summaryh(m1_imp)
 
 
 ```{r}
-# TODO
+
 d0_feed <- d0_feed[attention == 1 & ipblock == 0]
 glimpse(d0_feed)
 d0_feed_cc <- d0_feed[entity_set == "22052628_monkeypox"]
@@ -636,7 +636,6 @@ d0_feed_cc <- d0_feed[entity_set == "22052628_monkeypox"]
 # tempdat[, engage := log(engage + 1)]
 # mod <- lmer(engage ~ item_order + (1 | user_id), data = d0_feed_cc[user_id %in% include])
 
-# TODO
 # dwell over time
 library(brms)
 include <- d0_feed_cc[condition == 0.5 & engaged == 0, .N, user_id][, user_id]
@@ -648,11 +647,19 @@ mod <- brm(dwell ~ item_order + (item_order | user_id), data = tempdat[user_id %
 mod
 
 # b1 for each person
-fixef(mod)
-ranef(mod)$user_id
 
-# data.table()
-# fwrite()
+b1_dwell <- ranef(mod)$user_id
+b1_dwell_df<-data.frame(b1_dwell)
+b1_dwell_df <- cbind(user_id = rownames(b1_dwell_df), b1_dwell_df)
+rownames(b1_dwell_df) <- 1:nrow(b1_dwell_df)
+dwell_fe<-fixef(mod)
+dwell_fe_df <- data.frame(dwell_fe)
+b1_dwell_df$FEinterceptEstimate <- dwell_fe_df[c("Intercept"),"Estimate"]
+b1_dwell_df$FEitemOrderEstimate <- dwell_fe_df[c("item_order"),"Estimate"]
+b1_dwell_df$Estimate.InterceptACTUAL <- b1_dwell_df$Estimate.Intercept+b1_dwell_df$FEinterceptEstimate
+b1_dwell_df$Estimate.item_orderACTUAL <- b1_dwell_df$Estimate.item_order+b1_dwell_df$FEitemOrderEstimate
+
+# fwrite(b1_dwell_df, "../data/clean/b1_dwell.csv")
 
 # change outcome from dwell to engage!
 include <- d0_feed_cc[condition == 0.5, .N, user_id][, user_id]
@@ -660,6 +667,22 @@ tempdat <- d0_feed_cc[user_id %in% include]
 tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
 mod <- brm(engage ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include], cores = 4)
 mod
+
+
+b1_engage <- ranef(mod)$user_id
+b1_engage_df<-data.frame(b1_engage)
+b1_engage_df <- cbind(user_id = rownames(b1_engage_df), b1_engage_df)
+rownames(b1_engage_df) <- 1:nrow(b1_engage_df)
+engage_fe<-fixef(mod)
+engage_fe_df <- data.frame(engage_fe)
+b1_engage_df$FEinterceptEstimate <- engage_fe_df[c("Intercept"),"Estimate"]
+b1_engage_df$FEitemOrderEstimate <- engage_fe_df[c("item_order"),"Estimate"]
+b1_engage_df$Estimate.InterceptACTUAL <- b1_engage_df$Estimate.Intercept+b1_engage_df$FEinterceptEstimate
+b1_engage_df$Estimate.item_orderACTUAL <- b1_engage_df$Estimate.item_order+b1_engage_df$FEitemOrderEstimate
+
+# fwrite(b1_engage_df, "../data/clean/b1_engage.csv")
+
+
 
 # correlate b1 with importance ratings
 
