@@ -520,7 +520,9 @@ d0_feed[item_order == 0, .N, keyby = .(condition, engage, entity_id)]
 temp <- d0_feed[item_order == 0, .(user_id, engage_firstheadline = engage, condition)]
 # fwrite(temp, "../data/clean/first_headline_engagement.csv")
 
+
 temp2 <- left_join(d3[topic == "climate"], temp)
+temp2 <- temp2[!is.na(temp2$engage_firstheadline), ]
 setDT(temp2)
 glimpse(temp2)
 temp3 <- copy(temp2)
@@ -536,15 +538,34 @@ summaryh(m1_imp)
 m1_imp <- lm(importance ~ condition + engage_firstheadline, temp2)
 summaryh(m1_imp)
 
-# TODO: compute bayes factor (via model comparison)
-# https://richarddmorey.github.io/BayesFactor/#regression
+# compute bayes factor (via model comparison)
+bfOnlyCondition = lmBF(importance ~ condition, data = temp2)
+bfMainEffects = lmBF(importance ~ condition + engage_firstheadline, data = temp2)
+bfInteraction = lmBF(importance ~ condition + engage_firstheadline + condition:engage_firstheadline, data = temp2)
+
+bf = bfInteraction / bfMainEffects
+bf
+bf = bfInteraction / bfOnlyCondition
+bf
+bf = bfMainEffects / bfOnlyCondition
+bf
 
 m1_imp <- lm(newsworthiness ~ condition, d3[topic == "climate"])
 summaryh(m1_imp)
 m1_imp <- lm(newsworthiness ~ condition + engage_firstheadline, temp2)
 summaryh(m1_imp)
 
-# TODO: compute bayes factor 
+# compute bayes factor (via model comparison)
+bfOnlyCondition = lmBF(newsworthiness ~ condition, data = temp2)
+bfMainEffects = lmBF(newsworthiness ~ condition + engage_firstheadline, data = temp2)
+bfInteraction = lmBF(newsworthiness ~ condition + engage_firstheadline + condition:engage_firstheadline, data = temp2)
+
+bf = bfInteraction / bfMainEffects
+bf
+bf = bfInteraction / bfOnlyCondition
+bf
+bf = bfMainEffects / bfOnlyCondition
+bf
 ```
 
 
