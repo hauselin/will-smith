@@ -673,12 +673,22 @@ bf
 # split dwell analysis
 tempSplitDwell_df <- fread("../data/clean/dwell_split.csv")
 d3_tempSplitDwell <- left_join(d3, tempSplitDwell_df)
-correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "lastMINUSfirst")
-correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "lastMINUSfirst")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "dwell_diff")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "dwell_diff")
 
 
-correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "lastMINUSfirst", method = "kendall")
-correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "lastMINUSfirst", method = "kendall")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "dwell_diff", method = "kendall")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "dwell_diff", method = "kendall")
+
+
+tempSplitDwell_df <- fread("../data/clean/dwell_split_notengaged.csv")
+d3_tempSplitDwell <- left_join(d3, tempSplitDwell_df)
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "dwell_diff")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "dwell_diff")
+
+
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "importance", "dwell_diff", method = "kendall")
+correlation::cor_test(d3_tempSplitDwell[topic=="monkeypox"], "newsworthiness", "dwell_diff", method = "kendall")
 
 ```
 

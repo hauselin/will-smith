@@ -520,15 +520,32 @@ d0_feed[item_order == 0, .N, keyby = .(condition, engage, entity_id)]
 temp <- d0_feed[item_order == 0, .(user_id, engage_firstheadline = engage, condition)]
 # fwrite(temp, "../data/clean/first_headline_engagement.csv")
 
-tempSplitDwell <- d0_feed[condition == 0.5 & (item_order >= 0 & item_order <= 14), .(user_id, mean_dwell_first15 = dwell)]
-tempSplitDwell_df <- aggregate(mean_dwell_first15 ~ user_id, data = tempSplitDwell, FUN = mean)
 
-tempSplitDwell <- d0_feed[condition == 0.5 & (item_order >= 15 & item_order <= 99), .(user_id, mean_dwell_last85 = dwell)]
-tempSplitDwell <- aggregate(mean_dwell_last85 ~ user_id, data = tempSplitDwell, FUN = mean)
+# all relevant headlines (engaged or not)
+df_split_dwell <- d0_feed[entity_set == "22051858_climate", .(dwell = mean(dwell, na.rm = T), item_order = mean(item_order)), keyby = .(user_id, condition, chunk = ifelse(item_order < 15, "first15", "remaining"), entity_set)]
+df_split_dwell
 
-tempSplitDwell_df<- left_join(tempSplitDwell_df, tempSplitDwell)
-tempSplitDwell_df$lastMINUSfirst <- tempSplitDwell_df$mean_dwell_last85 - tempSplitDwell_df$mean_dwell_first15
-# fwrite(tempSplitDwell_df, "../data/clean/dwell_split.csv")
+df_split_dwell_wide <- dcast(df_split_dwell, user_id + condition ~ chunk, value.var = c("dwell"))
+df_split_dwell_wide[, dwell_diff := remaining - first15]
+df_split_dwell_wide[, hist(dwell_diff, breaks = 50)]
+# fwrite(df_split_dwell_wide, "../data/clean/dwell_split.csv")
+
+
+
+
+# all relevant headlines (only not-engaged)
+df_split_dwell <- d0_feed[entity_set == "22051858_climate" & engaged == 0, .(dwell = mean(dwell, na.rm = T), item_order = mean(item_order)), keyby = .(user_id, condition, chunk = ifelse(item_order < 15, "first15", "remaining"), entity_set)]
+df_split_dwell
+
+df_split_dwell_wide <- dcast(df_split_dwell, user_id + condition ~ chunk, value.var = c("dwell"))
+df_split_dwell_wide[, dwell_diff := remaining - first15]
+df_split_dwell_wide[, hist(dwell_diff, breaks = 50)]
+# fwrite(df_split_dwell_wide, "../data/clean/dwell_split_notengaged.csv")
+
+
+
+
+
 
 temp2 <- left_join(d3[topic == "climate"], temp)
 temp2 <- temp2[!is.na(temp2$engage_firstheadline), ]
@@ -579,12 +596,22 @@ bf
 # split dwell analysis
 tempSplitDwell_df <- fread("../data/clean/dwell_split.csv")
 d3_tempSplitDwell <- left_join(d3, tempSplitDwell_df)
-correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "importance", "lastMINUSfirst")
-correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "lastMINUSfirst")
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "importance", "dwell_diff")
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "dwell_diff")
 
 
-correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "importance", "lastMINUSfirst", method = "kendall")
-correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "lastMINUSfirst", method = "kendall")
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "importance", "dwell_diff", method = "kendall")
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "dwell_diff", method = "kendall")
+
+
+tempSplitDwell_df <- fread("../data/clean/dwell_split_notengaged.csv")
+d3_tempSplitDwell <- left_join(d3, tempSplitDwell_df)
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "importance", "dwell_diff")
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "dwell_diff")
+
+
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "importance", "dwell_diff", method = "kendall")
+correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "dwell_diff", method = "kendall")
 ```
 
 
