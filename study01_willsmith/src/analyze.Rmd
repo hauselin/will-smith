@@ -407,6 +407,10 @@ tempSplitDwell_df <- fread("../data/clean/dwell_split.csv")
 d3_tempSplitDwell <- left_join(d3, tempSplitDwell_df)
 correlation::cor_test(d3_tempSplitDwell[topic=="willsmith"], "importance", "lastMINUSfirst")
 correlation::cor_test(d3_tempSplitDwell[topic=="willsmith"], "newsworthiness", "lastMINUSfirst")
+
+
+correlation::cor_test(d3_tempSplitDwell[topic=="willsmith"], "importance", "lastMINUSfirst", method = "kendall")
+correlation::cor_test(d3_tempSplitDwell[topic=="willsmith"], "newsworthiness", "lastMINUSfirst", method = "kendall")
 ```
 
 
@@ -502,6 +506,13 @@ correlation::cor_test(d3_b1_engage[topic=="willsmith"], "importance", "Estimate.
 correlation::cor_test(d3_b1_dwell[topic=="willsmith"], "newsworthiness", "Estimate.item_orderACTUAL")
 correlation::cor_test(d3_b1_engage[topic=="willsmith"], "newsworthiness", "Estimate.item_orderACTUAL")
 
+
+
+correlation::cor_test(d3_b1_dwell[topic=="willsmith"], "importance", "Estimate.item_orderACTUAL", method = "kendall")
+correlation::cor_test(d3_b1_engage[topic=="willsmith"], "importance", "Estimate.item_orderACTUAL", method = "kendall") # significant
+
+correlation::cor_test(d3_b1_dwell[topic=="willsmith"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
+correlation::cor_test(d3_b1_engage[topic=="willsmith"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
 
 
 
