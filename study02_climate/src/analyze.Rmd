@@ -688,6 +688,7 @@ correlation::cor_test(d3_b1_engage[topic=="climate"], "importance", "Estimate.it
 correlation::cor_test(d3_b1_dwell[topic=="climate"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
 correlation::cor_test(d3_b1_engage[topic=="climate"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
 
+ggplot(d3_b1_engage[topic=="climate"], aes(Estimate.item_orderACTUAL, importance)) + geom_point()
 
 
 p1 <- ggplot(d0_feed_cc, aes(item_order, dwell)) +
