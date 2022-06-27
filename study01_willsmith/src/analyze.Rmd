@@ -514,6 +514,9 @@ correlation::cor_test(d3_b1_engage[topic=="willsmith"], "importance", "Estimate.
 correlation::cor_test(d3_b1_dwell[topic=="willsmith"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
 correlation::cor_test(d3_b1_engage[topic=="willsmith"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
 
+ggplot(d3_b1_engage[topic=="willsmith"], aes(Estimate.item_orderACTUAL, importance)) + geom_point()
+
+
 
 
 

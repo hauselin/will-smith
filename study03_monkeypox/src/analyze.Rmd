@@ -745,7 +745,8 @@ correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "importance", "Estimate.
 correlation::cor_test(d3_b1_dwell[topic=="monkeypox"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
 correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall") # significant corr
 
-
+ggplot(d3_b1_engage[topic=="monkeypox"], aes(Estimate.item_orderACTUAL, importance)) + geom_point()
+ggplot(d3_b1_engage[topic=="monkeypox"], aes(Estimate.item_orderACTUAL, newsworthiness)) + geom_point()
 
 
 p0 <- ggplot(d0_feed_cc, aes(item_order, engage)) +
