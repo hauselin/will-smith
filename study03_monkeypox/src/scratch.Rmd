@@ -1,0 +1,82 @@
+```{r}
+rm(list = ls())
+library(tidyverse); library(data.table); library(patchwork); library(hausekeep)
+theme_set(theme_minimal())
+```
+
+```{r}
+d0_feed <- fread("../data/clean/data_feed.csv")
+
+d0_feed[, share := ifelse(shares_1 > 0, 1, 0)]
+d0_feed[, like := ifelse(likes_1 > 0, 1, 0)]
+d0_feed[, read := ifelse(read_later_1 > 0, 1, 0)]
+
+d0_feed[, .(share = mean(share), like = mean(like), read = mean(read)), .(user_id)][,.(share = mean(share), like = mean(like), read = mean(read))]
+
+d0_feed[, n_distinct(user_id)]
+```
+
+
+```{r}
+users <- d0_feed[, unique(user_id)]
+users
+
+d0_feed[, engage := shares_1 + likes_1 + read_later_1 + shares_0 + likes_0 + read_later_0]
+
+glimpse(d0_feed)
+i <- 3
+p1 <- ggplot(d0_feed[user_id == users[i]], aes(item_order, dwell)) +
+    geom_smooth (alpha = 0.1, size = 0) +
+    stat_smooth (geom = "line", alpha = 0.3, size = 1) +
+    geom_point(data = d0_feed[user_id == users[i] & engage == 0], size = 1, col = 'black', alpha = 0.5) +
+    geom_point(data = d0_feed[user_id == users[i] & shares_1 > 0 & shares_0 == 0], col = 'red', size = 2) +
+    geom_point(data = d0_feed[user_id == users[i] & shares_0 > 0], col = 'red', size = 3, shape = 1, stroke = 1) +
+    scale_y_continuous(limits = c(0, 20000)) +
+    labs(x = "Entity order", y = "Dwell (ms)", title = "User 1", subtitle = "Shares (Red) / Un-shares (Hollow) ") +
+    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+p1
+
+i <- 14
+p2 <- ggplot(d0_feed[user_id == users[i]], aes(item_order, dwell)) +
+    geom_smooth (alpha = 0.1, size = 0) +
+    stat_smooth (geom = "line", alpha = 0.3, size = 1) +
+    geom_point(data = d0_feed[user_id == users[i] & engage == 0], size = 1, col = 'black', alpha = 0.5) +
+    geom_point(data = d0_feed[user_id == users[i] & likes_1 > 0 & likes_0 == 0], col = 'purple', size = 2) +
+    geom_point(data = d0_feed[user_id == users[i] & likes_0 > 0], col = 'purple', size = 3, shape = 1, stroke = 1) +
+    scale_y_continuous(limits = c(0, 20000)) +
+    labs(x = "Entity order", y = "Dwell (ms)", title = "User 2", subtitle = "Likes (Purple) / Un-likes (Hollow) ") +
+    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+p2
+
+i <- 493
+p3 <- ggplot(d0_feed[user_id == users[i]], aes(item_order, dwell)) +
+    geom_smooth (alpha = 0.1, size = 0) +
+    stat_smooth (geom = "line", alpha = 0.3, size = 1) +
+    geom_point(data = d0_feed[user_id == users[i] & engage == 0], size = 1, col = 'black', alpha = 0.5) +
+    geom_point(data = d0_feed[user_id == users[i] & read_later_1 > 0 & read_later_0 == 0], col = 'orange', size = 2) +
+    geom_point(data = d0_feed[user_id == users[i] & read_later_0 > 0], col = 'orange', size = 3, shape = 1, stroke = 1) +
+    scale_y_continuous(limits = c(0, 20000)) +
+    labs(x = "Entity order", y = "Dwell (ms)", title = "User 3", subtitle = "Bookmark (Orange) / Un-bookmark (Hollow) ") +
+    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+p3
+
+
+dat <- seWithin(d0_feed[user_id %in% users[1:100]], measurevar = "dwell", withinvars = "item_order", idvar = "user_id")
+glimpse(dat)
+dat[, dwell := as.numeric(dwell)]
+p4 <- ggplot(dat[item_order > 3], aes(item_order, dwell)) +
+    geom_ribbon(aes(ymin = dwell - ci, ymax = dwell + ci), alpha = 0.5) +
+    geom_line(size = 1, col = 'black') +
+    geom_point(size = 1, col = 'white') +
+    scale_x_continuous(limits = c(0, 100)) +
+    scale_y_continuous(limits = c(2000, 10500)) +
+    labs(x = "Entity order", y = "Dwell (ms)", title = "Mean of 100 users", subtitle = "95% CIs") +
+    theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))
+p4
+
+(p1 + p2) / (p3 + p4) + 
+    plot_annotation(title = "Dwell over time",
+                    theme = theme(plot.title = element_text(hjust = 0.5), plot.subtitle = element_text(hjust = 0.5))) 
+ggsave("~/Desktop/_temp.png", dpi = 300, bg = 'white', width = 13, height = 8)
+```
+

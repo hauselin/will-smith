@@ -36,3 +36,48 @@ hist(d1$resp, main = "economicissuespref")
 
 ```
 
+```{r}
+mod
+head(coef(mod)$user_id)
+
+head(coef(mod)$user_id[, , 1])
+head(coef(mod)$user_id[, , 2])
+
+fe <- fixef(mod, summary = FALSE)
+re <- fixef(mod, summary = FALSE)
+fe
+head(re)
+fixef(mod)
+
+ranef(mod)$user_id[,,1][, "Estimate"]
+
+head(ranef(mod)$user_id[,,1])
+head(ranef(mod)$user_id[,,2])
+
+
+head(coef(mod)$user_id[,,1])
+head(ranef(mod)$user_id[,,1])[, 'Estimate'] + fixef(mod)[1, 'Estimate']
+
+head(coef(mod)$user_id[,,2])
+head(ranef(mod)$user_id[,,2])[, "Estimate"] + fixef(mod)[2, 'Estimate']
+
+
+posterior_summary(fe[, 1] + re[, 2])
+fe[, 1] + re[, 2]
+
+re$user_id
+```
+
+```{r}
+data("sleepstudy", package ="lme4")
+df <- sleepstudy
+df$Days2 <- factor(ifelse(df$Days < 5, 0, 1))
+fit <- brm(Reaction ~ Days2 + (Days2 | Subject), df)
+fe <- fixef(fit, summary = FALSE)
+re <- ranef(fit, summary = FALSE)
+head(re)
+(res1 <- posterior_summary(fe[, 2] + re$Subject[, , 2]))
+(res2 <- coef(fit)$Subject[, , 2])
+all.equal(res1, res2)
+```
+

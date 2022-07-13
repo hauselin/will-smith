@@ -1,0 +1,101 @@
+```{r}
+rm(list = ls())
+library(tidyverse); library(data.table); library(hausekeep)
+theme_set(theme_minimal())
+```
+
+
+```{r}
+s1_engage <- fread("../../study01_willsmith/data/clean/coef_engage-itemorder.csv")
+s1_engage$study <- 1
+s2_engage <- fread("../../study02_climate/data/clean/coef_engage-itemorder.csv")
+s2_engage$study <- 2
+s3_engage <- fread("../../study03_monkeypox/data/clean/coef_engage-itemorder.csv")
+s3_engage$study <- 3
+```
+
+```{r engage}
+s0 <- bind_rows(s1_engage, s2_engage, s3_engage) 
+setDT(s0)
+
+# b1
+s0[, study := factor(study)]
+summaryh(lm(b1 ~ study, s0))
+
+s0[, study := relevel(study, ref = 2)]
+summaryh(lm(b1 ~ study, s0))
+
+s0[, study23 := ifelse(study == 1, "1", "23")]
+s0[, study23 := factor(study23)]
+s0[, unique(study23)]
+summaryh(lm(b1 ~ study23, s0))
+
+# b0
+s0[, study := relevel(study, ref = "1")]
+summaryh(lm(b0 ~ study, s0))
+
+s0[, study := relevel(study, ref = 2)]
+summaryh(lm(b0 ~ study, s0))
+
+s0[, study23 := ifelse(study == 1, "1", "23")]
+s0[, study23 := factor(study23)]
+s0[, unique(study23)]
+summaryh(lm(b0 ~ study23, s0))
+```
+
+
+
+```{r}
+ggplot(s0, aes(b1)) +
+    facet_wrap(~study) +
+    geom_histogram()
+
+ggplot(s0, aes(b0)) +
+    facet_wrap(~study) +
+    geom_histogram()
+```
+
+
+
+
+```{r}
+s1_dwell <- fread("../../study01_willsmith/data/clean/coef_dwell-itemorder.csv")
+s1_dwell$study <- 1
+s2_dwell <- fread("../../study02_climate/data/clean/coef_dwell-itemorder.csv")
+s2_dwell$study <- 2
+s3_dwell <- fread("../../study03_monkeypox/data/clean/coef_dwell-itemorder.csv")
+s3_dwell$study <- 3
+```
+
+
+```{r dwell}
+s0 <- bind_rows(s1_dwell, s2_dwell, s3_dwell) 
+setDT(s0)
+
+s0[, study := factor(study)]
+summaryh(lm(b1 ~ study, s0))
+
+s0[, study := relevel(study, ref = 2)]
+summaryh(lm(b1 ~ study, s0))
+
+s0[, study23 := ifelse(study == 1, "1", "23")]
+s0[, study23 := factor(study23)]
+s0[, unique(study23)]
+summaryh(lm(b1 ~ study23, s0))
+
+
+s0[, study := relevel(study, ref = "1")]
+summaryh(lm(b0 ~ study, s0))
+
+s0[, study := relevel(study, ref = "2")]
+summaryh(lm(b0 ~ study, s0))
+
+s0[, study := relevel(study, ref = "3")]
+summaryh(lm(b0 ~ study, s0))
+
+s0[, study23 := ifelse(study == 1, "1", "23")]
+s0[, study23 := factor(study23)]
+s0[, unique(study23)]
+summaryh(lm(b0 ~ study23, s0))
+```
+

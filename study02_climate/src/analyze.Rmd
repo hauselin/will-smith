@@ -618,6 +618,97 @@ correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "dw
 
 
 
+```{r b0 b1 across time analysis}
+glimpse(d0_feed)
+d0_feed <- d0_feed[attention == 1 & ipblock == 0]
+d0_feed_cc <- d0_feed[entity_set == "22051858_climate"]
+
+# dwell over time
+library(brms)
+include <- d0_feed_cc[condition == 0.5 & engaged == 0, .N, user_id][, user_id]
+tempdat <- d0_feed_cc[user_id %in% include]
+# tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
+tempdat[, dwell := log(dwell + 1)]
+
+mod <- brm(dwell ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include], cores = 4, iter = 20000)
+mod
+betas <- coef(mod)
+b0 <- betas$user_id[,,'Intercept'][, 'Estimate']
+b1 <- betas$user_id[,,'item_order'][, 'Estimate']
+dfbetas <- data.table(user_id = names(b0), b0, b1)
+fwrite(dfbetas, "../data/clean/coef_dwell-itemorder.csv")
+
+# change outcome from dwell to engage!
+include <- d0_feed_cc[condition == 0.5, .N, user_id][, user_id]
+tempdat <- d0_feed_cc[user_id %in% include]
+# tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
+mod <- brm(engage ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include], cores = 4, iter = 20000)
+mod
+betas <- coef(mod)
+b0 <- betas$user_id[,,'Intercept'][, 'Estimate']
+b1 <- betas$user_id[,,'item_order'][, 'Estimate']
+dfbetas <- data.table(user_id = names(b0), b0, b1)
+fwrite(dfbetas, "../data/clean/coef_engage-itemorder.csv")
+
+
+# correlate b1 with importance ratings
+b1_dwell_df <- fread("../data/clean/coef_dwell-itemorder.csv")
+b1_engage_df <- fread("../data/clean/coef_engage-itemorder.csv")
+d3_b1_dwell <- left_join(d3, b1_dwell_df) |> data.table()
+d3_b1_engage <- left_join(d3, b1_engage_df) |> data.table()
+
+# dwell
+correlation::cor_test(d3_b1_dwell[topic=="climate"], "importance", "b1")
+correlation::cor_test(d3_b1_dwell[topic=="climate"], "newsworthiness", "b1")
+correlation::cor_test(d3_b1_dwell[topic=="climate"], "importance", "b1", method = "spearman")
+correlation::cor_test(d3_b1_dwell[topic=="climate"], "newsworthiness", "b1", method = "spearman")
+
+d3_b1_dwell[, b0c := b0 - mean(b0, na.rm = T)]
+d3_b1_dwell[, b1c := b1 - mean(b1, na.rm = T)]
+summaryh(lm(importance ~ b0c * b1c, d3_b1_dwell[topic=="climate"]))
+summaryh(lm(newsworthiness ~ b0c * b1c, d3_b1_dwell[topic=="climate"]))
+
+# engage
+correlation::cor_test(d3_b1_engage[topic=="climate"], "importance", "b1")
+correlation::cor_test(d3_b1_engage[topic=="climate"], "newsworthiness", "b1")
+correlation::cor_test(d3_b1_engage[topic=="climate"], "importance", "b1", method = "spearman")
+correlation::cor_test(d3_b1_engage[topic=="climate"], "newsworthiness", "b1", method = "spearman")
+
+d3_b1_engage[, b0c := b0 - mean(b0, na.rm = T)]
+d3_b1_engage[, b1c := b1 - mean(b1, na.rm = T)]
+summaryh(lm(importance ~ b0c * b1c, d3_b1_engage[topic=="climate"]))
+summaryh(lm(newsworthiness ~ b0c * b1c, d3_b1_engage[topic=="climate"]))
+
+ggplot(d3_b1_engage[topic=="climate"], aes(b0, importance)) + geom_point()
+ggplot(d3_b1_engage[topic=="climate"], aes(b1, importance)) + geom_point()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -639,85 +730,10 @@ correlation::cor_test(d3_tempSplitDwell[topic=="climate"], "newsworthiness", "dw
 # other
 
 
+
+
+
 ```{r}
-glimpse(d0_feed)
-
-d0_feed <- d0_feed[attention == 1 & ipblock == 0]
-
-d0_feed_cc <- d0_feed[entity_set == "22051858_climate"]
-
-
-# dwell over time
-library(brms)
-include <- d0_feed_cc[condition == 0.5 & engaged == 0, .N, user_id][, user_id]
-tempdat <- d0_feed_cc[user_id %in% include]
-tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
-tempdat[, dwell := log(dwell + 1)]
-
-mod <- brm(dwell ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include], cores = 4)
-mod
-
-# b1 for each person
-
-b1_dwell <- ranef(mod)$user_id
-b1_dwell_df<-data.frame(b1_dwell)
-b1_dwell_df <- cbind(user_id = rownames(b1_dwell_df), b1_dwell_df)
-rownames(b1_dwell_df) <- 1:nrow(b1_dwell_df)
-dwell_fe<-fixef(mod)
-dwell_fe_df <- data.frame(dwell_fe)
-b1_dwell_df$FEinterceptEstimate <- dwell_fe_df[c("Intercept"),"Estimate"]
-b1_dwell_df$FEitemOrderEstimate <- dwell_fe_df[c("item_order"),"Estimate"]
-b1_dwell_df$Estimate.InterceptACTUAL <- b1_dwell_df$Estimate.Intercept+b1_dwell_df$FEinterceptEstimate
-b1_dwell_df$Estimate.item_orderACTUAL <- b1_dwell_df$Estimate.item_order+b1_dwell_df$FEitemOrderEstimate
-
-# fwrite(b1_dwell_df, "../data/clean/b1_dwell.csv")
-
-# change outcome from dwell to engage!
-include <- d0_feed_cc[condition == 0.5, .N, user_id][, user_id]
-tempdat <- d0_feed_cc[user_id %in% include]
-tempdat[, item_order := (item_order - mean(item_order, na.rm = T)) / sd(item_order, na.rm = T), user_id]
-mod <- brm(engage ~ item_order + (item_order | user_id), data = tempdat[user_id %in% include], cores = 4)
-mod
-
-
-b1_engage <- ranef(mod)$user_id
-b1_engage_df<-data.frame(b1_engage)
-b1_engage_df <- cbind(user_id = rownames(b1_engage_df), b1_engage_df)
-rownames(b1_engage_df) <- 1:nrow(b1_engage_df)
-engage_fe<-fixef(mod)
-engage_fe_df <- data.frame(engage_fe)
-b1_engage_df$FEinterceptEstimate <- engage_fe_df[c("Intercept"),"Estimate"]
-b1_engage_df$FEitemOrderEstimate <- engage_fe_df[c("item_order"),"Estimate"]
-b1_engage_df$Estimate.InterceptACTUAL <- b1_engage_df$Estimate.Intercept+b1_engage_df$FEinterceptEstimate
-b1_engage_df$Estimate.item_orderACTUAL <- b1_engage_df$Estimate.item_order+b1_engage_df$FEitemOrderEstimate
-
-# fwrite(b1_engage_df, "../data/clean/b1_engage.csv")
-
-
-
-# correlate b1 with importance ratings
-
-b1_dwell_df <- fread("../data/clean/b1_dwell.csv")
-b1_engage_df <- fread("../data/clean/b1_engage.csv")
-d3_b1_dwell <- left_join(d3, b1_dwell_df)
-d3_b1_engage <- left_join(d3, b1_engage_df)
-correlation::cor_test(d3_b1_dwell[topic=="climate"], "importance", "Estimate.item_orderACTUAL")
-correlation::cor_test(d3_b1_engage[topic=="climate"], "importance", "Estimate.item_orderACTUAL") # significant corr
-
-correlation::cor_test(d3_b1_dwell[topic=="climate"], "newsworthiness", "Estimate.item_orderACTUAL")
-correlation::cor_test(d3_b1_engage[topic=="climate"], "newsworthiness", "Estimate.item_orderACTUAL") # significant corr
-
-
-
-correlation::cor_test(d3_b1_dwell[topic=="climate"], "importance", "Estimate.item_orderACTUAL", method = "kendall")
-correlation::cor_test(d3_b1_engage[topic=="climate"], "importance", "Estimate.item_orderACTUAL", method = "kendall") # significant corr
-
-correlation::cor_test(d3_b1_dwell[topic=="climate"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
-correlation::cor_test(d3_b1_engage[topic=="climate"], "newsworthiness", "Estimate.item_orderACTUAL", method = "kendall")
-
-ggplot(d3_b1_engage[topic=="climate"], aes(Estimate.item_orderACTUAL, importance)) + geom_point()
-
-
 p1 <- ggplot(d0_feed_cc, aes(item_order, dwell)) +
     geom_smooth(method = 'lm') +
     stat_summary(fun = mean, geom = 'point', shape = 95, size = 6, position = position_dodge(1)) +

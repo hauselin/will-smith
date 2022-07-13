@@ -44,7 +44,7 @@ nrow(d1)
 na.omit(d1) |> nrow()
 d1 <- na.omit(d1)  # ensure no missing values
 
-cor_test(d1, "y", "engage_firstheadline", method = "kendall")
+correlation::cor_test(d1, "y", "engage_firstheadline", method = "kendall")
 ```
 
 ```{r}
