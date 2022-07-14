@@ -746,6 +746,13 @@ d3_b1_dwell[, b1c := b1 - mean(b1, na.rm = T)]
 summaryh(lm(importance ~ b0c * b1c, d3_b1_dwell[topic=="monkeypox"]))
 summaryh(lm(newsworthiness ~ b0c * b1c, d3_b1_dwell[topic=="monkeypox"]))
 
+mod_dwell_importance <- lm(importance ~ b0c * b1c, d3_b1_dwell[topic=="monkeypox"])
+plot_cme(mod_dwell_importance, effect = "b1c", condition = "b0c")
+
+mod_dwell_newsworthiness <- lm(newsworthiness ~ b0c * b1c, d3_b1_dwell[topic=="monkeypox"])
+plot_cme(mod_dwell_newsworthiness, effect = "b1c", condition = "b0c")
+
+
 # engage
 correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "importance", "b1")
 correlation::cor_test(d3_b1_engage[topic=="monkeypox"], "newsworthiness", "b1")
@@ -757,6 +764,11 @@ d3_b1_engage[, b1c := b1 - mean(b1, na.rm = T)]
 summaryh(lm(importance ~ b0c * b1c, d3_b1_engage[topic=="monkeypox"]))
 summaryh(lm(newsworthiness ~ b0c * b1c, d3_b1_engage[topic=="monkeypox"]))
 
+mod_engage_importance <- lm(importance ~ b0c * b1c, d3_b1_engage[topic=="monkeypox"])
+plot_cme(mod_engage_importance, effect = "b1c", condition = "b0c")
+
+mod_engage_newsworthiness <- lm(newsworthiness ~ b0c * b1c, d3_b1_engage[topic=="monkeypox"])
+plot_cme(mod_engage_newsworthiness, effect = "b1c", condition = "b0c")
 
 ggplot(d3_b1_engage[topic=="monkeypox"], aes(b0, importance)) + geom_point()
 ggplot(d3_b1_engage[topic=="monkeypox"], aes(b1, importance)) + geom_point()
