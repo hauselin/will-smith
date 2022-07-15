@@ -668,6 +668,13 @@ d3_b1_dwell[, b1c := b1 - mean(b1, na.rm = T)]
 summaryh(lm(importance ~ b0c * b1c, d3_b1_dwell[topic=="climate"]))
 summaryh(lm(newsworthiness ~ b0c * b1c, d3_b1_dwell[topic=="climate"]))
 
+mod_dwell_importance <- lm(importance ~ b0c * b1c, d3_b1_dwell[topic=="climate"])
+plot_cme(mod_dwell_importance, effect = "b1c", condition = "b0c")
+
+mod_dwell_newsworthiness <- lm(newsworthiness ~ b0c * b1c, d3_b1_dwell[topic=="climate"])
+plot_cme(mod_dwell_newsworthiness, effect = "b1c", condition = "b0c")
+
+
 # engage
 correlation::cor_test(d3_b1_engage[topic=="climate"], "importance", "b1")
 correlation::cor_test(d3_b1_engage[topic=="climate"], "newsworthiness", "b1")
@@ -678,6 +685,14 @@ d3_b1_engage[, b0c := b0 - mean(b0, na.rm = T)]
 d3_b1_engage[, b1c := b1 - mean(b1, na.rm = T)]
 summaryh(lm(importance ~ b0c * b1c, d3_b1_engage[topic=="climate"]))
 summaryh(lm(newsworthiness ~ b0c * b1c, d3_b1_engage[topic=="climate"]))
+
+
+mod_engage_importance <- lm(importance ~ b0c * b1c, d3_b1_engage[topic=="climate"])
+plot_cme(mod_engage_importance, effect = "b1c", condition = "b0c")
+
+mod_engage_newsworthiness <- lm(newsworthiness ~ b0c * b1c, d3_b1_engage[topic=="climate"])
+plot_cme(mod_engage_newsworthiness, effect = "b1c", condition = "b0c")
+
 
 ggplot(d3_b1_engage[topic=="climate"], aes(b0, importance)) + geom_point()
 ggplot(d3_b1_engage[topic=="climate"], aes(b1, importance)) + geom_point()
