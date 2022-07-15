@@ -623,6 +623,46 @@ glimpse(d0_feed)
 d0_feed <- d0_feed[attention == 1 & ipblock == 0]
 d0_feed_cc <- d0_feed[entity_set == "22051858_climate"]
 
+
+# create beginning mid end for users
+d0_feed_cc_top <- d0_feed_cc
+d0_feed_cc_top$item_order <- abs(d0_feed_cc_top$item_order - 0.0)
+d0_feed_cc_top <- d0_feed_cc_top[with(d0_feed_cc_top, order(user_id, item_order)), ]
+d0_feed_cc_top <- d0_feed_cc_top[, head(.SD, 5), by=user_id]
+d0_feed_cc_top <- d0_feed_cc_top[ , if (.N == 5L) .SD, by = user_id]
+d0_feed_cc_top <- d0_feed_cc_top[,lapply(.SD,mean,na.rm=TRUE),by=user_id,.SDcols=c("dwell", "engage")]
+d0_feed_cc_top$timepoint <- 1
+
+d0_feed_cc_mid <- d0_feed_cc
+d0_feed_cc_mid$item_order <- abs(d0_feed_cc_mid$item_order - 50.0)
+d0_feed_cc_mid <- d0_feed_cc_mid[with(d0_feed_cc_mid, order(user_id, item_order)), ]
+d0_feed_cc_mid <- d0_feed_cc_mid[, head(.SD, 5), by=user_id]
+d0_feed_cc_mid <- d0_feed_cc_mid[ , if (.N == 5L) .SD, by = user_id]
+d0_feed_cc_mid <- d0_feed_cc_mid[,lapply(.SD,mean,na.rm=TRUE),by=user_id,.SDcols=c("dwell", "engage")]
+d0_feed_cc_mid$timepoint <- 2
+
+d0_feed_cc_end <- d0_feed_cc
+d0_feed_cc_end$item_order <- abs(d0_feed_cc_end$item_order - 99.0)
+d0_feed_cc_end <- d0_feed_cc_end[with(d0_feed_cc_end, order(user_id, item_order)), ]
+d0_feed_cc_end <- d0_feed_cc_end[, head(.SD, 5), by=user_id]
+d0_feed_cc_end <- d0_feed_cc_end[ , if (.N == 5L) .SD, by = user_id]
+d0_feed_cc_end <- d0_feed_cc_end[,lapply(.SD,mean,na.rm=TRUE),by=user_id,.SDcols=c("dwell", "engage")]
+d0_feed_cc_end$timepoint <- 3
+
+d0_feed_cc_timed <- rbind(d0_feed_cc_top, d0_feed_cc_mid, d0_feed_cc_end)
+d3_feed_cc_timed <- left_join(d3, d0_feed_cc_timed) |> data.table()
+summaryh(lm(importance ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]))
+summaryh(lm(importance ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]))
+summaryh(lm(newsworthiness ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]))
+summaryh(lm(newsworthiness ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]))
+
+
+plot_cme(lm(importance ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "dwell", condition = "timepoint")
+plot_cme(lm(importance ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "engage", condition = "timepoint")
+plot_cme(lm(newsworthiness ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "dwell", condition = "timepoint")
+plot_cme(lm(newsworthiness ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "engage", condition = "timepoint")
+
+
 # dwell over time
 library(brms)
 include <- d0_feed_cc[condition == 0.5 & engaged == 0, .N, user_id][, user_id]
