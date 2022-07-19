@@ -11,6 +11,7 @@ library(data.table); library(tidyverse); library(correlation)
 library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
 library(hausekeep)
 library(marginaleffects)
+library(lme4)
 theme_set(theme_minimal())
 ```
 
@@ -482,16 +483,17 @@ d0_feed_cc_end$timepoint <- 3
 
 d0_feed_cc_timed <- rbind(d0_feed_cc_top, d0_feed_cc_mid, d0_feed_cc_end)
 d3_feed_cc_timed <- left_join(d3, d0_feed_cc_timed) |> data.table()
-summaryh(lm(importance ~ dwell * timepoint, d3_feed_cc_timed[topic=="willsmith"]))
-summaryh(lm(importance ~ engage * timepoint, d3_feed_cc_timed[topic=="willsmith"]))
-summaryh(lm(newsworthiness ~ dwell * timepoint, d3_feed_cc_timed[topic=="willsmith"]))
-summaryh(lm(newsworthiness ~ engage * timepoint, d3_feed_cc_timed[topic=="willsmith"]))
 
 
-plot_cme(lm(importance ~ dwell * timepoint, d3_feed_cc_timed[topic=="willsmith"]), effect = "dwell", condition = "timepoint")
-plot_cme(lm(importance ~ engage * timepoint, d3_feed_cc_timed[topic=="willsmith"]), effect = "engage", condition = "timepoint")
-plot_cme(lm(newsworthiness ~ dwell * timepoint, d3_feed_cc_timed[topic=="willsmith"]), effect = "dwell", condition = "timepoint")
-plot_cme(lm(newsworthiness ~ engage * timepoint, d3_feed_cc_timed[topic=="willsmith"]), effect = "engage", condition = "timepoint")
+d3_feed_cc_timed <- dcast(d3_feed_cc_timed[topic=="willsmith" & condition == 0.5], user_id + condition + topic + willsmith_perc + importance + newsworthiness + rating_combined + willsmith_percC ~ timepoint, value.var = c("dwell", "engage"))
+
+summaryh(lm(importance ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="willsmith"]))
+summaryh(lm(newsworthiness ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="willsmith"]))
+summaryh(lm(importance ~ engage_1 * engage_2 * engage_3, d3_feed_cc_timed[topic=="willsmith"]))
+summaryh(lm(newsworthiness ~ engage_1 * engage_2 * engage_3, d3_feed_cc_timed[topic=="willsmith"]))
+
+plot_cme(lm(importance ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="willsmith"]), effect = "dwell_2", condition = "dwell_3")
+plot_cme(lm(newsworthiness ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="willsmith"]), effect = "dwell_2", condition = "dwell_3")
 
 
 # dwell over time

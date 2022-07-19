@@ -651,16 +651,22 @@ d0_feed_cc_end$timepoint <- 3
 
 d0_feed_cc_timed <- rbind(d0_feed_cc_top, d0_feed_cc_mid, d0_feed_cc_end)
 d3_feed_cc_timed <- left_join(d3, d0_feed_cc_timed) |> data.table()
-summaryh(lm(importance ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]))
-summaryh(lm(importance ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]))
-summaryh(lm(newsworthiness ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]))
-summaryh(lm(newsworthiness ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]))
 
 
-plot_cme(lm(importance ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "dwell", condition = "timepoint")
-plot_cme(lm(importance ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "engage", condition = "timepoint")
-plot_cme(lm(newsworthiness ~ dwell * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "dwell", condition = "timepoint")
-plot_cme(lm(newsworthiness ~ engage * timepoint, d3_feed_cc_timed[topic=="climate"]), effect = "engage", condition = "timepoint")
+
+d3_feed_cc_timed <- dcast(d3_feed_cc_timed[topic=="climate" & condition == 0.5], user_id + condition + topic + climate_perc + concern + desired_frequency + exposure_frequency + hope + human_activity + importance + newsworthiness + problem + rating_combined + climate_percC ~ timepoint, value.var = c("dwell", "engage"))
+
+summaryh(lm(importance ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="climate"]))
+summaryh(lm(newsworthiness ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="climate"]))
+summaryh(lm(importance ~ engage_1 * engage_2 * engage_3, d3_feed_cc_timed[topic=="climate"]))
+summaryh(lm(newsworthiness ~ engage_1 * engage_2 * engage_3, d3_feed_cc_timed[topic=="climate"]))
+
+
+
+
+
+plot_cme(lm(importance ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="climate"]), effect = "dwell_2", condition = "dwell_3")
+plot_cme(lm(newsworthiness ~ dwell_1 * dwell_2 * dwell_3, d3_feed_cc_timed[topic=="climate"]), effect = "dwell_2", condition = "dwell_3")
 
 
 # dwell over time
