@@ -1,0 +1,28 @@
+---
+title: "analyze"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+rm(list = ls())
+library(data.table); library(tidyverse); library(correlation)
+library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
+library(hausekeep)
+library(marginaleffects)
+library(lme4)
+library(fixest)
+library(brms)
+library(lmerTest)
+theme_set(theme_minimal())
+```
+
+```{r}
+
+
+
+
+
+```
+
