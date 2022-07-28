@@ -20,6 +20,45 @@ theme_set(theme_minimal())
 
 ```{r}
 
+b1_dwell_df_willsmith <- fread("../../study01_willsmith/data/clean/coef_dwell-itemorder.csv")
+b1_engage_df_willsmith <- fread("../../study01_willsmith/data/clean/coef_engage-itemorder.csv")
+
+b1_dwell_df_climate <- fread("../../study02_climate/data/clean/coef_dwell-itemorder.csv")
+b1_engage_df_climate <- fread("../../study02_climate/data/clean/coef_engage-itemorder.csv")
+
+b1_dwell_df_monkeypox <- fread("../../study03_monkeypox/data/clean/coef_dwell-itemorder.csv")
+b1_engage_df_monkeypox <- fread("../../study03_monkeypox/data/clean/coef_engage-itemorder.csv")
+
+
+b1_dwell_df_willsmith[, b0c_withinCluster := b0 - mean(b0, na.rm = T)]
+b1_dwell_df_willsmith[, b1c_withinCluster := b1 - mean(b1, na.rm = T)]
+b1_engage_df_willsmith[, b0c_withinCluster := b0 - mean(b0, na.rm = T)]
+b1_engage_df_willsmith[, b1c_withinCluster := b1 - mean(b1, na.rm = T)]
+
+b1_dwell_df_climate[, b0c_withinCluster := b0 - mean(b0, na.rm = T)]
+b1_dwell_df_climate[, b1c_withinCluster := b1 - mean(b1, na.rm = T)]
+b1_engage_df_climate[, b0c_withinCluster := b0 - mean(b0, na.rm = T)]
+b1_engage_df_climate[, b1c_withinCluster := b1 - mean(b1, na.rm = T)]
+
+b1_dwell_df_monkeypox[, b0c_withinCluster := b0 - mean(b0, na.rm = T)]
+b1_dwell_df_monkeypox[, b1c_withinCluster := b1 - mean(b1, na.rm = T)]
+b1_engage_df_monkeypox[, b0c_withinCluster := b0 - mean(b0, na.rm = T)]
+b1_engage_df_monkeypox[, b1c_withinCluster := b1 - mean(b1, na.rm = T)]
+
+b1_dwell_df_willsmith$study <- "willsmith"
+b1_engage_df_willsmith$study <- "willsmith"
+b1_dwell_df_climate$study <- "climate"
+b1_engage_df_climate$study <- "climate"
+b1_dwell_df_monkeypox$study <- "monkeypox"
+b1_engage_df_monkeypox$study <- "monkeypox"
+
+b1_dwell_df <- rbind(b1_dwell_df_willsmith, b1_dwell_df_climate, b1_dwell_df_monkeypox)
+b1_engage_df <- rbind(b1_engage_df_willsmith, b1_engage_df_climate, b1_engage_df_monkeypox)
+
+b1_dwell_df[, b0c_grandMean := b0 - mean(b0, na.rm = T)]
+b1_dwell_df[, b1c_grandMean := b1 - mean(b1, na.rm = T)]
+b1_engage_df[, b0c_grandMean := b0 - mean(b0, na.rm = T)]
+b1_engage_df[, b1c_grandMean := b1 - mean(b1, na.rm = T)]
 
 
 
