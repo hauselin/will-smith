@@ -1,0 +1,846 @@
+ResponseId,topic,desiredFrequency,familiarity,importance,newsworthy,observedFrequency
+R_0kavUipiwHHpIpX,Amazon's One Medical Deal,1,1,3,4,7
+R_0kavUipiwHHpIpX,2022 NFL training camp,2,4,2,2,4
+R_0kavUipiwHHpIpX,Host Selection for ‘Jeopardy!’,1,3,2,2,6
+R_0kavUipiwHHpIpX,WNBA star Brittney Griner in Russian custody,1,4,5,5,3
+R_0kavUipiwHHpIpX,Rising Inflation,2,4,5,5,3
+R_10wkJSWUcLMSRbA,Prince Harry and Meghan Markle's life story,3,4,5,4,4
+R_10wkJSWUcLMSRbA,Mark Zuckerberg's Metaverse,3,3,4,5,5
+R_10wkJSWUcLMSRbA,2022 MLB trade deadline,3,3,5,4,5
+R_10wkJSWUcLMSRbA,Celebrity Alcohol Brands,3,4,5,4,5
+R_10wkJSWUcLMSRbA,Host Selection for ‘Jeopardy!’,2,,5,4,6
+R_11dcpfbogJ9cz1Y,January 6th attack investigation,1,2,3,3,3
+R_11dcpfbogJ9cz1Y,Mark Zuckerberg's Metaverse,1,3,2,2,6
+R_11dcpfbogJ9cz1Y,Amazon's One Medical Deal,3,1,4,4,7
+R_11dcpfbogJ9cz1Y,2022 MLB trade deadline,1,2,1,1,7
+R_11dcpfbogJ9cz1Y,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,1,1,6
+R_12LlXHjZsTdBfWv,Heat Waves,3,5,6,6,3
+R_12LlXHjZsTdBfWv,2022 MLB trade deadline,1,4,2,2,3
+R_12LlXHjZsTdBfWv,Nancy Pelosi’s Taiwan visit,2,3,5,5,4
+R_12LlXHjZsTdBfWv,Air travel disruptions,1,5,3,4,2
+R_12LlXHjZsTdBfWv,WNBA star Brittney Griner in Russian custody,2,4,5,5,3
+R_1BV2mXofMgYqxcK,2022 MLB trade deadline,2,1,3,4,7
+R_1BV2mXofMgYqxcK,Vince McMahon’s retirement and scandals,1,3,3,3,5
+R_1BV2mXofMgYqxcK,Prince William and Kate Middleton's life story,1,4,2,2,7
+R_1BV2mXofMgYqxcK,First Images from the James Webb Telescope,3,4,5,6,3
+R_1BV2mXofMgYqxcK,Wildfires in California,2,3,5,6,6
+R_1C7OjKNyY3TCL7e,2022 NFL training camp,1,1,4,1,7
+R_1C7OjKNyY3TCL7e,Prince William and Kate Middleton's life story,2,1,2,2,1
+R_1C7OjKNyY3TCL7e,Host Selection for ‘Jeopardy!’,2,2,2,4,7
+R_1C7OjKNyY3TCL7e,Race to Replace UK Prime Minister Boris Johnson,1,2,4,3,3
+R_1C7OjKNyY3TCL7e,First Images from the James Webb Telescope,1,2,1,1,6
+R_1CCnQe4nti8wjPX,Prince Harry and Meghan Markle's life story,3,4,5,5,5
+R_1CCnQe4nti8wjPX,New movie 'DC League of Super-pets',2,1,5,4,5
+R_1CCnQe4nti8wjPX,Number of kids celebrities have,1,3,3,3,4
+R_1CCnQe4nti8wjPX,Vince McMahon’s retirement and scandals,1,2,3,3,3
+R_1CCnQe4nti8wjPX,Wildfires in California,3,2,5,5,7
+R_1Ce8wPSwfRjOoLs,Amazon's One Medical Deal,3,1,4,4,7
+R_1Ce8wPSwfRjOoLs,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,1,1,7
+R_1Ce8wPSwfRjOoLs,Air travel disruptions,2,3,4,3,6
+R_1Ce8wPSwfRjOoLs,Race to Replace UK Prime Minister Boris Johnson,3,1,5,5,7
+R_1Ce8wPSwfRjOoLs,Musk-Twitter 44-Billion Deal,2,4,4,4,4
+R_1CgxRcDSAgdtnBi,Roe v. Wade & Abortion Rights,3,5,5,5,1
+R_1CgxRcDSAgdtnBi,2022 MLB trade deadline,1,2,2,2,7
+R_1CgxRcDSAgdtnBi,Air travel disruptions,2,2,4,4,4
+R_1CgxRcDSAgdtnBi,Rising Inflation,2,4,5,5,2
+R_1CgxRcDSAgdtnBi,Wildfires in California,3,2,5,5,5
+R_1DSTLinhXJ4DA2Z,Roe v. Wade & Abortion Rights,1,3,4,4,1
+R_1DSTLinhXJ4DA2Z,Mark Zuckerberg's Metaverse,1,4,1,1,3
+R_1DSTLinhXJ4DA2Z,2022 NFL training camp,1,2,1,1,5
+R_1DSTLinhXJ4DA2Z,Rising Inflation,3,4,6,6,3
+R_1DSTLinhXJ4DA2Z,Musk-Twitter 44-Billion Deal,2,3,4,4,4
+R_1DvRjP7CY8JXf53,New movie 'DC League of Super-pets',2,4,4,5,7
+R_1DvRjP7CY8JXf53,2022 NFL training camp,1,1,1,2,7
+R_1DvRjP7CY8JXf53,Prince William and Kate Middleton's life story,1,2,1,5,4
+R_1DvRjP7CY8JXf53,Musk-Twitter 44-Billion Deal,2,4,2,4,5
+R_1DvRjP7CY8JXf53,Stock Market Volatility,2,1,2,3,7
+R_1eKs0ukxif2iVyp,Prince Harry and Meghan Markle's life story,1,2,3,3,7
+R_1eKs0ukxif2iVyp,Number of kids celebrities have,1,2,1,1,6
+R_1eKs0ukxif2iVyp,Prince William and Kate Middleton's life story,1,2,1,1,7
+R_1eKs0ukxif2iVyp,Race to Replace UK Prime Minister Boris Johnson,2,3,4,4,6
+R_1eKs0ukxif2iVyp,Wildfires in California,2,2,4,4,6
+R_1eQvf0v6yJhitlf,Heat Waves,2,3,6,5,3
+R_1eQvf0v6yJhitlf,US Home Prices Potential Correction,2,3,5,4,4
+R_1eQvf0v6yJhitlf,New movie 'DC League of Super-pets',1,2,1,1,5
+R_1eQvf0v6yJhitlf,2022 NFL training camp,2,2,1,1,7
+R_1eQvf0v6yJhitlf,Number of kids celebrities have,2,3,1,2,4
+R_1EWn3iAxOncTTFw,Mark Zuckerberg's Metaverse,1,5,1,1,7
+R_1EWn3iAxOncTTFw,Amazon's One Medical Deal,2,3,3,3,4
+R_1EWn3iAxOncTTFw,2022 MLB trade deadline,3,5,6,6,1
+R_1EWn3iAxOncTTFw,Nancy Pelosi’s Taiwan visit,2,4,3,3,3
+R_1EWn3iAxOncTTFw,Vince McMahon’s retirement and scandals,1,5,1,1,7
+R_1GEqZwCV6bOp2m8,Heat Waves,2,4,4,4,3
+R_1GEqZwCV6bOp2m8,Nancy Pelosi’s Taiwan visit,1,1,4,4,7
+R_1GEqZwCV6bOp2m8,Air travel disruptions,2,3,4,4,6
+R_1GEqZwCV6bOp2m8,First Images from the James Webb Telescope,1,1,3,3,7
+R_1GEqZwCV6bOp2m8,Wildfires in California,2,3,5,5,6
+R_1Gy85UmeEbwdeS2,Heat Waves,2,4,5,6,3
+R_1Gy85UmeEbwdeS2,Vince McMahon’s retirement and scandals,1,1,1,1,7
+R_1Gy85UmeEbwdeS2,Host Selection for ‘Jeopardy!’,1,1,2,2,7
+R_1Gy85UmeEbwdeS2,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_1Gy85UmeEbwdeS2,First Images from the James Webb Telescope,2,4,5,5,3
+R_1H8J4jyet3onM9W,Amazon's One Medical Deal,1,1,3,3,7
+R_1H8J4jyet3onM9W,2022 NFL training camp,1,4,3,3,5
+R_1H8J4jyet3onM9W,Comedians joking about LGBTQ,1,3,3,3,7
+R_1H8J4jyet3onM9W,Host Selection for ‘Jeopardy!’,2,4,3,3,4
+R_1H8J4jyet3onM9W,Stock Market Volatility,1,1,2,2,7
+R_1hJWB9RcscQoUMT,Heat Waves,2,3,5,5,5
+R_1hJWB9RcscQoUMT,Amazon's One Medical Deal,2,4,4,5,6
+R_1hJWB9RcscQoUMT,WNBA star Brittney Griner in Russian custody,1,4,4,5,4
+R_1hJWB9RcscQoUMT,Stock Market Volatility,1,4,3,3,7
+R_1hJWB9RcscQoUMT,First Images from the James Webb Telescope,2,4,4,5,6
+R_1hWIw2Kwt1g8jDh,Heat Waves,3,5,6,6,5
+R_1hWIw2Kwt1g8jDh,New movie 'DC League of Super-pets',2,1,3,3,7
+R_1hWIw2Kwt1g8jDh,Comedians joking about LGBTQ,2,5,4,4,6
+R_1hWIw2Kwt1g8jDh,TikToker made $200k selling farts in jars,1,3,1,1,6
+R_1hWIw2Kwt1g8jDh,Musk-Twitter 44-Billion Deal,2,4,4,4,4
+R_1ihdk8sb6Mk0VeU,New movie 'DC League of Super-pets',1,1,1,1,7
+R_1ihdk8sb6Mk0VeU,Comedians joking about LGBTQ,2,3,4,4,6
+R_1ihdk8sb6Mk0VeU,Rising Inflation,2,3,6,6,2
+R_1ihdk8sb6Mk0VeU,Race to Replace UK Prime Minister Boris Johnson,2,3,4,4,2
+R_1ihdk8sb6Mk0VeU,First Images from the James Webb Telescope,3,1,5,5,7
+R_1ItRZxdLjZsvhe2,New movie 'DC League of Super-pets',2,4,6,5,5
+R_1ItRZxdLjZsvhe2,Roe v. Wade & Abortion Rights,2,5,6,6,6
+R_1ItRZxdLjZsvhe2,Comedians joking about LGBTQ,2,4,2,3,5
+R_1ItRZxdLjZsvhe2,First Images from the James Webb Telescope,2,3,5,4,3
+R_1ItRZxdLjZsvhe2,2022 Mass Shootings,3,5,6,6,7
+R_1jZInbfoMsH2tF4,2022 NFL training camp,1,1,1,1,1
+R_1jZInbfoMsH2tF4,2022 MLB trade deadline,1,1,1,1,7
+R_1jZInbfoMsH2tF4,Vince McMahon’s retirement and scandals,1,1,1,1,7
+R_1jZInbfoMsH2tF4,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,1,1,4
+R_1jZInbfoMsH2tF4,First Images from the James Webb Telescope,2,3,6,6,3
+R_1K9AJ12j89j79dC,January 6th attack investigation,3,4,5,5,3
+R_1K9AJ12j89j79dC,Roe v. Wade & Abortion Rights,3,4,6,6,3
+R_1K9AJ12j89j79dC,2022 NFL training camp,1,2,1,1,5
+R_1K9AJ12j89j79dC,Stock Market Volatility,2,2,2,3,4
+R_1K9AJ12j89j79dC,First Images from the James Webb Telescope,2,3,4,4,6
+R_1kHOfZJrv6qXpJl,January 6th attack investigation,2,5,6,6,6
+R_1kHOfZJrv6qXpJl,Mark Zuckerberg's Metaverse,1,1,1,1,7
+R_1kHOfZJrv6qXpJl,Nancy Pelosi’s Taiwan visit,1,1,2,2,7
+R_1kHOfZJrv6qXpJl,Prince William and Kate Middleton's life story,2,4,1,1,5
+R_1kHOfZJrv6qXpJl,Race to Replace UK Prime Minister Boris Johnson,1,1,1,1,7
+R_1kNghjVICL4zmtS,New movie 'DC League of Super-pets',1,2,1,1,5
+R_1kNghjVICL4zmtS,Mark Zuckerberg's Metaverse,2,4,4,4,4
+R_1kNghjVICL4zmtS,Prince William and Kate Middleton's life story,1,3,2,2,7
+R_1kNghjVICL4zmtS,TikToker made $200k selling farts in jars,1,2,1,1,7
+R_1kNghjVICL4zmtS,Musk-Twitter 44-Billion Deal,2,3,5,4,3
+R_1kRXOuObLWIATuF,US Home Prices Potential Correction,2,4,5,5,4
+R_1kRXOuObLWIATuF,Roe v. Wade & Abortion Rights,3,5,6,6,1
+R_1kRXOuObLWIATuF,Number of kids celebrities have,2,4,2,4,2
+R_1kRXOuObLWIATuF,Host Selection for ‘Jeopardy!’,1,2,3,3,4
+R_1kRXOuObLWIATuF,First Images from the James Webb Telescope,1,4,4,4,4
+R_1KsayZPE24lZhsy,Roe v. Wade & Abortion Rights,3,5,6,6,1
+R_1KsayZPE24lZhsy,Mark Zuckerberg's Metaverse,1,4,2,2,3
+R_1KsayZPE24lZhsy,Prince William and Kate Middleton's life story,1,3,1,1,7
+R_1KsayZPE24lZhsy,Host Selection for ‘Jeopardy!’,1,5,2,2,6
+R_1KsayZPE24lZhsy,Rising Inflation,2,5,6,6,2
+R_1kY0IE9zpVVDbvq,January 6th attack investigation,1,3,5,4,2
+R_1kY0IE9zpVVDbvq,Prince Harry and Meghan Markle's life story,1,2,1,1,7
+R_1kY0IE9zpVVDbvq,Rising Inflation,2,3,4,5,2
+R_1kY0IE9zpVVDbvq,Musk-Twitter 44-Billion Deal,1,2,3,3,3
+R_1kY0IE9zpVVDbvq,Wildfires in California,2,4,5,6,3
+R_1lypWZ0nZQahss6,January 6th attack investigation,2,3,4,4,5
+R_1lypWZ0nZQahss6,Prince Harry and Meghan Markle's life story,1,2,3,3,7
+R_1lypWZ0nZQahss6,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,3,3,7
+R_1lypWZ0nZQahss6,Celebrity Alcohol Brands,1,2,3,3,7
+R_1lypWZ0nZQahss6,2022 Mass Shootings,2,4,5,5,3
+R_1ml70fll0HpNXKc,January 6th attack investigation,3,3,5,6,3
+R_1ml70fll0HpNXKc,Heat Waves,2,4,4,4,4
+R_1ml70fll0HpNXKc,2022 MLB trade deadline,1,1,2,3,7
+R_1ml70fll0HpNXKc,Musk-Twitter 44-Billion Deal,1,2,3,5,5
+R_1ml70fll0HpNXKc,2022 Mass Shootings,1,3,6,6,4
+R_1mXariDLSufIVz5,Mark Zuckerberg's Metaverse,1,2,1,1,7
+R_1mXariDLSufIVz5,2022 NFL training camp,2,1,4,2,7
+R_1mXariDLSufIVz5,Celebrity Alcohol Brands,2,1,2,1,7
+R_1mXariDLSufIVz5,WNBA star Brittney Griner in Russian custody,1,1,3,3,6
+R_1mXariDLSufIVz5,Stock Market Volatility,1,1,3,2,7
+R_1mXE44Uk9cMd97C,2022 MLB trade deadline,1,1,2,2,7
+R_1mXE44Uk9cMd97C,Number of kids celebrities have,1,1,1,1,7
+R_1mXE44Uk9cMd97C,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,1,1,6
+R_1mXE44Uk9cMd97C,Musk-Twitter 44-Billion Deal,2,5,5,5,3
+R_1mXE44Uk9cMd97C,Wildfires in California,2,5,6,6,2
+R_1NFBJkAGsngVQbv,US Home Prices Potential Correction,3,4,6,6,4
+R_1NFBJkAGsngVQbv,Celebrity Alcohol Brands,1,1,1,1,1
+R_1NFBJkAGsngVQbv,Host Selection for ‘Jeopardy!’,1,2,1,2,7
+R_1NFBJkAGsngVQbv,Rising Inflation,2,5,6,5,2
+R_1NFBJkAGsngVQbv,First Images from the James Webb Telescope,3,5,6,6,3
+R_1nO3bwP9cIXrDYL,2022 NFL training camp,1,1,2,2,7
+R_1nO3bwP9cIXrDYL,2022 MLB trade deadline,1,1,2,2,7
+R_1nO3bwP9cIXrDYL,Air travel disruptions,2,2,3,3,6
+R_1nO3bwP9cIXrDYL,Celebrity Alcohol Brands,1,1,1,1,7
+R_1nO3bwP9cIXrDYL,Race to Replace UK Prime Minister Boris Johnson,2,2,4,4,6
+R_1OIRJVYt19mHwoy,January 6th attack investigation,2,4,5,6,2
+R_1OIRJVYt19mHwoy,US Home Prices Potential Correction,2,4,6,4,5
+R_1OIRJVYt19mHwoy,Prince William and Kate Middleton's life story,1,2,1,1,4
+R_1OIRJVYt19mHwoy,Stock Market Volatility,2,2,3,3,5
+R_1OIRJVYt19mHwoy,Wildfires in California,2,3,3,4,7
+R_1ouml9hdVrVrALW,Amazon's One Medical Deal,2,1,4,4,7
+R_1ouml9hdVrVrALW,Celebrity Alcohol Brands,1,2,1,3,5
+R_1ouml9hdVrVrALW,Host Selection for ‘Jeopardy!’,1,2,2,2,7
+R_1ouml9hdVrVrALW,Musk-Twitter 44-Billion Deal,2,4,4,5,4
+R_1ouml9hdVrVrALW,2022 Mass Shootings,2,2,5,5,6
+R_1PXdbG52DMBJ2w5,January 6th attack investigation,1,5,2,2,2
+R_1PXdbG52DMBJ2w5,Mark Zuckerberg's Metaverse,2,2,2,2,6
+R_1PXdbG52DMBJ2w5,Comedians joking about LGBTQ,1,3,4,4,6
+R_1PXdbG52DMBJ2w5,Musk-Twitter 44-Billion Deal,2,4,4,4,4
+R_1PXdbG52DMBJ2w5,Wildfires in California,2,4,5,5,4
+R_1QzxpF3owG94BCX,2022 MLB trade deadline,1,1,1,1,4
+R_1QzxpF3owG94BCX,Prince William and Kate Middleton's life story,1,3,3,3,3
+R_1QzxpF3owG94BCX,Celebrity Alcohol Brands,1,1,1,1,5
+R_1QzxpF3owG94BCX,Race to Replace UK Prime Minister Boris Johnson,2,2,4,4,3
+R_1QzxpF3owG94BCX,Musk-Twitter 44-Billion Deal,2,4,4,4,1
+R_1rcWBSAVqS3x8DF,Roe v. Wade & Abortion Rights,3,4,6,6,2
+R_1rcWBSAVqS3x8DF,Comedians joking about LGBTQ,1,2,2,2,6
+R_1rcWBSAVqS3x8DF,TikToker made $200k selling farts in jars,3,2,2,4,5
+R_1rcWBSAVqS3x8DF,Race to Replace UK Prime Minister Boris Johnson,1,3,4,5,3
+R_1rcWBSAVqS3x8DF,Musk-Twitter 44-Billion Deal,1,3,4,5,3
+R_1rlECziYr0RwhIm,2022 NFL training camp,2,4,4,4,4
+R_1rlECziYr0RwhIm,2022 MLB trade deadline,1,4,3,3,7
+R_1rlECziYr0RwhIm,Number of kids celebrities have,1,1,3,3,7
+R_1rlECziYr0RwhIm,Host Selection for ‘Jeopardy!’,1,1,3,3,7
+R_1rlECziYr0RwhIm,WNBA star Brittney Griner in Russian custody,3,1,3,3,7
+R_22A0ptOipfCeh1M,Roe v. Wade & Abortion Rights,3,4,5,5,3
+R_22A0ptOipfCeh1M,2022 MLB trade deadline,2,3,4,4,5
+R_22A0ptOipfCeh1M,Prince William and Kate Middleton's life story,1,4,2,4,6
+R_22A0ptOipfCeh1M,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_22A0ptOipfCeh1M,Race to Replace UK Prime Minister Boris Johnson,3,3,5,5,4
+R_22J4F8iOwvXKjWV,Race to Replace UK Prime Minister Boris Johnson,2,1,3,3,7
+R_22J4F8iOwvXKjWV,Musk-Twitter 44-Billion Deal,2,3,3,4,3
+R_22J4F8iOwvXKjWV,Stock Market Volatility,2,1,3,3,7
+R_22J4F8iOwvXKjWV,First Images from the James Webb Telescope,2,2,4,4,5
+R_22J4F8iOwvXKjWV,2022 Mass Shootings,1,2,4,3,7
+R_22mPNogUIGb4TFx,Amazon's One Medical Deal,2,3,5,4,5
+R_22mPNogUIGb4TFx,Number of kids celebrities have,3,4,5,4,5
+R_22mPNogUIGb4TFx,Vince McMahon’s retirement and scandals,3,4,5,4,4
+R_22mPNogUIGb4TFx,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,2,3,5,4,5
+R_22mPNogUIGb4TFx,Musk-Twitter 44-Billion Deal,3,4,5,4,4
+R_231N93tcQ0HCJW4,Comedians joking about LGBTQ,1,4,4,4,4
+R_231N93tcQ0HCJW4,Rising Inflation,3,4,4,4,3
+R_231N93tcQ0HCJW4,Musk-Twitter 44-Billion Deal,2,4,5,5,3
+R_231N93tcQ0HCJW4,Stock Market Volatility,2,3,4,4,3
+R_231N93tcQ0HCJW4,2022 Mass Shootings,3,5,6,6,2
+R_2338QxdvgqcqUFR,Mark Zuckerberg's Metaverse,1,5,3,3,6
+R_2338QxdvgqcqUFR,Celebrity Alcohol Brands,2,2,1,1,6
+R_2338QxdvgqcqUFR,Host Selection for ‘Jeopardy!’,1,4,1,1,7
+R_2338QxdvgqcqUFR,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_2338QxdvgqcqUFR,Wildfires in California,2,5,6,6,3
+R_24zRX6D03Qq1X1F,January 6th attack investigation,3,4,4,5,7
+R_24zRX6D03Qq1X1F,New movie 'DC League of Super-pets',1,3,2,2,4
+R_24zRX6D03Qq1X1F,Mark Zuckerberg's Metaverse,1,2,1,1,7
+R_24zRX6D03Qq1X1F,Celebrity Alcohol Brands,1,1,1,1,7
+R_24zRX6D03Qq1X1F,TikToker made $200k selling farts in jars,1,2,1,1,6
+R_27WlcgUX0SIfiib,US Home Prices Potential Correction,2,3,4,4,3
+R_27WlcgUX0SIfiib,Mark Zuckerberg's Metaverse,1,2,2,2,6
+R_27WlcgUX0SIfiib,Amazon's One Medical Deal,2,1,4,4,7
+R_27WlcgUX0SIfiib,Rising Inflation,2,4,6,6,2
+R_27WlcgUX0SIfiib,First Images from the James Webb Telescope,2,4,6,6,2
+R_29oew0rgcaCTuFQ,Prince Harry and Meghan Markle's life story,2,3,4,4,6
+R_29oew0rgcaCTuFQ,2022 NFL training camp,2,2,4,4,6
+R_29oew0rgcaCTuFQ,WNBA star Brittney Griner in Russian custody,2,3,5,5,3
+R_29oew0rgcaCTuFQ,First Images from the James Webb Telescope,1,1,4,4,7
+R_29oew0rgcaCTuFQ,Wildfires in California,2,4,6,6,3
+R_2aQzxPP3ABcFrx6,New movie 'DC League of Super-pets',2,2,2,2,6
+R_2aQzxPP3ABcFrx6,Amazon's One Medical Deal,2,3,4,4,5
+R_2aQzxPP3ABcFrx6,Vince McMahon’s retirement and scandals,2,3,4,4,5
+R_2aQzxPP3ABcFrx6,Rising Inflation,2,3,4,4,5
+R_2aQzxPP3ABcFrx6,Wildfires in California,2,3,4,4,5
+R_2aS89GpPsYdR3tq,January 6th attack investigation,1,4,2,3,3
+R_2aS89GpPsYdR3tq,2022 NFL training camp,2,3,2,2,3
+R_2aS89GpPsYdR3tq,Vince McMahon’s retirement and scandals,1,3,2,2,5
+R_2aS89GpPsYdR3tq,WNBA star Brittney Griner in Russian custody,1,4,2,3,4
+R_2aS89GpPsYdR3tq,2022 Mass Shootings,2,3,5,5,5
+R_2BbdgpOtTHaIzxm,Heat Waves,3,3,5,5,6
+R_2BbdgpOtTHaIzxm,Comedians joking about LGBTQ,2,4,4,4,4
+R_2BbdgpOtTHaIzxm,Vince McMahon’s retirement and scandals,2,5,6,6,3
+R_2BbdgpOtTHaIzxm,Prince William and Kate Middleton's life story,1,3,1,1,6
+R_2BbdgpOtTHaIzxm,Musk-Twitter 44-Billion Deal,1,5,3,3,3
+R_2bD6De4asS6rbmV,January 6th attack investigation,2,5,6,6,2
+R_2bD6De4asS6rbmV,Mark Zuckerberg's Metaverse,1,2,3,3,6
+R_2bD6De4asS6rbmV,Prince William and Kate Middleton's life story,1,2,1,1,6
+R_2bD6De4asS6rbmV,TikToker made $200k selling farts in jars,1,2,1,1,7
+R_2bD6De4asS6rbmV,Stock Market Volatility,2,3,4,4,3
+R_2Bs2Al7gHBTeGRG,Comedians joking about LGBTQ,1,3,4,4,4
+R_2Bs2Al7gHBTeGRG,Vince McMahon’s retirement and scandals,2,3,4,4,6
+R_2Bs2Al7gHBTeGRG,Prince William and Kate Middleton's life story,2,4,3,4,5
+R_2Bs2Al7gHBTeGRG,TikToker made $200k selling farts in jars,1,2,1,1,6
+R_2Bs2Al7gHBTeGRG,Musk-Twitter 44-Billion Deal,2,4,6,5,3
+R_2c8b7GX0MggY7SJ,Heat Waves,1,4,2,2,2
+R_2c8b7GX0MggY7SJ,Prince Harry and Meghan Markle's life story,1,3,2,2,5
+R_2c8b7GX0MggY7SJ,Roe v. Wade & Abortion Rights,1,4,3,2,2
+R_2c8b7GX0MggY7SJ,Celebrity Alcohol Brands,1,1,1,1,7
+R_2c8b7GX0MggY7SJ,2022 Mass Shootings,1,4,4,4,3
+R_2cvgLOTjwvuOet5,January 6th attack investigation,1,4,4,4,6
+R_2cvgLOTjwvuOet5,Vince McMahon’s retirement and scandals,1,2,3,3,6
+R_2cvgLOTjwvuOet5,Air travel disruptions,2,3,4,4,4
+R_2cvgLOTjwvuOet5,Host Selection for ‘Jeopardy!’,1,1,2,2,7
+R_2cvgLOTjwvuOet5,Musk-Twitter 44-Billion Deal,3,4,5,6,4
+R_2D63x2xas98spOP,2022 NFL training camp,2,2,2,2,6
+R_2D63x2xas98spOP,Vince McMahon’s retirement and scandals,2,1,2,2,7
+R_2D63x2xas98spOP,Prince William and Kate Middleton's life story,2,3,2,3,6
+R_2D63x2xas98spOP,Celebrity Alcohol Brands,1,1,1,2,7
+R_2D63x2xas98spOP,First Images from the James Webb Telescope,2,2,3,4,3
+R_2dECRKKRBnpUnsB,New movie 'DC League of Super-pets',2,2,2,2,7
+R_2dECRKKRBnpUnsB,2022 MLB trade deadline,2,2,4,5,6
+R_2dECRKKRBnpUnsB,Number of kids celebrities have,1,3,1,2,6
+R_2dECRKKRBnpUnsB,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_2dECRKKRBnpUnsB,Rising Inflation,3,4,5,6,2
+R_2DV8B7lp22UmPps,January 6th attack investigation,2,5,6,5,3
+R_2DV8B7lp22UmPps,Heat Waves,2,5,5,5,1
+R_2DV8B7lp22UmPps,Amazon's One Medical Deal,2,2,4,4,7
+R_2DV8B7lp22UmPps,Celebrity Alcohol Brands,1,2,1,1,6
+R_2DV8B7lp22UmPps,Host Selection for ‘Jeopardy!’,1,4,3,3,6
+R_2EE2ANG6nOKFU4P,US Home Prices Potential Correction,3,1,4,5,7
+R_2EE2ANG6nOKFU4P,2022 MLB trade deadline,2,1,1,4,7
+R_2EE2ANG6nOKFU4P,Vince McMahon’s retirement and scandals,3,1,2,4,7
+R_2EE2ANG6nOKFU4P,Host Selection for ‘Jeopardy!’,2,3,1,4,6
+R_2EE2ANG6nOKFU4P,Wildfires in California,3,4,6,6,6
+R_2eXUIAm6l6qmYsj,US Home Prices Potential Correction,2,4,4,3,5
+R_2eXUIAm6l6qmYsj,Amazon's One Medical Deal,2,4,5,4,6
+R_2eXUIAm6l6qmYsj,Comedians joking about LGBTQ,2,3,4,5,6
+R_2eXUIAm6l6qmYsj,Vince McMahon’s retirement and scandals,3,5,5,4,5
+R_2eXUIAm6l6qmYsj,Stock Market Volatility,3,4,5,6,4
+R_2OTNIQAGiYArUaA,New movie 'DC League of Super-pets',2,3,3,2,5
+R_2OTNIQAGiYArUaA,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,2,1,4
+R_2OTNIQAGiYArUaA,Host Selection for ‘Jeopardy!’,1,4,2,2,6
+R_2OTNIQAGiYArUaA,TikToker made $200k selling farts in jars,1,1,1,1,6
+R_2OTNIQAGiYArUaA,Race to Replace UK Prime Minister Boris Johnson,2,3,4,4,3
+R_2OZvn42RoTeqgN2,2022 NFL training camp,1,1,1,1,7
+R_2OZvn42RoTeqgN2,Number of kids celebrities have,1,5,1,1,3
+R_2OZvn42RoTeqgN2,Vince McMahon’s retirement and scandals,1,1,1,1,7
+R_2OZvn42RoTeqgN2,Air travel disruptions,3,5,6,6,3
+R_2OZvn42RoTeqgN2,Musk-Twitter 44-Billion Deal,3,5,4,5,1
+R_2PhCjNI4Qds9rtz,Prince Harry and Meghan Markle's life story,3,5,5,4,4
+R_2PhCjNI4Qds9rtz,US Home Prices Potential Correction,1,3,5,3,6
+R_2PhCjNI4Qds9rtz,New movie 'DC League of Super-pets',1,1,4,5,5
+R_2PhCjNI4Qds9rtz,2022 NFL training camp,3,4,6,4,5
+R_2PhCjNI4Qds9rtz,Comedians joking about LGBTQ,2,4,6,4,6
+R_2pKUjWIMe6F6zOF,Roe v. Wade & Abortion Rights,2,3,4,4,3
+R_2pKUjWIMe6F6zOF,Mark Zuckerberg's Metaverse,1,1,1,1,7
+R_2pKUjWIMe6F6zOF,Prince William and Kate Middleton's life story,1,1,1,1,7
+R_2pKUjWIMe6F6zOF,Air travel disruptions,1,4,2,2,3
+R_2pKUjWIMe6F6zOF,Celebrity Alcohol Brands,1,1,1,1,7
+R_2Pvr9Q6CQx0hU9M,January 6th attack investigation,2,3,4,4,4
+R_2Pvr9Q6CQx0hU9M,US Home Prices Potential Correction,2,3,4,4,3
+R_2Pvr9Q6CQx0hU9M,Amazon's One Medical Deal,2,2,3,2,6
+R_2Pvr9Q6CQx0hU9M,Comedians joking about LGBTQ,1,3,3,2,7
+R_2Pvr9Q6CQx0hU9M,Rising Inflation,2,3,5,5,3
+R_2QQfDsta8986VAt,US Home Prices Potential Correction,3,4,5,5,4
+R_2QQfDsta8986VAt,Roe v. Wade & Abortion Rights,2,4,5,4,4
+R_2QQfDsta8986VAt,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,2,2,5
+R_2QQfDsta8986VAt,Air travel disruptions,2,3,4,4,4
+R_2QQfDsta8986VAt,Rising Inflation,3,4,5,5,3
+R_2R2lk930ARYxclv,Heat Waves,2,4,5,5,4
+R_2R2lk930ARYxclv,Amazon's One Medical Deal,2,3,6,6,3
+R_2R2lk930ARYxclv,Vince McMahon’s retirement and scandals,1,1,3,3,4
+R_2R2lk930ARYxclv,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,2,2,4
+R_2R2lk930ARYxclv,Rising Inflation,2,4,5,6,2
+R_2s5NyoQixnw1HYH,Nancy Pelosi’s Taiwan visit,1,3,4,2,6
+R_2s5NyoQixnw1HYH,Race to Replace UK Prime Minister Boris Johnson,2,2,5,5,7
+R_2s5NyoQixnw1HYH,Stock Market Volatility,1,3,2,1,7
+R_2s5NyoQixnw1HYH,First Images from the James Webb Telescope,2,2,3,4,6
+R_2s5NyoQixnw1HYH,2022 Mass Shootings,1,5,6,6,6
+R_2sQESaFrEfCWWSf,Number of kids celebrities have,1,3,2,1,4
+R_2sQESaFrEfCWWSf,Comedians joking about LGBTQ,1,2,2,2,4
+R_2sQESaFrEfCWWSf,Vince McMahon’s retirement and scandals,1,1,2,4,7
+R_2sQESaFrEfCWWSf,Air travel disruptions,2,3,5,4,3
+R_2sQESaFrEfCWWSf,Stock Market Volatility,1,2,4,3,6
+R_2SqNj3Rgkh89kro,Prince Harry and Meghan Markle's life story,1,3,4,3,3
+R_2SqNj3Rgkh89kro,US Home Prices Potential Correction,3,5,6,6,2
+R_2SqNj3Rgkh89kro,Mark Zuckerberg's Metaverse,1,3,3,3,4
+R_2SqNj3Rgkh89kro,Number of kids celebrities have,1,3,3,3,3
+R_2SqNj3Rgkh89kro,Rising Inflation,3,5,6,6,1
+R_2SucV2zQEYasLfh,New movie 'DC League of Super-pets',2,2,3,2,7
+R_2SucV2zQEYasLfh,Roe v. Wade & Abortion Rights,1,4,5,4,2
+R_2SucV2zQEYasLfh,Mark Zuckerberg's Metaverse,1,2,1,1,7
+R_2SucV2zQEYasLfh,Amazon's One Medical Deal,2,2,4,4,6
+R_2SucV2zQEYasLfh,Comedians joking about LGBTQ,1,4,2,2,7
+R_2sWMTpdsKgjAp6u,January 6th attack investigation,2,4,5,5,4
+R_2sWMTpdsKgjAp6u,Prince Harry and Meghan Markle's life story,2,4,5,4,5
+R_2sWMTpdsKgjAp6u,Mark Zuckerberg's Metaverse,2,4,5,4,5
+R_2sWMTpdsKgjAp6u,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,2,4,5,5,5
+R_2sWMTpdsKgjAp6u,Prince William and Kate Middleton's life story,2,3,4,4,4
+R_2tA53fmpP7sYg5X,US Home Prices Potential Correction,1,1,1,1,7
+R_2tA53fmpP7sYg5X,Roe v. Wade & Abortion Rights,3,3,4,4,5
+R_2tA53fmpP7sYg5X,2022 MLB trade deadline,1,1,2,2,7
+R_2tA53fmpP7sYg5X,Number of kids celebrities have,2,2,3,2,4
+R_2tA53fmpP7sYg5X,Wildfires in California,2,3,6,6,4
+R_2tnuwP2riKPnqSo,Mark Zuckerberg's Metaverse,1,2,2,2,4
+R_2tnuwP2riKPnqSo,Nancy Pelosi’s Taiwan visit,3,4,5,5,2
+R_2tnuwP2riKPnqSo,Musk-Twitter 44-Billion Deal,2,4,4,4,3
+R_2tnuwP2riKPnqSo,First Images from the James Webb Telescope,2,4,5,5,3
+R_2tnuwP2riKPnqSo,Wildfires in California,3,4,6,6,2
+R_2TtRvmrY1PtWMMR,January 6th attack investigation,2,4,5,5,3
+R_2TtRvmrY1PtWMMR,Heat Waves,2,5,5,4,4
+R_2TtRvmrY1PtWMMR,Mark Zuckerberg's Metaverse,2,2,3,3,7
+R_2TtRvmrY1PtWMMR,Host Selection for ‘Jeopardy!’,2,3,3,3,7
+R_2TtRvmrY1PtWMMR,TikToker made $200k selling farts in jars,1,2,2,2,6
+R_2ttZGCFgrvVo4p2,New movie 'DC League of Super-pets',3,3,4,5,3
+R_2ttZGCFgrvVo4p2,Vince McMahon’s retirement and scandals,2,4,3,2,4
+R_2ttZGCFgrvVo4p2,Air travel disruptions,1,4,5,6,1
+R_2ttZGCFgrvVo4p2,Host Selection for ‘Jeopardy!’,2,5,4,5,5
+R_2ttZGCFgrvVo4p2,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_2uUTvWKoGkj98fK,January 6th attack investigation,2,4,6,6,4
+R_2uUTvWKoGkj98fK,US Home Prices Potential Correction,2,1,4,4,7
+R_2uUTvWKoGkj98fK,Vince McMahon’s retirement and scandals,2,3,2,4,3
+R_2uUTvWKoGkj98fK,Celebrity Alcohol Brands,2,2,2,2,7
+R_2uUTvWKoGkj98fK,Rising Inflation,2,4,6,6,3
+R_2uWCpyyZiiIKO40,Vince McMahon’s retirement and scandals,1,1,3,2,7
+R_2uWCpyyZiiIKO40,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_2uWCpyyZiiIKO40,Stock Market Volatility,2,2,4,4,5
+R_2uWCpyyZiiIKO40,2022 Mass Shootings,2,3,5,5,4
+R_2uWCpyyZiiIKO40,Wildfires in California,2,3,5,5,3
+R_2uwdPTbdpHOfZp8,Nancy Pelosi’s Taiwan visit,2,1,4,4,7
+R_2uwdPTbdpHOfZp8,Vince McMahon’s retirement and scandals,2,2,3,4,6
+R_2uwdPTbdpHOfZp8,TikToker made $200k selling farts in jars,1,3,1,1,6
+R_2uwdPTbdpHOfZp8,Race to Replace UK Prime Minister Boris Johnson,2,3,4,5,4
+R_2uwdPTbdpHOfZp8,2022 Mass Shootings,3,4,6,6,4
+R_2VyYgV0PH9x0Jdp,Celebrity Alcohol Brands,1,1,1,2,7
+R_2VyYgV0PH9x0Jdp,TikToker made $200k selling farts in jars,1,1,1,2,7
+R_2VyYgV0PH9x0Jdp,Race to Replace UK Prime Minister Boris Johnson,3,2,4,4,7
+R_2VyYgV0PH9x0Jdp,Stock Market Volatility,2,2,5,5,7
+R_2VyYgV0PH9x0Jdp,2022 Mass Shootings,2,3,5,5,6
+R_2wEVhCEJuzmFEgk,January 6th attack investigation,2,5,6,6,1
+R_2wEVhCEJuzmFEgk,US Home Prices Potential Correction,1,3,5,5,6
+R_2wEVhCEJuzmFEgk,2022 MLB trade deadline,1,3,3,4,6
+R_2wEVhCEJuzmFEgk,Vince McMahon’s retirement and scandals,1,3,2,2,5
+R_2wEVhCEJuzmFEgk,WNBA star Brittney Griner in Russian custody,2,3,3,4,3
+R_2wn0nR52o9S5aCq,Roe v. Wade & Abortion Rights,2,3,6,6,1
+R_2wn0nR52o9S5aCq,Vince McMahon’s retirement and scandals,2,1,1,1,7
+R_2wn0nR52o9S5aCq,WNBA star Brittney Griner in Russian custody,1,3,1,1,5
+R_2wn0nR52o9S5aCq,Rising Inflation,3,3,6,6,3
+R_2wn0nR52o9S5aCq,Stock Market Volatility,3,5,4,4,6
+R_2wtSrwXRKpM2CTu,2022 MLB trade deadline,2,1,1,1,7
+R_2wtSrwXRKpM2CTu,Nancy Pelosi’s Taiwan visit,2,3,5,5,2
+R_2wtSrwXRKpM2CTu,Air travel disruptions,2,1,2,2,7
+R_2wtSrwXRKpM2CTu,2022 Mass Shootings,2,4,3,5,5
+R_2wtSrwXRKpM2CTu,Wildfires in California,2,4,3,3,6
+R_2wtv1NtauRX3h4R,US Home Prices Potential Correction,2,2,5,4,7
+R_2wtv1NtauRX3h4R,2022 MLB trade deadline,1,1,1,2,7
+R_2wtv1NtauRX3h4R,TikToker made $200k selling farts in jars,2,1,1,2,7
+R_2wtv1NtauRX3h4R,Race to Replace UK Prime Minister Boris Johnson,3,3,5,5,4
+R_2wtv1NtauRX3h4R,2022 Mass Shootings,2,4,6,6,3
+R_2xEJy2foshl496f,Heat Waves,2,5,6,6,1
+R_2xEJy2foshl496f,US Home Prices Potential Correction,2,4,5,6,4
+R_2xEJy2foshl496f,Roe v. Wade & Abortion Rights,2,4,6,5,1
+R_2xEJy2foshl496f,2022 MLB trade deadline,2,4,2,4,1
+R_2xEJy2foshl496f,Race to Replace UK Prime Minister Boris Johnson,2,2,4,5,4
+R_2Y3XaGj4Jf6crPC,Heat Waves,3,4,6,6,5
+R_2Y3XaGj4Jf6crPC,2022 MLB trade deadline,3,4,5,5,6
+R_2Y3XaGj4Jf6crPC,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,3,4,5,6,6
+R_2Y3XaGj4Jf6crPC,Race to Replace UK Prime Minister Boris Johnson,3,4,5,6,6
+R_2Y3XaGj4Jf6crPC,Wildfires in California,3,4,5,6,6
+R_2YEcmegpYW4hLZA,Prince Harry and Meghan Markle's life story,1,1,1,1,7
+R_2YEcmegpYW4hLZA,Comedians joking about LGBTQ,1,3,2,2,7
+R_2YEcmegpYW4hLZA,WNBA star Brittney Griner in Russian custody,1,2,1,1,6
+R_2YEcmegpYW4hLZA,Rising Inflation,3,4,6,6,4
+R_2YEcmegpYW4hLZA,2022 Mass Shootings,2,3,5,5,5
+R_2yl5jFp0NvHwRoJ,2022 NFL training camp,1,1,1,3,7
+R_2yl5jFp0NvHwRoJ,2022 MLB trade deadline,1,1,1,2,7
+R_2yl5jFp0NvHwRoJ,TikToker made $200k selling farts in jars,2,1,2,4,7
+R_2yl5jFp0NvHwRoJ,WNBA star Brittney Griner in Russian custody,1,2,4,4,7
+R_2yl5jFp0NvHwRoJ,Stock Market Volatility,1,1,2,4,7
+R_2Yyx2R18QsbHOlq,2022 NFL training camp,2,2,4,4,7
+R_2Yyx2R18QsbHOlq,2022 MLB trade deadline,2,3,4,4,6
+R_2Yyx2R18QsbHOlq,Number of kids celebrities have,1,2,2,1,6
+R_2Yyx2R18QsbHOlq,Prince William and Kate Middleton's life story,2,3,2,3,7
+R_2Yyx2R18QsbHOlq,2022 Mass Shootings,2,4,6,6,3
+R_2ZX2o7kFLsrWsJc,2022 NFL training camp,1,1,3,4,7
+R_2ZX2o7kFLsrWsJc,Air travel disruptions,2,2,4,4,6
+R_2ZX2o7kFLsrWsJc,Race to Replace UK Prime Minister Boris Johnson,3,1,4,4,7
+R_2ZX2o7kFLsrWsJc,Musk-Twitter 44-Billion Deal,2,2,4,4,6
+R_2ZX2o7kFLsrWsJc,First Images from the James Webb Telescope,3,2,5,5,6
+R_2zzLFGq2wc7iOeY,Prince Harry and Meghan Markle's life story,2,2,4,4,6
+R_2zzLFGq2wc7iOeY,2022 MLB trade deadline,2,1,5,5,7
+R_2zzLFGq2wc7iOeY,Number of kids celebrities have,2,2,3,3,6
+R_2zzLFGq2wc7iOeY,Race to Replace UK Prime Minister Boris Johnson,2,1,4,4,7
+R_2zzLFGq2wc7iOeY,Musk-Twitter 44-Billion Deal,2,2,4,4,6
+R_30dDcn0QkGqqef3,2022 MLB trade deadline,1,1,2,3,7
+R_30dDcn0QkGqqef3,Nancy Pelosi’s Taiwan visit,2,3,5,6,3
+R_30dDcn0QkGqqef3,Air travel disruptions,2,4,5,5,4
+R_30dDcn0QkGqqef3,WNBA star Brittney Griner in Russian custody,2,4,4,5,3
+R_30dDcn0QkGqqef3,Race to Replace UK Prime Minister Boris Johnson,2,3,6,6,4
+R_31sHUjdCmMaHBXh,January 6th attack investigation,2,4,4,4,5
+R_31sHUjdCmMaHBXh,New movie 'DC League of Super-pets',2,3,4,5,5
+R_31sHUjdCmMaHBXh,Roe v. Wade & Abortion Rights,2,3,5,4,5
+R_31sHUjdCmMaHBXh,Nancy Pelosi’s Taiwan visit,2,3,4,5,5
+R_31sHUjdCmMaHBXh,Celebrity Alcohol Brands,3,4,5,4,5
+R_336YKQI4NC8VsJg,January 6th attack investigation,1,2,2,2,5
+R_336YKQI4NC8VsJg,2022 NFL training camp,1,3,3,3,5
+R_336YKQI4NC8VsJg,Comedians joking about LGBTQ,2,3,3,3,6
+R_336YKQI4NC8VsJg,TikToker made $200k selling farts in jars,1,3,1,1,6
+R_336YKQI4NC8VsJg,Rising Inflation,3,4,5,5,4
+R_33C0oLoBeBVcxsK,Amazon's One Medical Deal,3,2,5,5,7
+R_33C0oLoBeBVcxsK,Nancy Pelosi’s Taiwan visit,1,3,4,4,3
+R_33C0oLoBeBVcxsK,Comedians joking about LGBTQ,1,4,4,5,5
+R_33C0oLoBeBVcxsK,Host Selection for ‘Jeopardy!’,1,3,2,3,4
+R_33C0oLoBeBVcxsK,Race to Replace UK Prime Minister Boris Johnson,1,3,4,4,4
+R_3DpT8fGctCvf9wt,Mark Zuckerberg's Metaverse,1,4,3,3,2
+R_3DpT8fGctCvf9wt,Nancy Pelosi’s Taiwan visit,2,5,6,6,1
+R_3DpT8fGctCvf9wt,Vince McMahon’s retirement and scandals,1,2,1,2,6
+R_3DpT8fGctCvf9wt,Rising Inflation,1,5,6,6,1
+R_3DpT8fGctCvf9wt,Wildfires in California,2,2,5,5,6
+R_3DtHTENoqVXvntR,January 6th attack investigation,1,1,5,5,5
+R_3DtHTENoqVXvntR,2022 MLB trade deadline,1,3,3,3,7
+R_3DtHTENoqVXvntR,Number of kids celebrities have,1,4,1,1,5
+R_3DtHTENoqVXvntR,Prince William and Kate Middleton's life story,1,3,3,3,7
+R_3DtHTENoqVXvntR,First Images from the James Webb Telescope,3,3,5,5,6
+R_3e9be16iR4iEzx9,Mark Zuckerberg's Metaverse,1,1,2,2,7
+R_3e9be16iR4iEzx9,Amazon's One Medical Deal,3,1,4,5,7
+R_3e9be16iR4iEzx9,2022 MLB trade deadline,1,1,1,3,7
+R_3e9be16iR4iEzx9,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_3e9be16iR4iEzx9,2022 Mass Shootings,2,3,5,5,4
+R_3EtG0BoBPuW0wvG,US Home Prices Potential Correction,2,3,5,5,3
+R_3EtG0BoBPuW0wvG,Nancy Pelosi’s Taiwan visit,2,5,5,6,2
+R_3EtG0BoBPuW0wvG,Host Selection for ‘Jeopardy!’,1,2,2,2,4
+R_3EtG0BoBPuW0wvG,Race to Replace UK Prime Minister Boris Johnson,1,4,4,4,3
+R_3EtG0BoBPuW0wvG,First Images from the James Webb Telescope,3,4,5,6,3
+R_3FWmdPmsDKDHgNm,January 6th attack investigation,3,5,6,6,4
+R_3FWmdPmsDKDHgNm,2022 MLB trade deadline,2,1,1,1,7
+R_3FWmdPmsDKDHgNm,Air travel disruptions,2,3,4,5,5
+R_3FWmdPmsDKDHgNm,Race to Replace UK Prime Minister Boris Johnson,3,3,6,6,6
+R_3FWmdPmsDKDHgNm,First Images from the James Webb Telescope,2,5,5,6,3
+R_3G8M8Npq3fCBjLP,Prince Harry and Meghan Markle's life story,1,3,1,1,6
+R_3G8M8Npq3fCBjLP,US Home Prices Potential Correction,2,2,4,5,3
+R_3G8M8Npq3fCBjLP,Celebrity Alcohol Brands,1,3,1,1,6
+R_3G8M8Npq3fCBjLP,Rising Inflation,3,3,5,5,3
+R_3G8M8Npq3fCBjLP,Race to Replace UK Prime Minister Boris Johnson,3,2,5,5,6
+R_3HAix7ye3eOL5DT,January 6th attack investigation,3,4,6,6,1
+R_3HAix7ye3eOL5DT,Prince William and Kate Middleton's life story,1,1,2,2,7
+R_3HAix7ye3eOL5DT,Air travel disruptions,2,3,4,4,3
+R_3HAix7ye3eOL5DT,TikToker made $200k selling farts in jars,1,2,1,1,7
+R_3HAix7ye3eOL5DT,2022 Mass Shootings,3,5,6,6,2
+R_3HANvgUINcwVsF6,January 6th attack investigation,2,4,5,4,4
+R_3HANvgUINcwVsF6,Air travel disruptions,2,4,5,4,4
+R_3HANvgUINcwVsF6,TikToker made $200k selling farts in jars,2,3,5,4,5
+R_3HANvgUINcwVsF6,Stock Market Volatility,2,4,5,4,5
+R_3HANvgUINcwVsF6,Wildfires in California,3,4,5,4,6
+R_3j1dTnhZQkOPrqk,New movie 'DC League of Super-pets',2,1,3,2,6
+R_3j1dTnhZQkOPrqk,2022 MLB trade deadline,3,4,5,3,2
+R_3j1dTnhZQkOPrqk,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,3,4,3,1,4
+R_3j1dTnhZQkOPrqk,WNBA star Brittney Griner in Russian custody,1,3,5,2,7
+R_3j1dTnhZQkOPrqk,Musk-Twitter 44-Billion Deal,1,3,5,2,6
+R_3J2fkq4soWWyjfu,Roe v. Wade & Abortion Rights,2,3,4,4,4
+R_3J2fkq4soWWyjfu,Prince William and Kate Middleton's life story,1,2,1,2,7
+R_3J2fkq4soWWyjfu,Celebrity Alcohol Brands,2,2,1,2,7
+R_3J2fkq4soWWyjfu,TikToker made $200k selling farts in jars,2,3,4,5,6
+R_3J2fkq4soWWyjfu,Wildfires in California,3,3,5,5,6
+R_3j2NRy3NH6h5jRS,Heat Waves,3,5,6,6,3
+R_3j2NRy3NH6h5jRS,Prince William and Kate Middleton's life story,1,3,2,2,3
+R_3j2NRy3NH6h5jRS,Air travel disruptions,2,3,4,4,5
+R_3j2NRy3NH6h5jRS,Race to Replace UK Prime Minister Boris Johnson,2,3,6,6,5
+R_3j2NRy3NH6h5jRS,2022 Mass Shootings,2,5,6,6,4
+R_3J7VpSqSvHfpOB6,Amazon's One Medical Deal,2,3,4,4,4
+R_3J7VpSqSvHfpOB6,2022 NFL training camp,1,2,1,1,7
+R_3J7VpSqSvHfpOB6,Host Selection for ‘Jeopardy!’,2,3,4,3,4
+R_3J7VpSqSvHfpOB6,WNBA star Brittney Griner in Russian custody,1,5,1,1,4
+R_3J7VpSqSvHfpOB6,2022 Mass Shootings,2,3,4,4,5
+R_3JqNVi7to8pNqip,January 6th attack investigation,1,4,2,3,1
+R_3JqNVi7to8pNqip,Number of kids celebrities have,1,3,1,1,3
+R_3JqNVi7to8pNqip,Nancy Pelosi’s Taiwan visit,2,4,6,6,1
+R_3JqNVi7to8pNqip,Rising Inflation,2,4,6,6,2
+R_3JqNVi7to8pNqip,Musk-Twitter 44-Billion Deal,1,3,4,4,2
+R_3k1VO1WVV79Kfnz,Heat Waves,1,3,4,4,3
+R_3k1VO1WVV79Kfnz,Amazon's One Medical Deal,3,3,5,5,6
+R_3k1VO1WVV79Kfnz,Number of kids celebrities have,1,2,2,3,3
+R_3k1VO1WVV79Kfnz,First Images from the James Webb Telescope,2,2,5,5,5
+R_3k1VO1WVV79Kfnz,2022 Mass Shootings,1,3,4,4,2
+R_3ktxZe5yFGfHSQa,2022 MLB trade deadline,2,1,2,3,7
+R_3ktxZe5yFGfHSQa,Vince McMahon’s retirement and scandals,1,1,1,2,7
+R_3ktxZe5yFGfHSQa,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,1,1,7
+R_3ktxZe5yFGfHSQa,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_3ktxZe5yFGfHSQa,First Images from the James Webb Telescope,2,2,4,4,3
+R_3L528XqP54rLZi8,January 6th attack investigation,1,4,3,3,1
+R_3L528XqP54rLZi8,Comedians joking about LGBTQ,1,2,1,1,4
+R_3L528XqP54rLZi8,Air travel disruptions,2,3,4,4,3
+R_3L528XqP54rLZi8,2022 Mass Shootings,1,5,3,3,3
+R_3L528XqP54rLZi8,Wildfires in California,2,2,4,4,5
+R_3L5uZiWAXvonCYN,Heat Waves,3,4,6,6,5
+R_3L5uZiWAXvonCYN,New movie 'DC League of Super-pets',2,1,3,2,7
+R_3L5uZiWAXvonCYN,Nancy Pelosi’s Taiwan visit,1,1,4,1,7
+R_3L5uZiWAXvonCYN,Vince McMahon’s retirement and scandals,3,1,5,6,7
+R_3L5uZiWAXvonCYN,Rising Inflation,3,3,6,6,7
+R_3MgPQqmXxBHsm6Z,US Home Prices Potential Correction,2,3,5,6,5
+R_3MgPQqmXxBHsm6Z,Number of kids celebrities have,1,4,1,1,5
+R_3MgPQqmXxBHsm6Z,Race to Replace UK Prime Minister Boris Johnson,3,3,5,6,6
+R_3MgPQqmXxBHsm6Z,Musk-Twitter 44-Billion Deal,1,4,2,2,3
+R_3MgPQqmXxBHsm6Z,2022 Mass Shootings,1,5,6,6,4
+R_3MtFnrJpdFV27Wc,January 6th attack investigation,3,4,6,6,3
+R_3MtFnrJpdFV27Wc,Prince Harry and Meghan Markle's life story,1,1,1,1,6
+R_3MtFnrJpdFV27Wc,Nancy Pelosi’s Taiwan visit,1,2,4,3,3
+R_3MtFnrJpdFV27Wc,Musk-Twitter 44-Billion Deal,2,4,4,4,3
+R_3MtFnrJpdFV27Wc,First Images from the James Webb Telescope,3,3,5,4,4
+R_3n3sAM30awEQYmI,January 6th attack investigation,1,5,1,1,1
+R_3n3sAM30awEQYmI,Prince Harry and Meghan Markle's life story,1,2,1,1,4
+R_3n3sAM30awEQYmI,Air travel disruptions,2,3,2,2,4
+R_3n3sAM30awEQYmI,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_3n3sAM30awEQYmI,Rising Inflation,3,5,6,6,3
+R_3nemKVPEjUqDQ5d,US Home Prices Potential Correction,3,3,5,5,6
+R_3nemKVPEjUqDQ5d,2022 NFL training camp,1,3,1,1,3
+R_3nemKVPEjUqDQ5d,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_3nemKVPEjUqDQ5d,Stock Market Volatility,3,5,5,5,7
+R_3nemKVPEjUqDQ5d,First Images from the James Webb Telescope,2,5,4,4,2
+R_3niSjFckFv0L0eF,Heat Waves,2,4,6,6,3
+R_3niSjFckFv0L0eF,Amazon's One Medical Deal,1,3,5,3,6
+R_3niSjFckFv0L0eF,Host Selection for ‘Jeopardy!’,2,1,2,2,7
+R_3niSjFckFv0L0eF,Race to Replace UK Prime Minister Boris Johnson,1,2,3,3,6
+R_3niSjFckFv0L0eF,Musk-Twitter 44-Billion Deal,1,4,3,2,6
+R_3nJCxTVcgA83aQ7,Heat Waves,1,4,4,4,3
+R_3nJCxTVcgA83aQ7,Prince Harry and Meghan Markle's life story,1,3,3,4,3
+R_3nJCxTVcgA83aQ7,Number of kids celebrities have,1,2,1,1,7
+R_3nJCxTVcgA83aQ7,Air travel disruptions,2,3,4,4,6
+R_3nJCxTVcgA83aQ7,Musk-Twitter 44-Billion Deal,1,3,4,5,4
+R_3npaGgK9suFzaxn,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,3,3,3
+R_3npaGgK9suFzaxn,Rising Inflation,3,3,5,5,4
+R_3npaGgK9suFzaxn,Musk-Twitter 44-Billion Deal,1,3,3,3,3
+R_3npaGgK9suFzaxn,Stock Market Volatility,3,3,3,3,4
+R_3npaGgK9suFzaxn,First Images from the James Webb Telescope,3,3,5,5,5
+R_3oA8Z0u1gixOOQj,2022 NFL training camp,1,3,2,2,7
+R_3oA8Z0u1gixOOQj,Number of kids celebrities have,1,2,1,1,6
+R_3oA8Z0u1gixOOQj,Nancy Pelosi’s Taiwan visit,1,1,4,3,7
+R_3oA8Z0u1gixOOQj,Vince McMahon’s retirement and scandals,1,1,1,2,7
+R_3oA8Z0u1gixOOQj,2022 Mass Shootings,2,4,5,5,3
+R_3OrBHFBxGorrVBu,US Home Prices Potential Correction,2,3,6,5,3
+R_3OrBHFBxGorrVBu,Roe v. Wade & Abortion Rights,2,5,6,6,1
+R_3OrBHFBxGorrVBu,Mark Zuckerberg's Metaverse,1,2,2,2,6
+R_3OrBHFBxGorrVBu,2022 MLB trade deadline,2,3,3,4,3
+R_3OrBHFBxGorrVBu,Musk-Twitter 44-Billion Deal,1,4,5,6,3
+R_3PTadTDMFhfEwUy,Amazon's One Medical Deal,3,1,3,4,7
+R_3PTadTDMFhfEwUy,Comedians joking about LGBTQ,1,1,2,2,7
+R_3PTadTDMFhfEwUy,Vince McMahon’s retirement and scandals,2,1,2,2,7
+R_3PTadTDMFhfEwUy,Prince William and Kate Middleton's life story,1,1,1,1,7
+R_3PTadTDMFhfEwUy,Air travel disruptions,2,2,4,4,6
+R_3PzQQ6XudWrPAan,New movie 'DC League of Super-pets',1,3,3,3,4
+R_3PzQQ6XudWrPAan,Amazon's One Medical Deal,3,1,4,4,7
+R_3PzQQ6XudWrPAan,Vince McMahon’s retirement and scandals,2,4,4,4,3
+R_3PzQQ6XudWrPAan,Celebrity Alcohol Brands,3,3,3,3,7
+R_3PzQQ6XudWrPAan,First Images from the James Webb Telescope,3,3,4,5,5
+R_3R8GyZB3rXkUBhp,Number of kids celebrities have,3,2,3,4,4
+R_3R8GyZB3rXkUBhp,Air travel disruptions,3,3,3,3,2
+R_3R8GyZB3rXkUBhp,Host Selection for ‘Jeopardy!’,2,4,3,3,3
+R_3R8GyZB3rXkUBhp,WNBA star Brittney Griner in Russian custody,2,3,5,3,3
+R_3R8GyZB3rXkUBhp,Race to Replace UK Prime Minister Boris Johnson,2,4,3,4,3
+R_3RgZDb2t92bnGV3,January 6th attack investigation,2,5,6,6,7
+R_3RgZDb2t92bnGV3,Prince Harry and Meghan Markle's life story,1,3,4,4,5
+R_3RgZDb2t92bnGV3,Roe v. Wade & Abortion Rights,3,5,6,6,2
+R_3RgZDb2t92bnGV3,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,4,1,1,4
+R_3RgZDb2t92bnGV3,WNBA star Brittney Griner in Russian custody,3,4,6,6,4
+R_3rHgSo3IfWBMiVn,Number of kids celebrities have,1,2,1,1,6
+R_3rHgSo3IfWBMiVn,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,1,1,4
+R_3rHgSo3IfWBMiVn,Air travel disruptions,2,2,3,3,7
+R_3rHgSo3IfWBMiVn,Stock Market Volatility,1,1,3,2,7
+R_3rHgSo3IfWBMiVn,Wildfires in California,3,3,4,4,6
+R_3Rz0w1033GZR5tz,Prince Harry and Meghan Markle's life story,1,4,1,1,4
+R_3Rz0w1033GZR5tz,Amazon's One Medical Deal,3,1,6,6,7
+R_3Rz0w1033GZR5tz,2022 NFL training camp,1,3,1,1,7
+R_3Rz0w1033GZR5tz,Number of kids celebrities have,1,3,1,1,6
+R_3Rz0w1033GZR5tz,Celebrity Alcohol Brands,1,3,1,1,7
+R_3spLaqlfZ28ymQh,Roe v. Wade & Abortion Rights,3,5,6,6,2
+R_3spLaqlfZ28ymQh,Mark Zuckerberg's Metaverse,1,2,2,3,6
+R_3spLaqlfZ28ymQh,Musk-Twitter 44-Billion Deal,1,4,2,4,4
+R_3spLaqlfZ28ymQh,First Images from the James Webb Telescope,2,3,4,5,6
+R_3spLaqlfZ28ymQh,Wildfires in California,2,5,6,6,2
+R_3Vppr7IRAzbPOLv,2022 NFL training camp,2,3,3,5,7
+R_3Vppr7IRAzbPOLv,Comedians joking about LGBTQ,2,3,2,4,6
+R_3Vppr7IRAzbPOLv,Air travel disruptions,1,4,4,5,7
+R_3Vppr7IRAzbPOLv,Celebrity Alcohol Brands,2,2,2,3,7
+R_3Vppr7IRAzbPOLv,2022 Mass Shootings,2,4,6,6,5
+R_5o4rs4p8LacfYAh,January 6th attack investigation,1,5,4,4,1
+R_5o4rs4p8LacfYAh,2022 MLB trade deadline,2,5,5,4,3
+R_5o4rs4p8LacfYAh,Comedians joking about LGBTQ,1,3,3,1,6
+R_5o4rs4p8LacfYAh,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,2,2,6
+R_5o4rs4p8LacfYAh,Rising Inflation,2,5,6,6,1
+R_6ETKFCcWnKQVdfP,Heat Waves,3,3,5,6,2
+R_6ETKFCcWnKQVdfP,US Home Prices Potential Correction,1,2,3,4,6
+R_6ETKFCcWnKQVdfP,New movie 'DC League of Super-pets',1,2,1,2,6
+R_6ETKFCcWnKQVdfP,Prince William and Kate Middleton's life story,1,2,1,1,6
+R_6ETKFCcWnKQVdfP,Musk-Twitter 44-Billion Deal,1,4,4,4,2
+R_81zMbCF3V3PRcid,January 6th attack investigation,2,3,4,4,3
+R_81zMbCF3V3PRcid,Mark Zuckerberg's Metaverse,2,1,1,1,7
+R_81zMbCF3V3PRcid,Comedians joking about LGBTQ,2,2,4,3,6
+R_81zMbCF3V3PRcid,Vince McMahon’s retirement and scandals,2,1,4,4,7
+R_81zMbCF3V3PRcid,Host Selection for ‘Jeopardy!’,2,2,2,2,6
+R_8AGj6sm96G04U01,Amazon's One Medical Deal,2,1,5,5,7
+R_8AGj6sm96G04U01,2022 NFL training camp,2,3,3,4,3
+R_8AGj6sm96G04U01,Vince McMahon’s retirement and scandals,1,3,3,3,3
+R_8AGj6sm96G04U01,Celebrity Alcohol Brands,2,2,2,2,4
+R_8AGj6sm96G04U01,Host Selection for ‘Jeopardy!’,2,5,4,4,4
+R_9BtDk2GoP9IMEsV,Heat Waves,3,4,6,5,4
+R_9BtDk2GoP9IMEsV,New movie 'DC League of Super-pets',2,1,4,4,7
+R_9BtDk2GoP9IMEsV,2022 MLB trade deadline,1,2,4,4,4
+R_9BtDk2GoP9IMEsV,Nancy Pelosi’s Taiwan visit,2,3,4,4,4
+R_9BtDk2GoP9IMEsV,WNBA star Brittney Griner in Russian custody,3,5,6,6,3
+R_A0by2tCSs9ZzJxT,Prince Harry and Meghan Markle's life story,1,3,1,1,4
+R_A0by2tCSs9ZzJxT,Roe v. Wade & Abortion Rights,2,5,6,6,1
+R_A0by2tCSs9ZzJxT,2022 MLB trade deadline,1,1,1,1,7
+R_A0by2tCSs9ZzJxT,Comedians joking about LGBTQ,1,3,1,1,4
+R_A0by2tCSs9ZzJxT,Stock Market Volatility,1,3,4,4,2
+R_A1o2FsSS4y0qGc1,Nancy Pelosi’s Taiwan visit,2,4,6,5,3
+R_A1o2FsSS4y0qGc1,Comedians joking about LGBTQ,2,2,3,3,6
+R_A1o2FsSS4y0qGc1,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,2,2,3,3,4
+R_A1o2FsSS4y0qGc1,Celebrity Alcohol Brands,2,1,3,3,6
+R_A1o2FsSS4y0qGc1,Rising Inflation,2,4,6,6,2
+R_Ad4zI9OHwZHgOaZ,Heat Waves,3,5,6,6,2
+R_Ad4zI9OHwZHgOaZ,Air travel disruptions,2,2,4,4,6
+R_Ad4zI9OHwZHgOaZ,Host Selection for ‘Jeopardy!’,1,2,1,1,6
+R_Ad4zI9OHwZHgOaZ,Rising Inflation,3,5,6,6,2
+R_Ad4zI9OHwZHgOaZ,First Images from the James Webb Telescope,3,5,6,6,1
+R_AiFF2adn1dleCkh,Roe v. Wade & Abortion Rights,2,3,5,4,3
+R_AiFF2adn1dleCkh,Mark Zuckerberg's Metaverse,2,2,3,3,7
+R_AiFF2adn1dleCkh,Number of kids celebrities have,2,1,2,2,6
+R_AiFF2adn1dleCkh,Vince McMahon’s retirement and scandals,2,1,3,4,7
+R_AiFF2adn1dleCkh,Musk-Twitter 44-Billion Deal,2,3,4,4,3
+R_cu7ICMphekLoQFj,Heat Waves,3,4,6,5,5
+R_cu7ICMphekLoQFj,Roe v. Wade & Abortion Rights,2,4,4,3,6
+R_cu7ICMphekLoQFj,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,1,1,7
+R_cu7ICMphekLoQFj,Rising Inflation,3,3,6,6,2
+R_cu7ICMphekLoQFj,Stock Market Volatility,2,2,4,3,4
+R_D1P8FsNWSxsA6Xv,Prince Harry and Meghan Markle's life story,1,3,3,3,6
+R_D1P8FsNWSxsA6Xv,US Home Prices Potential Correction,3,3,5,5,6
+R_D1P8FsNWSxsA6Xv,Roe v. Wade & Abortion Rights,2,3,5,5,2
+R_D1P8FsNWSxsA6Xv,Rising Inflation,3,3,5,5,3
+R_D1P8FsNWSxsA6Xv,Race to Replace UK Prime Minister Boris Johnson,3,3,4,5,5
+R_Dw6dCmFsXa4QrVD,Comedians joking about LGBTQ,2,1,5,4,7
+R_Dw6dCmFsXa4QrVD,WNBA star Brittney Griner in Russian custody,1,1,4,4,7
+R_Dw6dCmFsXa4QrVD,Rising Inflation,2,3,5,5,4
+R_Dw6dCmFsXa4QrVD,Musk-Twitter 44-Billion Deal,1,3,3,3,6
+R_Dw6dCmFsXa4QrVD,First Images from the James Webb Telescope,2,2,5,5,6
+R_eCMpsy0sYKlkI7L,Heat Waves,2,3,5,4,4
+R_eCMpsy0sYKlkI7L,Roe v. Wade & Abortion Rights,3,4,6,6,5
+R_eCMpsy0sYKlkI7L,Mark Zuckerberg's Metaverse,1,2,2,2,6
+R_eCMpsy0sYKlkI7L,Vince McMahon’s retirement and scandals,1,1,1,1,7
+R_eCMpsy0sYKlkI7L,Rising Inflation,3,4,5,5,3
+R_NXgxHZhRdz0GwF3,Roe v. Wade & Abortion Rights,2,2,5,3,5
+R_NXgxHZhRdz0GwF3,2022 NFL training camp,2,3,5,3,5
+R_NXgxHZhRdz0GwF3,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,2,4,5,4,4
+R_NXgxHZhRdz0GwF3,WNBA star Brittney Griner in Russian custody,2,3,5,4,4
+R_NXgxHZhRdz0GwF3,Musk-Twitter 44-Billion Deal,2,3,5,4,5
+R_OvYiV80Exz9564F,US Home Prices Potential Correction,2,2,5,4,7
+R_OvYiV80Exz9564F,2022 MLB trade deadline,1,1,4,3,7
+R_OvYiV80Exz9564F,Nancy Pelosi’s Taiwan visit,1,1,4,4,7
+R_OvYiV80Exz9564F,Air travel disruptions,2,3,5,5,7
+R_OvYiV80Exz9564F,WNBA star Brittney Griner in Russian custody,1,2,4,4,6
+R_pbByRfQrUVSbq2R,Prince Harry and Meghan Markle's life story,2,1,2,2,7
+R_pbByRfQrUVSbq2R,2022 MLB trade deadline,3,1,2,2,7
+R_pbByRfQrUVSbq2R,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,2,2,5
+R_pbByRfQrUVSbq2R,Stock Market Volatility,2,3,4,4,4
+R_pbByRfQrUVSbq2R,Wildfires in California,2,2,5,4,5
+R_PCJYe0WSpdK9vfH,New movie 'DC League of Super-pets',3,3,2,3,7
+R_PCJYe0WSpdK9vfH,2022 NFL training camp,1,1,3,4,7
+R_PCJYe0WSpdK9vfH,Nancy Pelosi’s Taiwan visit,3,2,4,4,6
+R_PCJYe0WSpdK9vfH,Host Selection for ‘Jeopardy!’,3,1,3,4,7
+R_PCJYe0WSpdK9vfH,Musk-Twitter 44-Billion Deal,2,4,3,5,3
+R_PCoEkTXBNlwhMlj,Heat Waves,3,4,4,4,4
+R_PCoEkTXBNlwhMlj,2022 NFL training camp,2,4,1,1,3
+R_PCoEkTXBNlwhMlj,Nancy Pelosi’s Taiwan visit,2,3,4,4,4
+R_PCoEkTXBNlwhMlj,Comedians joking about LGBTQ,2,5,1,1,7
+R_PCoEkTXBNlwhMlj,Stock Market Volatility,2,3,4,4,2
+R_PYb0C6JViei0kV3,Heat Waves,2,5,5,5,3
+R_PYb0C6JViei0kV3,Mark Zuckerberg's Metaverse,1,3,3,3,6
+R_PYb0C6JViei0kV3,Comedians joking about LGBTQ,2,2,4,4,5
+R_PYb0C6JViei0kV3,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,2,2,3,6
+R_PYb0C6JViei0kV3,Prince William and Kate Middleton's life story,1,2,2,2,6
+R_REo5Y2GKmUjbPm9,US Home Prices Potential Correction,2,3,5,5,4
+R_REo5Y2GKmUjbPm9,2022 MLB trade deadline,2,4,4,4,3
+R_REo5Y2GKmUjbPm9,Vince McMahon’s retirement and scandals,1,2,1,1,6
+R_REo5Y2GKmUjbPm9,Prince William and Kate Middleton's life story,1,4,1,1,4
+R_REo5Y2GKmUjbPm9,Musk-Twitter 44-Billion Deal,2,4,5,5,3
+R_rjV0rRW3PqGGtfr,Amazon's One Medical Deal,2,2,5,4,4
+R_rjV0rRW3PqGGtfr,2022 NFL training camp,2,4,4,4,2
+R_rjV0rRW3PqGGtfr,Number of kids celebrities have,1,3,1,1,5
+R_rjV0rRW3PqGGtfr,Comedians joking about LGBTQ,1,3,2,3,3
+R_rjV0rRW3PqGGtfr,Rising Inflation,2,4,6,6,2
+R_RKaYHzd8kqHKtcB,2022 NFL training camp,2,2,2,2,6
+R_RKaYHzd8kqHKtcB,Number of kids celebrities have,2,3,4,4,5
+R_RKaYHzd8kqHKtcB,Comedians joking about LGBTQ,2,1,3,3,7
+R_RKaYHzd8kqHKtcB,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,1,1,7
+R_RKaYHzd8kqHKtcB,2022 Mass Shootings,2,3,4,4,5
+R_sI6AYe9GOmW859v,New movie 'DC League of Super-pets',1,1,3,3,7
+R_sI6AYe9GOmW859v,Amazon's One Medical Deal,2,1,4,4,7
+R_sI6AYe9GOmW859v,Number of kids celebrities have,1,2,1,3,6
+R_sI6AYe9GOmW859v,Air travel disruptions,2,2,4,4,7
+R_sI6AYe9GOmW859v,Rising Inflation,2,4,5,5,4
+R_sMamcheulbM71Zf,Heat Waves,3,4,5,5,6
+R_sMamcheulbM71Zf,Prince Harry and Meghan Markle's life story,2,3,1,1,7
+R_sMamcheulbM71Zf,Roe v. Wade & Abortion Rights,2,5,5,5,2
+R_sMamcheulbM71Zf,Nancy Pelosi’s Taiwan visit,2,1,3,3,7
+R_sMamcheulbM71Zf,Race to Replace UK Prime Minister Boris Johnson,1,2,5,5,7
+R_sMtnUtdR5c83Ihb,Heat Waves,2,3,5,5,7
+R_sMtnUtdR5c83Ihb,Comedians joking about LGBTQ,1,4,1,1,7
+R_sMtnUtdR5c83Ihb,Host Selection for ‘Jeopardy!’,1,1,1,1,7
+R_sMtnUtdR5c83Ihb,TikToker made $200k selling farts in jars,1,2,1,1,7
+R_sMtnUtdR5c83Ihb,Wildfires in California,1,3,5,5,4
+R_ThFDHnuNFenND8d,Heat Waves,2,4,5,6,3
+R_ThFDHnuNFenND8d,Amazon's One Medical Deal,3,2,5,6,5
+R_ThFDHnuNFenND8d,Air travel disruptions,2,2,2,3,6
+R_ThFDHnuNFenND8d,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_ThFDHnuNFenND8d,Rising Inflation,2,4,6,6,2
+R_U9r23DByugV0i4N,US Home Prices Potential Correction,3,1,5,5,7
+R_U9r23DByugV0i4N,Amazon's One Medical Deal,3,1,6,6,7
+R_U9r23DByugV0i4N,2022 MLB trade deadline,1,,2,3,7
+R_U9r23DByugV0i4N,Musk-Twitter 44-Billion Deal,1,5,4,4,4
+R_U9r23DByugV0i4N,2022 Mass Shootings,2,4,6,6,3
+R_UWmQDsjxmYXn345,US Home Prices Potential Correction,3,2,6,6,7
+R_UWmQDsjxmYXn345,Amazon's One Medical Deal,1,1,3,3,7
+R_UWmQDsjxmYXn345,Vince McMahon’s retirement and scandals,2,1,4,4,7
+R_UWmQDsjxmYXn345,Host Selection for ‘Jeopardy!’,1,1,1,1,7
+R_UWmQDsjxmYXn345,Race to Replace UK Prime Minister Boris Johnson,3,1,5,5,7
+R_UyVRsWX5w94UZ2N,Heat Waves,2,4,5,5,3
+R_UyVRsWX5w94UZ2N,Amazon's One Medical Deal,2,1,4,4,7
+R_UyVRsWX5w94UZ2N,Host Selection for ‘Jeopardy!’,2,2,3,3,7
+R_UyVRsWX5w94UZ2N,WNBA star Brittney Griner in Russian custody,2,4,4,4,3
+R_UyVRsWX5w94UZ2N,Rising Inflation,3,4,6,6,4
+R_VIjikTra93vbdZf,US Home Prices Potential Correction,3,1,4,4,7
+R_VIjikTra93vbdZf,2022 NFL training camp,1,3,2,2,7
+R_VIjikTra93vbdZf,Prince William and Kate Middleton's life story,1,1,2,1,7
+R_VIjikTra93vbdZf,Air travel disruptions,1,3,4,4,6
+R_VIjikTra93vbdZf,Race to Replace UK Prime Minister Boris Johnson,1,2,5,5,3
+R_vVMXMAjmijilHtT,Nancy Pelosi’s Taiwan visit,2,1,2,3,7
+R_vVMXMAjmijilHtT,Host Selection for ‘Jeopardy!’,1,1,2,3,7
+R_vVMXMAjmijilHtT,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_vVMXMAjmijilHtT,Musk-Twitter 44-Billion Deal,1,1,2,2,7
+R_vVMXMAjmijilHtT,2022 Mass Shootings,2,3,5,5,6
+R_WB5egP03f8NPWVj,Amazon's One Medical Deal,3,2,4,5,6
+R_WB5egP03f8NPWVj,Number of kids celebrities have,1,2,2,2,3
+R_WB5egP03f8NPWVj,Prince William and Kate Middleton's life story,1,1,1,1,7
+R_WB5egP03f8NPWVj,Rising Inflation,3,4,6,6,4
+R_WB5egP03f8NPWVj,First Images from the James Webb Telescope,2,4,6,6,5
+R_WDImGextsSTfYZj,US Home Prices Potential Correction,2,3,6,6,4
+R_WDImGextsSTfYZj,Number of kids celebrities have,3,5,6,5,4
+R_WDImGextsSTfYZj,TikToker made $200k selling farts in jars,1,4,5,5,7
+R_WDImGextsSTfYZj,Stock Market Volatility,2,3,5,5,6
+R_WDImGextsSTfYZj,2022 Mass Shootings,1,3,4,4,6
+R_XizIanzadDbVdJv,Nancy Pelosi’s Taiwan visit,2,5,6,6,3
+R_XizIanzadDbVdJv,Prince William and Kate Middleton's life story,2,4,3,2,6
+R_XizIanzadDbVdJv,WNBA star Brittney Griner in Russian custody,1,4,1,2,3
+R_XizIanzadDbVdJv,Race to Replace UK Prime Minister Boris Johnson,3,3,5,6,3
+R_XizIanzadDbVdJv,Wildfires in California,2,4,6,6,3
+R_XMLVLeQUchu6LxT,January 6th attack investigation,2,3,4,3,5
+R_XMLVLeQUchu6LxT,Mark Zuckerberg's Metaverse,1,2,3,4,4
+R_XMLVLeQUchu6LxT,Air travel disruptions,2,3,4,4,6
+R_XMLVLeQUchu6LxT,Host Selection for ‘Jeopardy!’,1,2,3,4,5
+R_XMLVLeQUchu6LxT,Stock Market Volatility,2,3,4,5,3
+R_Y3laPSCr1IAdI77,Heat Waves,2,5,4,4,2
+R_Y3laPSCr1IAdI77,Nancy Pelosi’s Taiwan visit,2,5,5,5,1
+R_Y3laPSCr1IAdI77,Vince McMahon’s retirement and scandals,1,1,2,2,7
+R_Y3laPSCr1IAdI77,Musk-Twitter 44-Billion Deal,1,4,2,2,3
+R_Y3laPSCr1IAdI77,Wildfires in California,2,4,5,5,2
+R_YY597Pn1YIJUwc9,2022 NFL training camp,1,2,4,5,3
+R_YY597Pn1YIJUwc9,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,1,2,2,7
+R_YY597Pn1YIJUwc9,Prince William and Kate Middleton's life story,1,2,2,2,6
+R_YY597Pn1YIJUwc9,Air travel disruptions,1,3,4,4,4
+R_YY597Pn1YIJUwc9,Race to Replace UK Prime Minister Boris Johnson,3,3,4,5,4
+R_ZDhZg4ztB2ANHeV,January 6th attack investigation,3,4,5,5,4
+R_ZDhZg4ztB2ANHeV,Roe v. Wade & Abortion Rights,3,3,5,5,3
+R_ZDhZg4ztB2ANHeV,Vince McMahon’s retirement and scandals,3,2,4,4,4
+R_ZDhZg4ztB2ANHeV,Race to Replace UK Prime Minister Boris Johnson,3,3,4,5,7
+R_ZDhZg4ztB2ANHeV,Musk-Twitter 44-Billion Deal,3,3,4,4,4
+R_ZeM17uoqfBSaEb7,January 6th attack investigation,2,3,5,5,6
+R_ZeM17uoqfBSaEb7,Number of kids celebrities have,1,2,2,2,6
+R_ZeM17uoqfBSaEb7,Host Selection for ‘Jeopardy!’,2,2,2,2,6
+R_ZeM17uoqfBSaEb7,TikToker made $200k selling farts in jars,1,1,1,1,7
+R_ZeM17uoqfBSaEb7,Race to Replace UK Prime Minister Boris Johnson,1,2,4,4,7
+R_ZISeZgopxBhdNNn,Prince Harry and Meghan Markle's life story,1,4,4,5,4
+R_ZISeZgopxBhdNNn,Mark Zuckerberg's Metaverse,1,3,4,5,4
+R_ZISeZgopxBhdNNn,Jennifer Lopez and Ben Affleck's Wedding and Honeymoon,1,3,4,4,5
+R_ZISeZgopxBhdNNn,Host Selection for ‘Jeopardy!’,1,4,3,4,4
+R_ZISeZgopxBhdNNn,Stock Market Volatility,1,3,4,5,2

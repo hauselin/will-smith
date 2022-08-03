@@ -530,12 +530,16 @@ b1_engage_df <- fread("../data/clean/coef_engage-itemorder.csv")
 d3_b1_dwell <- left_join(d3, b1_dwell_df) |> data.table()
 d3_b1_engage <- left_join(d3, b1_engage_df) |> data.table()
 
+
+
+
+
 d0_feed_cc_agg <- d0_feed_cc[,lapply(.SD,mean,na.rm=TRUE),by=user_id,.SDcols=c("dwell")]
 d3_b1_dwell_agg <- left_join(d0_feed_cc_agg, d3_b1_engage[topic=="willsmith"]) |> data.table()
 d3_b1_dwell_agg[, b0c := b0 - mean(b0, na.rm = T)]
 d3_b1_dwell_agg[, b1c := b1 - mean(b1, na.rm = T)]
 d3_b1_dwell_agg[, dwellc := dwell - mean(dwell, na.rm = T)]
-d3_b1_dwell_agg[, sqrtdwellc := sqrt(dwell) - mean(sqrt(dwell), na.rm = T)]
+d3_b1_dwell_agg[, sqrtdwellc := log(dwell+1) - mean(log(dwell+1), na.rm = T)]
 
 summaryh(lm(importance ~ dwellc * b0c, d3_b1_dwell_agg[topic=="willsmith"]))
 summaryh(lm(newsworthiness ~ dwellc * b0c, d3_b1_dwell_agg[topic=="willsmith"]))
@@ -543,7 +547,30 @@ summaryh(lm(newsworthiness ~ dwellc * b0c, d3_b1_dwell_agg[topic=="willsmith"]))
 summaryh(lm(importance ~ sqrtdwellc * b0c, d3_b1_dwell_agg[topic=="willsmith"]))
 summaryh(lm(newsworthiness ~ sqrtdwellc * b0c, d3_b1_dwell_agg[topic=="willsmith"]))
 hist((d3_b1_dwell_agg$sqrtdwellc))
-hist((d3_b1_dwell_agg$dwell))
+hist((d3_b1_dwell_agg$dwellc))
+
+
+
+
+d0_feed_cc_agg <- d0_feed_cc[,lapply(.SD,sum,na.rm=TRUE),by=user_id,.SDcols=c("engage")]
+d3_b1_engage_agg <- left_join(d0_feed_cc_agg, d3_b1_engage[topic=="willsmith"]) |> data.table()
+d3_b1_engage_agg[, b0c := b0 - mean(b0, na.rm = T)]
+d3_b1_engage_agg[, b1c := b1 - mean(b1, na.rm = T)]
+d3_b1_engage_agg[, engagec := engage - mean(engage, na.rm = T)]
+d3_b1_engage_agg[, sqrtengagec := log(engage+1) - mean(log(engage+1), na.rm = T)]
+
+summaryh(lm(importance ~ engagec * b0c, d3_b1_engage_agg[topic=="willsmith"]))
+summaryh(lm(newsworthiness ~ engagec * b0c, d3_b1_engage_agg[topic=="willsmith"]))
+
+summaryh(lm(importance ~ sqrtengagec * b0c, d3_b1_engage_agg[topic=="willsmith"]))
+summaryh(lm(newsworthiness ~ sqrtengagec * b0c, d3_b1_engage_agg[topic=="willsmith"]))
+hist((d3_b1_engage_agg$sqrtengagec), breaks = 60)
+hist((d3_b1_engage_agg$engagec), breaks=50)
+
+
+
+
+
 
 # dwell
 correlation::cor_test(d3_b1_dwell[topic=="willsmith"], "importance", "b1")
