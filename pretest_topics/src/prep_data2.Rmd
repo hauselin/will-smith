@@ -1,0 +1,44 @@
+```{r}
+rm(list = ls())
+library(data.table); library(tidyverse)
+```
+
+```{r}
+d0 <- fread("../data/raw/Pretest news importance_August 2, 2022_21.06.csv")
+d0 <- d0[-c(1, 2, 3, 4, 5, 6, 7, 8, 9)]
+fwrite(d0, "../data/raw/qualtrics1.csv")
+d0 <- fread("../data/raw/qualtrics1.csv")
+glimpse(d0)
+```
+
+```{r}
+oldnames <- names(select(d0, `1_importance`:`28_desiredFrequency`))
+newnames <- paste0("t_", oldnames)
+setnames(d0, oldnames, newnames)
+d1 <- select(d0, subj = ResponseId, all_of(newnames))
+glimpse(d1)
+
+d2 <- melt(d1, id.vars = "subj")
+d2 <- d2[!is.na(value)]
+d2
+d2[, .N, subj][N != 25] # everyone should have 25 responses (2 people don't, but it's fine to include them)
+d2[, n_distinct(value), subj][V1 == 1]  # no one gave same response for all items
+
+d2[, unique(variable)]
+d3 <- separate(d2, variable, c("tt", "topic_id", "question"))
+d3$tt <- NULL
+d3[, topic_id := as.numeric(topic_id)]
+
+d3[, unique(topic_id)]
+d3[, unique(question)]
+
+topics <- fread("../data/topics.csv")
+d4 <- left_join(topics, d3) |> data.table()
+
+item_avg <- d4[, .(value = mean(value, na.rm = T)), keyby = .(question, topic_id, topic)]
+item_avg_wide <- dcast(item_avg, topic_id + topic ~ question, value.var = "value")
+item_avg_wide <- select(item_avg_wide, topic_id, topic, importance, newsworthy, familiarity, desiredFrequency, observedFrequency) |> 
+    arrange(importance)
+fwrite(item_avg_wide, "../data/clean/item_avg.csv")
+```
+
