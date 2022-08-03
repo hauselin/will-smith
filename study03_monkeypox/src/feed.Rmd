@@ -1,0 +1,77 @@
+```{r}
+rm(list = ls())
+library(tidyverse); library(data.table); library(hausekeep); library(correlation); library(marginaleffects); library(mgcv); library(gratia)
+theme_set(theme_minimal())
+```
+
+```{r}
+d_feed <- fread("../data/clean/data_feed.csv")
+d_feed <- d_feed[attention == 1.0 & ipblock == 0]
+d_feed[, engage := likes_1 + shares_1 + read_later_1]
+d_feed[, engaged := 0]
+d_feed[likes_1 > 0 | shares_1 > 0 | read_later_1 > 0, engaged := 1]
+d_feedfocal <- d_feed[entity_set == "22052628_monkeypox"]
+d_feedfocal
+
+d1 <- fread("../data/clean/data_model.csv")
+d1
+d1_focal <- d1[topic == "monkeypox"]
+
+b_dwell <- fread("../data/clean/coef_dwell-itemorder.csv")
+setnames(b_dwell, c("b0", "b1"), c("dwell_b0", "dwell_b1"))
+b_engage <- fread("../data/clean/coef_engage-itemorder.csv")
+setnames(b_engage, c("b0", "b1"), c("engage_b0", "engage_b1"))
+
+d1_focal <- left_join(d1_focal, b_dwell)
+d1_focal <- left_join(d1_focal, b_engage)
+setDT(d1_focal)
+d1_focal
+```
+
+```{r}
+# treatment group: does dwell/engage predict outcome?
+d_feedfocal[, dwelled := ifelse(dwell > 2500, 1, 0)]
+dwelled_avg <- d_feedfocal[condition == 0.5, .(dwells = sum(dwelled, na.rm = T), 
+                                               engage = sum(engaged)), .(user_id, condition)]
+dwelled_avg[, hist(dwells, breaks = 20)]
+dwelled_avg[, hist(engage, breaks = 20)]
+d1_focal_avg <- left_join(d1_focal[condition == 0.5], dwelled_avg) |> data.table()
+d1_focal_avg
+
+cols2center <- c("dwells", "engage", "dwell_b0", "dwell_b1", "engage_b0", "engage_b1")
+newcols <- paste0(cols2center, "c")
+d1_focal_avg[, (newcols) := lapply(.SD, function(x) x - mean(x, na.rm = T)), .SDcols = cols2center]
+
+summaryh(m1 <- lm(importance ~ engage_b0c * engage_b1c, d1_focal_avg))
+summaryh(m2 <- lm(newsworthiness ~ engage_b0c * engage_b1c, d1_focal_avg))
+plot_cme(m1, effect = "engage_b1c", condition = "engage_b0c") + geom_hline(yintercept = 0, lty = 'dashed') + labs(x = "initial engagement level", y = "marginal effect of 'engagement change over time' on importance")
+plot_cme(m2, effect = "engage_b1c", condition = "engage_b0c") + geom_hline(yintercept = 0, lty = 'dashed') + labs(x = "initial engagement level", y = "marginal effect of 'engagement change over time' on newsworthiness")
+
+summaryh(m3 <- lm(importance ~ dwell_b0c * dwell_b1c, d1_focal_avg))
+summaryh(m4 <- lm(newsworthiness ~ dwell_b0c * dwell_b1c, d1_focal_avg))
+plot_cme(m3, effect = "dwell_b1c", condition = "dwell_b0c") + geom_hline(yintercept = 0, lty = 'dashed') + labs(x = "initial engagement level", y = "marginal effect of 'dwell change over time' on importance")
+plot_cme(m4, effect = "dwell_b1c", condition = "dwell_b0c") + geom_hline(yintercept = 0, lty = 'dashed') + labs(x = "initial engagement level", y = "marginal effect of 'dwell change over time' on newsworthiness")
+
+ggsave(glue::glue("/Users/hause/Dropbox/obsidian/notes/attachments/{as.integer(Sys.time())}.png"), dpi = 300, bg = 'white', width = 8, height = 5)
+```
+
+```{r gam}
+gm2s <- gam(newsworthiness ~ s(engage_b0c) + s(engage_b1c), data = d1_focal_avg)
+summary(gm2s)
+draw(gm2s)
+plot(gm2s, cex = 1)
+vis.gam(gm2s, theta = 320)
+
+gm3s <- gam(newsworthiness ~ s(engage_b0c, engage_b1c) + s(engage_b0c) + s(engage_b1c), data = d1_focal_avg)
+summary(gm3s)
+summary(m2)
+draw(gm3s)
+plot(gm3s)
+vis.gam(gm3s, theta = 240)
+
+anova(gm2s, gm3s, test = "Chisq")
+plot(gm2s)
+AIC(gm2s, gm3s)
+BIC(gm2s, gm3s)
+```
+
