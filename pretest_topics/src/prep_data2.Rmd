@@ -35,10 +35,12 @@ d3[, unique(question)]
 topics <- fread("../data/topics.csv")
 d4 <- left_join(topics, d3) |> data.table()
 
-item_avg <- d4[, .(value = mean(value, na.rm = T)), keyby = .(question, topic_id, topic)]
-item_avg_wide <- dcast(item_avg, topic_id + topic ~ question, value.var = "value")
-item_avg_wide <- select(item_avg_wide, topic_id, topic, importance, newsworthy, familiarity, desiredFrequency, observedFrequency) |> 
+item_avg <- d4[, .(value = mean(value, na.rm = T), n_ratings = .N), keyby = .(question, topic_id, topic)]
+item_avg_wide <- dcast(item_avg, topic_id + topic ~ question, value.var = c("value", "n_ratings"))
+setnames(item_avg_wide, gsub("value_", "", names(item_avg_wide)))  # rname
+item_avg_wide <- select(item_avg_wide, topic_id, topic, importance, newsworthy, familiarity, desiredFrequency, observedFrequency, n_ratings = n_ratings_desiredFrequency) |> 
     arrange(importance)
+item_avg_wide
 fwrite(item_avg_wide, "../data/clean/item_avg.csv")
 ```
 
