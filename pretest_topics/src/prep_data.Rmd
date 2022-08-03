@@ -1,0 +1,77 @@
+---
+title: "prep_data"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html
+# https://richarddmorey.github.io/BayesFactor/
+rm(list = ls())
+library(data.table); library(tidyverse); library(rIP)
+library(stringr)
+
+```
+
+```{r}
+d0 <- fread("../data/raw/Pretest news importance_August 2, 2022_20.50.csv")
+d0_numeric <- fread("../data/raw/Pretest news importance_August 2, 2022_21.06.csv")
+
+d0 <- d0[-c(1, 2, 3, 4, 5, 6, 7, 8, 9)]
+fwrite(d0, "../data/raw/qualtrics1.csv")
+d0 <- fread("../data/raw/qualtrics1.csv")
+glimpse(d0)
+
+d0_numeric <- d0_numeric[-c(1, 2, 3, 4, 5, 6, 7, 8, 9)]
+fwrite(d0_numeric, "../data/raw/qualtrics1_numeric.csv")
+d0_numeric <- fread("../data/raw/qualtrics1_numeric.csv")
+glimpse(d0_numeric)
+
+```
+
+```{r}
+d0_numeric<-data.frame(d0_numeric)
+d1 <- d0_numeric[,( grepl( "importance" , names( d0_numeric ) ) | grepl( "newsworthy" , names( d0_numeric ) ) | grepl( "ResponseId" , names( d0_numeric ) ) | grepl( "familiarity" , names( d0_numeric ) ) | grepl( "observedFrequency" , names( d0_numeric ) ) | grepl( "desiredFrequency" , names( d0_numeric ) ) )]
+
+d1_long <- melt(setDT(d1), id.vars = c("ResponseId"), variable.name = "variable")
+d1_long <- d1_long[!is.na(d1_long$value), ]
+
+d1_long$topic <- str_split_fixed(d1_long$variable, "_", 2)[,1]
+d1_long$measure <- str_split_fixed(d1_long$variable, "_", 2)[,2]
+d1_long<-data.frame(d1_long)
+d1_long <- d1_long[ , !(names(d1_long) %in% c("variable"))]
+
+d2 <- spread(d1_long, measure, value)
+
+d2$topic[d2$topic == "X1"] <- "January 6th attack investigation"
+d2$topic[d2$topic == "X2"] <- "Nancy Pelosi’s Taiwan visit"
+d2$topic[d2$topic == "X3"] <- "Rising Inflation"
+d2$topic[d2$topic == "X4"] <- "Race to Replace UK Prime Minister Boris Johnson"
+d2$topic[d2$topic == "X5"] <- "Musk-Twitter 44-Billion Deal"
+d2$topic[d2$topic == "X6"] <- "Stock Market Volatility"
+d2$topic[d2$topic == "X7"] <- "First Images from the James Webb Telescope"
+d2$topic[d2$topic == "X8"] <- "2022 Mass Shootings"
+d2$topic[d2$topic == "X9"] <- "Wildfires in California"
+d2$topic[d2$topic == "X10"] <- "Heat Waves"
+d2$topic[d2$topic == "X11"] <- "Prince Harry and Meghan Markle's life story"
+d2$topic[d2$topic == "X12"] <- "US Home Prices Potential Correction"
+d2$topic[d2$topic == "X13"] <- "New movie 'DC League of Super-pets'"
+d2$topic[d2$topic == "X14"] <- "Roe v. Wade & Abortion Rights"
+d2$topic[d2$topic == "X15"] <- "Mark Zuckerberg's Metaverse"
+d2$topic[d2$topic == "X16"] <- "Amazon's One Medical Deal"
+d2$topic[d2$topic == "X17"] <- "2022 NFL training camp"
+d2$topic[d2$topic == "X18"] <- "2022 MLB trade deadline"
+d2$topic[d2$topic == "X19"] <- "Number of kids celebrities have"
+d2$topic[d2$topic == "X20"] <- "Comedians joking about LGBTQ"
+d2$topic[d2$topic == "X21"] <- "Vince McMahon’s retirement and scandals"
+d2$topic[d2$topic == "X22"] <- "Jennifer Lopez and Ben Affleck's Wedding and Honeymoon"
+d2$topic[d2$topic == "X23"] <- "Prince William and Kate Middleton's life story"
+d2$topic[d2$topic == "X24"] <- "Air travel disruptions"
+d2$topic[d2$topic == "X25"] <- "Celebrity Alcohol Brands"
+d2$topic[d2$topic == "X26"] <- "Host Selection for ‘Jeopardy!’"
+d2$topic[d2$topic == "X27"] <- "TikToker made $200k selling farts in jars"
+d2$topic[d2$topic == "X28"] <- "WNBA star Brittney Griner in Russian custody"
+
+fwrite(d2, "../data/clean/qualtrics1_clean_data.csv")
+```

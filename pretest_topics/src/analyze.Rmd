@@ -1,0 +1,166 @@
+---
+title: "prep_data"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# https://rdatatable.gitlab.io/data.table/articles/datatable-intro.html
+# https://richarddmorey.github.io/BayesFactor/
+rm(list = ls())
+library(data.table); library(tidyverse); library(rIP)
+library(stringr)
+library(viridis)
+library(hrbrthemes)
+
+```
+
+```{r}
+d0 <- fread("../data/clean/qualtrics1_clean_data.csv")
+d0$observedFrequency <- 8-d0$observedFrequency
+
+plot_importance <- d0 %>%
+  ggplot( aes(x=importance, color=topic, fill=topic)) +
+    geom_histogram(alpha=0.6, binwidth = 1) +
+    scale_fill_viridis(discrete=TRUE) +
+    scale_color_viridis(discrete=TRUE) +
+
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 7)
+    ) +
+    xlab("importance [1:no imp; 6:very high imp]") +
+    ylab("number of ratings") +
+    facet_wrap(~topic)
+
+plot_newsworthy <- d0 %>%
+  ggplot( aes(x=newsworthy, color=topic, fill=topic)) +
+    geom_histogram(alpha=0.6, binwidth = 1) +
+    scale_fill_viridis(discrete=TRUE) +
+    scale_color_viridis(discrete=TRUE) +
+
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 7)
+    ) +
+    xlab("newsworthy [1:no newsworthy; 6:very high newswrthy]") +
+    ylab("number of ratings") +
+    facet_wrap(~topic)
+
+plot_familiarity <- d0 %>%
+  ggplot( aes(x=familiarity, color=topic, fill=topic)) +
+    geom_histogram(alpha=0.6, binwidth = 1) +
+    scale_fill_viridis(discrete=TRUE) +
+    scale_color_viridis(discrete=TRUE) +
+
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 7)
+    ) +
+    xlab("familiarity [1:never heard of it; 5:know it well]") +
+    ylab("number of ratings") +
+    facet_wrap(~topic)
+
+plot_observedFrequency <- d0 %>%
+  ggplot( aes(x=observedFrequency, color=topic, fill=topic)) +
+    geom_histogram(alpha=0.6, binwidth = 1) +
+    scale_fill_viridis(discrete=TRUE) +
+    scale_color_viridis(discrete=TRUE) +
+
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 7)
+    ) +
+    xlab("observedFrequency [1:none at all this month; 7:multiple times daily]") +
+    ylab("number of ratings") +
+    facet_wrap(~topic)
+
+plot_desiredFrequency <- d0 %>%
+  ggplot( aes(x=desiredFrequency, color=topic, fill=topic)) +
+    geom_histogram(alpha=0.6, binwidth = 1) +
+    scale_fill_viridis(discrete=TRUE) +
+    scale_color_viridis(discrete=TRUE) +
+
+    theme(
+      legend.position="none",
+      panel.spacing = unit(0.1, "lines"),
+      strip.text.x = element_text(size = 7)
+    ) +
+    xlab("observedFrequency [1:less news abt topic; 3:more news abt topic]") +
+    ylab("number of ratings") +
+    facet_wrap(~topic)
+
+ggsave("../figures/plot_importance.png", plot_importance, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_newsworthy.png", plot_newsworthy, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_familiarity.png", plot_familiarity, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_observedFrequency.png", plot_observedFrequency, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_desiredFrequency.png", plot_desiredFrequency, dpi = 300, width = 13, height = 5, bg = "white")
+
+```
+
+```{r}
+d0_msd <- d0 %>%
+  group_by(topic) %>%
+  summarise_at(vars(importance, newsworthy, familiarity, observedFrequency, desiredFrequency),
+               list(mean = mean,
+                    sd = sd), na.rm=TRUE) %>% 
+  as.data.frame()
+         
+
+plot_importance_mean <- d0_msd %>%
+  mutate(topic = fct_reorder(topic, importance_mean)) %>%
+ggplot(aes(x = importance_mean,
+           y = topic)) + 
+  geom_errorbar(aes(xmin = importance_mean - importance_sd,
+                    xmax = importance_mean + importance_sd)) +
+  geom_point()
+
+plot_newsworthy_mean <- d0_msd %>%
+  mutate(topic = fct_reorder(topic, newsworthy_mean)) %>%
+ggplot(aes(x = newsworthy_mean,
+           y = topic)) + 
+  geom_errorbar(aes(xmin = newsworthy_mean - newsworthy_sd,
+                    xmax = newsworthy_mean + newsworthy_sd)) +
+  geom_point()
+
+plot_familiarity_mean <- d0_msd %>%
+  mutate(topic = fct_reorder(topic, familiarity_mean)) %>%
+ggplot(aes(x = familiarity_mean,
+           y = topic)) + 
+  geom_errorbar(aes(xmin = familiarity_mean - familiarity_sd,
+                    xmax = familiarity_mean + familiarity_sd)) +
+  geom_point()
+
+plot_observedFrequency_mean <- d0_msd %>%
+  mutate(topic = fct_reorder(topic, observedFrequency_mean)) %>%
+ggplot(aes(x = observedFrequency_mean,
+           y = topic)) + 
+  geom_errorbar(aes(xmin = observedFrequency_mean - observedFrequency_sd,
+                    xmax = observedFrequency_mean + observedFrequency_sd)) +
+  geom_point()
+
+plot_desiredFrequency_mean <- d0_msd %>%
+  mutate(topic = fct_reorder(topic, desiredFrequency_mean)) %>%
+ggplot(aes(x = desiredFrequency_mean,
+           y = topic)) + 
+  geom_errorbar(aes(xmin = desiredFrequency_mean - desiredFrequency_sd,
+                    xmax = desiredFrequency_mean + desiredFrequency_sd)) +
+  geom_point()
+
+
+ggsave("../figures/plot_importance_mean.png", plot_importance_mean, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_newsworthy_mean.png", plot_newsworthy_mean, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_familiarity_mean.png", plot_familiarity_mean, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_observedFrequency_mean.png", plot_observedFrequency_mean, dpi = 300, width = 13, height = 5, bg = "white")
+ggsave("../figures/plot_desiredFrequency_mean.png", plot_desiredFrequency_mean, dpi = 300, width = 13, height = 5, bg = "white")
+
+```
+
+```{r}
+
+```
