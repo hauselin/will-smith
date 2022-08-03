@@ -111,6 +111,7 @@ d0_msd <- d0 %>%
                     sd = sd), na.rm=TRUE) %>% 
   as.data.frame()
          
+fwrite(d0_msd, "../data/clean/item_meansANDsd.csv")
 
 plot_importance_mean <- d0_msd %>%
   mutate(topic = fct_reorder(topic, importance_mean)) %>%
