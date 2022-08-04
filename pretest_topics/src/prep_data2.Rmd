@@ -43,5 +43,11 @@ item_avg_wide <- select(item_avg_wide, topic_id, topic, importance, newsworthy, 
 item_avg_wide
 item_avg_wide$observedFrequency <- 8-item_avg_wide$observedFrequency # this needs to be reverse coded
 fwrite(item_avg_wide, "../data/clean/item_avg.csv")
+
+
+cor_table <- (cor(item_avg_wide[, c('importance','newsworthy','familiarity', 'observedFrequency', 'desiredFrequency')]))
+write.csv(cor_table,"../data/clean/cor_table.csv")
+
+
 ```
 
