@@ -69,6 +69,7 @@ d2[, .(field, topic, question)][order(topic, question)] |> distinct()
 d3 <- dcast(d2, user_id + condition + topic + climate_perc ~ question, value.var = "news_eval")
 d3[, rating_combined := (importance + newsworthiness) / 2]
 d3
+fwrite(d3, "../data/clean/data-model.csv")
 ```
 
 ```{r check correlations}
