@@ -19,13 +19,35 @@ theme_set(theme_minimal())
 ```{r}
 d0_firstHeadline <- fread("../data/clean/first_headline_engagement.csv")
 d3 <- fread("../data/clean/data_model.csv")
+d0_focalHeadline <- fread("../data/clean/focal_headline_engagement.csv")
 
 d3_onlyTreatment <- d0_firstHeadline[condition == 0.5] |> inner_join(d3[topic == "monkeypox"]) 
+
+d3_onlyTreatmentFocal <- d0_focalHeadline |> inner_join(d3[topic == "monkeypox" & condition == 0.5])
+
+d3_onlyControl <- d0_firstHeadline[condition == -0.5] |> inner_join(d3[topic == "monkeypox"]) 
 
 correlation::cor_test(d3_onlyTreatment, "importance", "engage_firstheadline", method = "spearman")
 correlation::cor_test(d3_onlyTreatment, "importance", "engage_firstheadline", method = "pearson")
 correlation::cor_test(d3_onlyTreatment, "newsworthiness", "engage_firstheadline", method = "spearman")
 correlation::cor_test(d3_onlyTreatment, "newsworthiness", "engage_firstheadline", method = "pearson")
+
+
+
+correlation::cor_test(d3_onlyControl, "importance", "engage_firstheadline", method = "spearman")
+correlation::cor_test(d3_onlyControl, "importance", "engage_firstheadline", method = "pearson")
+correlation::cor_test(d3_onlyControl, "newsworthiness", "engage_firstheadline", method = "spearman")
+correlation::cor_test(d3_onlyControl, "newsworthiness", "engage_firstheadline", method = "pearson")|> plot()
+
+
+
+correlation::cor_test(d3_onlyTreatmentFocal, "importance", "engage", method = "spearman")
+correlation::cor_test(d3_onlyTreatmentFocal, "importance", "engage", method = "pearson")
+correlation::cor_test(d3_onlyTreatmentFocal, "newsworthiness", "engage", method = "spearman")
+correlation::cor_test(d3_onlyTreatmentFocal, "newsworthiness", "engage", method = "pearson")|> plot()
+
+
+
 
 b0s <- fread("../data/clean/coef_engage-itemorder.csv")
 d3_onlyTreatment_b0s <- b0s |> inner_join(d3[topic == "monkeypox"]) 

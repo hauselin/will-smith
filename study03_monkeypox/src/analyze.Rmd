@@ -587,9 +587,9 @@ d0_feed[item_order == 0, .N, keyby = .(condition, engage, entity_id)]
 temp <- d0_feed[item_order == 0, .(user_id, engage_firstheadline = engage, condition)]
 # fwrite(temp, "../data/clean/first_headline_engagement.csv")
 
+temp2 <- d0_feed[entity_set == "22052628_monkeypox", .(engage = sum(engage, na.rm=T)), keyby = .(user_id)]
 
-
-
+# fwrite(temp2, "../data/clean/focal_headline_engagement.csv")
 
 # all relevant headlines (engaged or not)
 df_split_dwell <- d0_feed[entity_set == "22052628_monkeypox", .(dwell = mean(dwell, na.rm = T), item_order = mean(item_order)), keyby = .(user_id, condition, chunk = ifelse(item_order < 15, "first15", "remaining"), entity_set)]
