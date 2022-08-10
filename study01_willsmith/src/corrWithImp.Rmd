@@ -1,0 +1,43 @@
+---
+title: "analyze"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+rm(list = ls())
+library(data.table); library(tidyverse); library(correlation)
+library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
+library(hausekeep)
+library(marginaleffects)
+library(lme4)
+library(lmerTest)
+theme_set(theme_minimal())
+```
+
+```{r}
+d0_firstHeadline <- fread("../data/clean/first_headline_engagement.csv")
+d3 <- fread("../data/clean/data_model.csv")
+
+d3_onlyTreatment <- d0_firstHeadline[condition == 0.5] |> inner_join(d3[topic == "willsmith"]) 
+
+correlation::cor_test(d3_onlyTreatment, "importance", "engage_firstheadline", method = "spearman")
+correlation::cor_test(d3_onlyTreatment, "importance", "engage_firstheadline", method = "pearson")
+correlation::cor_test(d3_onlyTreatment, "newsworthiness", "engage_firstheadline", method = "spearman")
+correlation::cor_test(d3_onlyTreatment, "newsworthiness", "engage_firstheadline", method = "pearson")
+
+b0s <- fread("../data/clean/coef_engage-itemorder.csv")
+d3_onlyTreatment_b0s <- b0s |> inner_join(d3[topic == "willsmith"]) 
+
+correlation::cor_test(d3_onlyTreatment_b0s, "b0", "importance", method = "spearman") |> plot()+ geom_vline(xintercept = mean(d3_onlyTreatment_b0s$b0))
+
+correlation::cor_test(d3_onlyTreatment_b0s, "b0", "newsworthiness", method = "spearman")
+
+mean(d3_onlyTreatment_b0s$b0)
+
+
+```
+
+
+
