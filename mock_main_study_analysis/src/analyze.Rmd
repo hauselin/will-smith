@@ -1,0 +1,100 @@
+---
+title: "analyze"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+rm(list = ls())
+library(data.table); library(tidyverse); library(correlation)
+library(BayesFactor); library(BFpack); library(ggbeeswarm); library(patchwork); library(ggdist)
+library(hausekeep)
+library(marginaleffects)
+library(lme4)
+library(lmerTest)
+theme_set(theme_minimal())
+```
+
+```{r}
+d0_feed <- fread("../data/clean/data_feed.csv")
+
+d0_feed <- d0_feed[attention == 1.0 & ipblock == 0]
+d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = .(user_id, entity_set, condition)][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), keyby = .(condition, entity_set)]
+d0_feed[, .(mean_n_dwells = mean(n_dwells, na.rm = T), mean_dwell = mean(dwell, na.rm = T), mean_ldwell = mean(ldwell, na.rm = T)), by = .(user_id, condition)][, .(mean2_n_dwells = mean(mean_n_dwells, na.rm = T), mean2_dwell = mean(mean_dwell, na.rm = T), mean2_ldwell = mean(mean_ldwell, na.rm = T)), keyby = .(condition)]
+library(fixest)
+feols(ldwell ~ condition, d0_feed[entity_set == 'oct9_news' & dwell>2000], cluster = ~user_id+entity_id)
+
+feols(dwell ~ condition, d0_feed, cluster = ~user_id)
+feols(n_dwells ~ condition, d0_feed, cluster = ~user_id)
+feglm(n_dwells ~ condition, d0_feed, cluster = ~user_id, family = 'quasipoisson')
+
+hist(d0_feed$ldwell)
+hist(d0_feed$dwell)
+hist(d0_feed$n_dwells)
+
+d1 <- fread("../data/clean/data.csv")
+d1[, n_distinct(user_id), keyby = .(condition)]
+d1[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]  
+# users per condition
+
+d2 <- d1[attention == 1.0 & ipblock == 0]
+d2[, n_distinct(user_id), keyby = .(condition, attention, ipblock)]
+d2[, n_distinct(user_id)]
+d2[, n_distinct(user_id), condition]
+
+# remove alphanumeric response column, ip address and country codes
+d2 <- select(d2, user_id, condition, field, news_eval)
+perc <- d2[field == "monkeypox_cards_perc", .(user_id, news_eval)]
+setnames(perc, c("user_id", "monkeypox_perc"))
+perc
+
+d2 <- d2[field != "monkeypox_cards_perc"] |> left_join(perc) 
+setDT(d2)
+```
+
+```{r}
+d2[, unique(field)]
+d2[grepl("monkeypox_", field), topic := "monkeypox"]
+d2[grepl("johnny_", field), topic := "johnny"]
+d2[grepl("election_", field), topic := "election"]
+d2[grepl("covid_", field), topic := "covid"]
+d2[, .(field, topic)][order(field)] |> distinct()
+
+d2[, question := field]
+d2[, question := gsub("monkeypox_", "", question)]
+d2[, question := gsub("johnny_", "", question)]
+d2[, question := gsub("election_", "", question)]
+d2[, question := gsub("covid_", "", question)]
+d2[, .(field, question)][order(question)] |> distinct()
+
+d2[, .(field, topic, question)][order(topic, question)] |> distinct()
+
+d2_covid_fatigue <- d2[question == "changesubject"]
+d2_covid_fatigue$question <- "covidfatigue"
+d2_covid_fatigue$field <- "covid_covidfatigue"
+d2_covid_fatigue$news_eval <- d2[question == "changesubject" | question == "sickhearing" | question == "tired"][, .(covid_fatigue = mean(news_eval)), by = user_id]$covid_fatigue
+d2 <- rbind(d2, d2_covid_fatigue)
+
+d3 <- dcast(d2, user_id + condition + topic + monkeypox_perc ~ question, value.var = "news_eval")
+d3[, rating_combined := (importance + newsworthiness) / 2]
+d3[, covid_fatigue := (changesubject + sickhearing + tired) / 3]
+d3
+```
+
+```{r check correlations}
+cors <- d3[, .(r = cor(importance, newsworthiness)), topic]
+cors
+ggplot(d3, aes(importance, newsworthiness)) +
+    facet_wrap(~ topic) +
+    geom_jitter() +
+    geom_smooth(method = 'lm', alpha = 0.1) 
+
+select(d3, topic, importance, newsworthiness) %>% group_by(topic) %>% correlation()
+correlation(d3[topic == "monkeypox"])
+fwrite(d3, "../data/clean/data_model.csv")
+
+fwrite(d3[topic == "monkeypox"], "../data/clean/data_model_only_focal.csv")
+
+```
+
