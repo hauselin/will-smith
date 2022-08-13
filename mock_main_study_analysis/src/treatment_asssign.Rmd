@@ -1,0 +1,160 @@
+```{r}
+rm(list = ls())
+library(tidyverse); library(data.table); library(patchwork); library(glue); library(quickblock); library(modelsummary)
+theme_set(theme_minimal())
+```
+
+```{r}
+d0 <- fread("../data/clean/data_model_only_focal.csv")
+d0 <- select(d0, user_id, importance, newsworthiness)
+
+dcov <- fread("../data/clean/data-wide.csv")[, .(user_id, age, politicalposition, politicalpref, ses_ladder)]
+glimpse(dcov)
+glimpse(d0)
+
+d1 <- left_join(d0, dcov) |> data.table()
+
+setnames(d1, c("importance", "newsworthiness"), c("topic1", "topic2"))
+d1
+
+d1[, `:=` (topic1 = runif(.N, -20, 20), 
+           topic2 = runif(.N, -40, 40) * rnorm(.N, 1, 0.2), 
+           topic3 = runif(.N, -50, 50) * rnorm(.N, 1, 0.3))]
+
+d1[, topic2_binary := ifelse(topic2 > 0, 1, -1)]
+d1long <- melt(d1, id.vars = c("user_id"), measure.vars = c("topic1", "topic2", "topic3")) |> data.table()
+d1long
+```
+
+```{r }
+# step 1: pick a topic
+p1 <- ggplot(d1long, aes(value, col = variable)) +
+    stat_ecdf()
+
+p2 <- ggplot(d1long, aes(value, col = variable)) +
+    geom_density()
+p2    
+p1 + p2
+```
+
+```{r}
+# step 2: find consistent people
+d2 <- d1[(topic2_binary == 1 & topic2 > 0) | (topic2_binary == -1 & topic2 < 0), ]
+d2[, fivenum(topic2), keyby = .(topic2_binary)]
+
+# step 3: remove extremes
+lower <- c(-35, -10)
+upper <- c(10, 35)
+
+d3 <- d2[topic2 %between% lower | topic2 %between% upper]
+d3
+
+p3 <- ggplot(d2, aes(topic2, fill = factor(topic2_binary))) +
+    geom_histogram(bins = 100) +
+    scale_x_continuous(limits = c(-50, 50), n.breaks = 11) +
+    labs(title = glue("n = {d1[, .N]}"), fill = 'bin')
+
+p4 <- ggplot(d3, aes(topic2, fill = factor(topic2_binary))) +
+    geom_histogram(bins = 100) +
+    scale_x_continuous(limits = c(-50, 50), n.breaks = 11) +
+    labs(title = glue("n = {d3[, .N]}"), fill = 'bin') 
+
+p3 / p4
+
+d3[, .N, keyby = topic2_binary]
+```
+
+```{r}
+# step 4: assign within each bin to control/treatment
+d4 <- select(d3, user_id, topic2_binary, age:ses_ladder, topic2)
+
+d4low <- d4[topic2_binary == -1, ]
+d4high <- d4[topic2_binary == 1, ]
+
+datasummary_skim(d4low)
+datasummary_skim(d4high)
+
+
+
+
+
+# low group
+set.seed(1)
+d4lowcov <- select(d4low, -user_id, -topic2_binary)
+dists <- distances(d4lowcov, normalize = "mahalanobize")
+blocks <- quickblock(dists, size_constraint = 6)
+table(blocks)
+treatments <- assign_treatment(blocks, treatments = c("card1", "card33"))
+table(treatments)
+d4low$block <- blocks
+d4low$condition <- treatments
+
+d4low[, .(topic2 = mean(topic2)), keyby = .(condition)]
+d4low[, .(topic2 = mean(topic2)), keyby = .(block, condition)]
+
+
+
+# high group
+d4highcov <- select(d4high, -user_id, -topic2_binary)
+set.seed(1)
+d4highcov <- select(d4high, -user_id, -topic2_binary)
+dists <- distances(d4highcov, normalize = "mahalanobize")
+blocks <- quickblock(dists, size_constraint = 6)
+table(blocks)
+treatments <- assign_treatment(blocks, treatments = c("card1", "card33"))
+table(treatments)
+d4high$block <- blocks
+d4high[, block := block + 1000]
+d4high$condition <- treatments
+d4high[, .(topic2 = mean(topic2)), keyby = .(condition)]
+d4high[, .(topic2 = mean(topic2)), keyby = .(block, condition)]
+
+
+d5 <- rbind(d4low, d4high)
+d5[, .N, keyby = .(topic2_binary, condition)]
+fwrite(d5, "../data/treatment_assignment.csv")
+
+# step 5: create two studies on yourfeed (card1 and card33)
+```
+
+
+```{r estimate sample size for wave 1} 
+n_group_required <- 350  # min required per cell (of 4 cells)
+n_groups <- 4
+(n_total_required <- n_group_required * n_groups)
+
+drop1 <- 0.6  # remove extremities
+drop2 <- 0.8  # attrition between wave 1 and wave 2
+(n_group_required <- (n_group_required / drop1) / drop2)
+
+(N_required <- n_group_required * n_groups)  # wave 1 sample size
+
+cost_per_subj_wave1 <- 0.6  # depends on n topics
+(cost_wave1 <- N_required * cost_per_subj_wave1)
+
+cost_per_subj_wave2 <- 1.9
+(cost_wave2 <- N_required * drop1 * cost_per_subj_wave2)
+
+(total_cost <- cost_wave1 + cost_wave2)
+```
+
+```{r} 
+n_group_required <- 300  # min required per cell (of 4 cells)
+n_groups <- 4
+(n_total_required <- n_group_required * n_groups)
+
+drop1 <- 0.6  # remove extremities
+drop2 <- 0.8  # attrition between wave 1 and wave 2
+(n_group_required <- (n_group_required / drop1) / drop2)
+
+(N_required <- n_group_required * n_groups)  # wave 1 sample size
+
+cost_per_subj_wave1 <- 0.3  # depends on n topics
+(cost_wave1 <- N_required * cost_per_subj_wave1)
+
+cost_per_subj_wave2 <- 1.7 
+(cost_wave2 <- N_required * drop1 * cost_per_subj_wave2)
+
+(total_cost <- cost_wave1 + cost_wave2)
+```
+
